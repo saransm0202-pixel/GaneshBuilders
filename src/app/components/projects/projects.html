@@ -1,0 +1,68 @@
+<section class="section projects" id="projects">
+  <div class="container">
+    <div class="projects__head" appReveal="up">
+      <div class="section-head">
+        <span class="section-label">Our Work</span>
+        <h2 class="section-title">Our <em>Projects</em></h2>
+        <p class="section-sub">
+          Homes thoughtfully designed and built for the way you live.
+        </p>
+      </div>
+      <button class="btn btn--outline btn--sm projects__all" (click)="scrollTo('contact')">
+        View All Projects
+        <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="projects__grid">
+      @for (project of projects; track project.id; let i = $index) {
+        <article class="card" appReveal="up" [delay]="(i % 2) * 140">
+          <div class="card__media">
+            <img
+              [src]="project.image"
+              [alt]="project.name + ' — ' + project.type"
+              loading="lazy"
+            />
+            <span class="card__num">Project 0{{ project.id }}</span>
+            <span class="card__status" [class.card__status--live]="project.status === 'Ongoing'">
+              {{ project.status }}
+            </span>
+            <div class="card__overlay">
+              <button class="btn btn--primary btn--sm" (click)="onView(project)">
+                View Project
+                <svg class="arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">{{ project.name }}</h3>
+            <ul class="card__meta">
+              <li>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                {{ project.location }}
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                </svg>
+                {{ project.area }}
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m3 11 9-8 9 8"/><path d="M5 9v11h14V9"/>
+                </svg>
+                {{ project.type }}
+              </li>
+            </ul>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="asky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe0dc"/>
+      <stop offset="1" stop-color="#eae3d2"/>
+    </linearGradient>
+    <linearGradient id="awall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4d5a55"/>
+      <stop offset="1" stop-color="#3b4642"/>
+    </linearGradient>
+    <linearGradient id="awall2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#efefea"/>
+      <stop offset="1" stop-color="#dde0da"/>
+    </linearGradient>
+    <linearGradient id="awin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9d9ae"/>
+      <stop offset="1" stop-color="#b98c50"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="900" fill="url(#asky)"/>
+  <g fill="#ffffff" opacity="0.7">
+    <ellipse cx="240" cy="150" rx="130" ry="34"/>
+    <ellipse cx="820" cy="200" rx="150" ry="36"/>
+  </g>
+
+  <!-- Ground -->
+  <rect y="560" width="1080" height="340" fill="#4c5a48"/>
+  <path d="M0 560 Q540 540 1080 560 L1080 586 Q540 566 0 586 Z" fill="#3f4c3c"/>
+
+  <!-- Main house -->
+  <g>
+    <rect x="300" y="280" width="430" height="240" fill="url(#awall)"/>
+    <rect x="360" y="180" width="300" height="120" fill="#45514c"/>
+    <rect x="342" y="162" width="336" height="20" fill="#2d3634"/>
+    <rect x="342" y="288" width="336" height="20" fill="#2d3634"/>
+
+    <!-- Upper windows -->
+    <rect x="392" y="208" width="70" height="58" fill="url(#awin)"/>
+    <rect x="520" y="208" width="70" height="58" fill="url(#awin)"/>
+    <line x1="427" y1="208" x2="427" y2="266" stroke="#ddd0ae" stroke-width="3"/>
+    <line x1="555" y1="208" x2="555" y2="266" stroke="#ddd0ae" stroke-width="3"/>
+
+    <!-- Ground windows -->
+    <rect x="392" y="330" width="110" height="100" fill="url(#awin)"/>
+    <line x1="447" y1="330" x2="447" y2="430" stroke="#ddd0ae" stroke-width="3"/>
+    <rect x="560" y="330" width="110" height="100" fill="url(#awin)"/>
+    <line x1="615" y1="330" x2="615" y2="430" stroke="#ddd0ae" stroke-width="3"/>
+
+    <!-- Door -->
+    <rect x="460" y="400" width="90" height="120" fill="#232a2c"/>
+    <line x1="505" y1="400" x2="505" y2="520" stroke="#c4a265" stroke-width="3"/>
+    <circle cx="470" cy="462" r="4" fill="#c4a265"/>
+
+    <!-- Terrace -->
+    <rect x="720" y="380" width="160" height="140" fill="url(#awall2)"/>
+    <rect x="704" y="366" width="192" height="16" fill="#c9c9bd"/>
+    <rect x="738" y="420" width="70" height="54" fill="url(#awin)"/>
+    <line x1="773" y1="420" x2="773" y2="474" stroke="#ddd0ae" stroke-width="3"/>
+    <rect x="824" y="360" width="130" height="160" fill="#4d5a55"/>
+
+    <!-- Roof -->
+    <path d="M342 162 L480 60 L618 162 Z" fill="#2d3634"/>
+  </g>
+
+  <!-- Pathway -->
+  <path d="M470 560 L560 760 L600 900 L400 900 L420 760 Z" fill="#8b8372"/>
+  <path d="M470 560 L560 760 L600 900 L540 900 L520 760 Z" fill="#7d7563" opacity="0.6"/>
+
+  <!-- Pool -->
+  <rect x="120" y="640" width="180" height="120" rx="10" fill="#5f7d85"/>
+  <rect x="120" y="640" width="180" height="26" rx="10" fill="#6d8f98"/>
+  <ellipse cx="210" cy="700" rx="70" ry="12" fill="#ffffff" opacity="0.15"/>
+
+  <!-- Trees -->
+  <g>
+    <path d="M60 560 Q30 440 90 400 Q170 360 200 440 Q225 500 180 560 Z" fill="#3a4a36"/>
+    <path d="M900 560 Q870 450 930 410 Q1010 370 1040 450 Q1060 510 1020 560 Z" fill="#33422f"/>
+    <path d="M640 560 Q620 480 660 450 Q720 420 740 470 Q755 520 720 560 Z" fill="#3a4a36"/>
+  </g>
+
+  <!-- Clouds shadow -->
+  <g fill="#2d3634" opacity="0.12">
+    <ellipse cx="500" cy="620" rx="240" ry="18"/>
+    <ellipse cx="210" cy="780" rx="120" ry="14"/>
+  </g>
+</svg>

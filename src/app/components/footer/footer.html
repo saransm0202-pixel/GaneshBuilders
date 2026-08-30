@@ -1,0 +1,94 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="footer__logo" [routerLink]="['/']" (click)="scrollTo('home')" aria-label="Ganesh Homes — Home">
+          <span class="footer__mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="44" height="44">
+              <rect x="4" y="4" width="40" height="40" rx="10" fill="currentColor"/>
+              <path d="M24 12 L38 34 H34 L24 18 L14 34 H10 Z" fill="#f6f2ea"/>
+              <rect x="21" y="28" width="6" height="10" fill="#f6f2ea"/>
+            </svg>
+          </span>
+          <span class="footer__word">
+            <strong>GANESH</strong><em>HOMES</em>
+          </span>
+        </a>
+        <p class="footer__tagline">
+          Building dreams. Creating lasting homes.
+        </p>
+        <div class="footer__socials">
+          @for (social of socials; track social.name) {
+            <a
+              class="footer__social"
+              [href]="social.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Follow us on ' + social.name"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path [attr.d]="socialIcon(social.name)"/>
+              </svg>
+            </a>
+          }
+        </div>
+      </div>
+
+      <nav class="footer__col" aria-label="Quick links">
+        <h3 class="footer__heading">Quick Links</h3>
+        <ul class="footer__list">
+          @for (link of quickLinks; track link.label) {
+            <li>
+              <a href="javascript:void(0)" (click)="scrollTo(link.target)">{{ link.label }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <nav class="footer__col" aria-label="Services">
+        <h3 class="footer__heading">Services</h3>
+        <ul class="footer__list">
+          @for (link of serviceLinks; track link.label) {
+            <li>
+              <a href="javascript:void(0)" (click)="scrollTo(link.target)">{{ link.label }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <h3 class="footer__heading">Contact</h3>
+        <ul class="footer__list">
+          <li>
+            <a class="footer__contact" [href]="phoneHref">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.35 1.79.7 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.45-1.27a2 2 0 0 1 2.11-.45c.84.35 1.73.58 2.63.7A2 2 0 0 1 22 16.92Z"/>
+              </svg>
+              {{ phone }}
+            </a>
+          </li>
+          <li>
+            <a class="footer__contact" [href]="'mailto:' + email">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-10 6L2 7"/>
+              </svg>
+              {{ email }}
+            </a>
+          </li>
+          <li class="footer__contact">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            Chennai, Tamil Nadu
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {{ year }} Ganesh Homes. All Rights Reserved.</p>
+      <p class="footer__made">Crafted with care in Chennai</p>
+    </div>
+  </div>
+</footer>

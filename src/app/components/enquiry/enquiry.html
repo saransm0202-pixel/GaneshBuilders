@@ -1,0 +1,194 @@
+<section class="section enquiry" id="contact">
+  <div class="container enquiry__grid">
+    <div class="enquiry__intro" appReveal="left">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">
+        Request a Free<br /><em>Consultation</em>
+      </h2>
+      <p class="enquiry__text">
+        Tell us about your plot and vision. Our team will reach out within one
+        business day with a free consultation and estimate.
+      </p>
+
+      <ul class="enquiry__points">
+        <li>
+          <span class="enquiry__point-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Free site visit</strong>
+            <span>We inspect your plot before proposing a design.</span>
+          </div>
+        </li>
+        <li>
+          <span class="enquiry__point-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Transparent estimate</strong>
+            <span>No hidden charges — clear, itemised pricing.</span>
+          </div>
+        </li>
+        <li>
+          <span class="enquiry__point-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </span>
+          <div>
+            <strong>No obligation</strong>
+            <span>Consult for free, decide with confidence.</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="enquiry__contact">
+        <div>
+          <span class="enquiry__contact-label">Call or WhatsApp</span>
+          <a class="enquiry__contact-value" [href]="'tel:' + phone.replace(/\s/g, '')">{{ phone }}</a>
+        </div>
+        <div>
+          <span class="enquiry__contact-label">WhatsApp Us</span>
+          <a class="enquiry__contact-value" [href]="whatsappHref" target="_blank" rel="noopener noreferrer">Chat Now</a>
+        </div>
+        <div>
+          <span class="enquiry__contact-label">Email</span>
+          <a class="enquiry__contact-value" [href]="'mailto:' + email">{{ email }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="enquiry__panel" appReveal="right">
+      @if (submitted()) {
+        <div class="enquiry__success">
+          <span class="enquiry__success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+          <h3 class="enquiry__success-title">Thank You, {{ form.value.name || 'Friend' }}!</h3>
+          <p class="enquiry__success-text">
+            Your request has been received. Our team will contact you shortly
+            to schedule your free consultation.
+          </p>
+          <button class="btn btn--outline btn--sm" (click)="resetForm()">Send Another Enquiry</button>
+        </div>
+      } @else {
+        <form class="enquiry__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <h3 class="enquiry__form-title">Tell Us About Your Project</h3>
+
+          <div class="enquiry__row">
+            <div class="field">
+              <label class="field__label" for="name">Full Name <span aria-hidden="true">*</span></label>
+              <input
+                class="field__input"
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="Your full name"
+                [class.field__input--error]="isInvalid('name')"
+              />
+              @if (isInvalid('name')) {
+                <p class="field__error">{{ errorFor('name') }}</p>
+              }
+            </div>
+            <div class="field">
+              <label class="field__label" for="phone">Phone Number <span aria-hidden="true">*</span></label>
+              <input
+                class="field__input"
+                id="phone"
+                type="tel"
+                formControlName="phone"
+                placeholder="+91 98765 43210"
+                [class.field__input--error]="isInvalid('phone')"
+              />
+              @if (isInvalid('phone')) {
+                <p class="field__error">{{ errorFor('phone') }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="email">Email Address <span aria-hidden="true">*</span></label>
+            <input
+              class="field__input"
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              [class.field__input--error]="isInvalid('email')"
+            />
+            @if (isInvalid('email')) {
+              <p class="field__error">{{ errorFor('email') }}</p>
+            }
+          </div>
+
+          <div class="enquiry__row">
+            <div class="field">
+              <label class="field__label" for="plotLocation">Plot Location <span aria-hidden="true">*</span></label>
+              <input
+                class="field__input"
+                id="plotLocation"
+                type="text"
+                formControlName="plotLocation"
+                placeholder="e.g. Chennai, OMR, Tambaram"
+                [class.field__input--error]="isInvalid('plotLocation')"
+              />
+              @if (isInvalid('plotLocation')) {
+                <p class="field__error">{{ errorFor('plotLocation') }}</p>
+              }
+            </div>
+            <div class="field">
+              <label class="field__label" for="plotArea">Plot Area</label>
+              <input
+                class="field__input"
+                id="plotArea"
+                type="text"
+                formControlName="plotArea"
+                placeholder="e.g. 1200 Sq.Ft"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="package">Interested Package</label>
+            <select class="field__input" id="package" formControlName="package">
+              <option value="" disabled selected>Select a package</option>
+              @for (pkg of packages; track pkg) {
+                <option [value]="pkg">{{ pkg }}</option>
+              }
+              <option value="Not Sure Yet">Not Sure Yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="message">Message</label>
+            <textarea
+              class="field__input field__input--area"
+              id="message"
+              rows="3"
+              formControlName="message"
+              placeholder="Tell us a little about your dream home…"
+            ></textarea>
+          </div>
+
+          <button class="btn btn--primary enquiry__submit" type="submit">
+            Request a Free Consultation
+            <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </button>
+
+          <p class="enquiry__note">
+            By submitting, you agree to be contacted by Ganesh Homes. We never share your details.
+          </p>
+        </form>
+      }
+    </div>
+  </div>
+</section>

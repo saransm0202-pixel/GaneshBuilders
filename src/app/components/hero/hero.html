@@ -1,0 +1,102 @@
+<section class="hero" id="home">
+  <div class="hero__canvas" #canvas aria-hidden="true">
+    <video
+      #film
+      class="hero__film"
+      src="assets/videos/build-film.mp4"
+      poster="assets/videos/build-poster.png"
+      autoplay
+      muted
+      playsinline
+      preload="auto"></video>
+    @if (atEnd()) {
+      <img
+        class="hero__endframe"
+        src="assets/videos/build-poster.png"
+        alt="Completed dream home built by Ganesh Homes" />
+    }
+  </div>
+
+  <div class="hero__grade" aria-hidden="true"></div>
+  <div class="hero__vignette" aria-hidden="true"></div>
+  <div class="hero__grain" aria-hidden="true"></div>
+  <div class="hero__frame" aria-hidden="true"></div>
+
+  <div class="hero__content container">
+    <div class="hero__copy" [@copyIn]>
+      <p class="hero__kicker">
+        <span class="hero__rule"></span>
+        Premium Home Construction in Chennai
+      </p>
+      <h1 class="hero__title">
+        <span class="mask"><span class="line">Building Your</span></span>
+        <span class="mask"><span class="line">Dream Home, <em>Built to Last.</em></span></span>
+      </h1>
+      <p class="hero__text">
+        From thoughtful design to quality construction, Ganesh Homes brings your
+        dream home to life with transparency, craftsmanship and care.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="javascript:void(0)" (click)="scrollTo('contact')">
+          Start Your Project
+          <svg class="arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a class="btn btn--ghost" href="javascript:void(0)" (click)="scrollTo('projects')">View Our Projects</a>
+      </div>
+      <p class="hero__trust">
+        Quality Construction
+        <span aria-hidden="true">•</span>
+        Transparent Pricing
+        <span aria-hidden="true">•</span>
+        On-Time Delivery
+      </p>
+    </div>
+  </div>
+
+  <div class="hero__strip" aria-hidden="false">
+    <!-- <div class="counter">
+      <span class="counter__big">
+        @for (n of [active()]; track n) {
+          <span class="counter__val">{{ pad(n) }}</span>
+        }
+      </span>
+      <span class="counter__total">/ {{ pad(chapters.length - 1) }}</span>
+      <span class="counter__word">
+        @for (s of [active()]; track s) {
+          <span class="counter__word-in">{{ chapters[s].step }}</span>
+        }
+      </span>
+    </div> -->
+
+    <!-- <nav class="buildbar" aria-label="Construction build stages">
+      @for (chapter of chapters; track chapter.step; let i = $index) {
+        <button
+          type="button"
+          class="seg"
+          [class.is-done]="i < active()"
+          [class.is-now]="i === active()"
+          (click)="goTo(i)"
+          [attr.aria-label]="'Jump to stage ' + (i + 1) + ': ' + chapter.label">
+          <span class="seg__top">
+            <span class="seg__idx">{{ pad(i) }}</span>
+            <span class="seg__name">{{ chapter.step }}</span>
+          </span>
+          <span class="seg__track"><span class="seg__fill" #fill></span></span>
+        </button>
+      }
+    </nav> -->
+
+    <p class="caption" aria-live="polite">
+      @for (s of [active()]; track s) {
+        <span class="caption__in">Stage {{ pad(s) }} &mdash; {{ chapters[s].label }}</span>
+      }
+    </p>
+  </div>
+
+  <a class="hero__scroll" href="javascript:void(0)" (click)="scrollTo('about')" aria-label="Scroll down">
+    <span>Scroll</span>
+    <span class="hero__scroll-line"><span></span></span>
+  </a>
+</section>

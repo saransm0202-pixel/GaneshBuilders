@@ -1,0 +1,21 @@
+<section class="cta" appReveal="scale">
+  <div class="cta__bg" aria-hidden="true"></div>
+  <div class="cta__overlay" aria-hidden="true"></div>
+
+  <div class="container cta__inner">
+    <span class="cta__kicker">Start Today</span>
+    <h2 class="cta__title">Ready to Build Your<br />Dream Home?</h2>
+    <p class="cta__text">
+      Let's turn your vision into a home you'll be proud of.
+    </p>
+    <div class="cta__actions">
+      <a class="btn btn--primary" href="javascript:void(0)" (click)="scrollTo('contact')">
+        Get Free Quote
+        <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+      <a class="btn btn--ghost" [href]="'tel:' + phone.replace(/\s/g, '')">Talk to Our Team</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,62 @@
+<header
+  class="nav"
+  [class.nav--scrolled]="scrolled()"
+  [class.nav--solid]="!isHome() && !scrolled()"
+  [class.nav--open]="menuOpen()">
+  <div class="nav__inner container">
+    <a class="nav__brand" [routerLink]="['/']" (click)="scrollTo('home')" aria-label="Ganesh Homes — Home">
+      <span class="nav__mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="42" height="42" role="img">
+          <rect x="4" y="4" width="40" height="40" rx="10" fill="currentColor"/>
+          <path d="M24 12 L38 34 H34 L24 18 L14 34 H10 Z" fill="#f6f2ea"/>
+          <rect x="21" y="28" width="6" height="10" fill="#f6f2ea"/>
+        </svg>
+      </span>
+      <span class="nav__word">
+        <strong>GANESH</strong><em>HOMES</em>
+        <small>Building Dreams · Creating Homes</small>
+      </span>
+    </a>
+
+    <nav class="nav__menu" [class.nav__menu--open]="menuOpen()" aria-label="Primary">
+      <ul class="nav__list">
+        @for (link of links; track link.label) {
+          <li>
+            <a
+              class="nav__link"
+              href="javascript:void(0)"
+              (click)="scrollTo(link.target)"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+        <!-- <li>
+          <a class="nav__link nav__link--est" routerLink="/estimate" (click)="menuOpen.set(false)">
+            Free Estimate
+          </a>
+        </li> -->
+      </ul>
+      <div class="nav__actions">
+        <a class="btn btn--primary btn--sm" routerLink="/estimate" (click)="menuOpen.set(false)">
+          Free Estimate
+        </a>
+        <a class="nav__phone" [href]="phoneHref">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.35 1.79.7 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.45-1.27a2 2 0 0 1 2.11-.45c.84.35 1.73.58 2.63.7A2 2 0 0 1 22 16.92Z"/>
+          </svg>
+          {{ phone }}
+        </a>
+      </div>
+    </nav>
+
+    <button
+      class="nav__toggle"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Toggle navigation"
+      (click)="toggleMenu()"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

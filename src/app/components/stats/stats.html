@@ -1,0 +1,12 @@
+<section class="stats" aria-label="Company statistics">
+  <div class="stats__inner container">
+    @for (stat of stats; track stat.label; let i = $index) {
+      <div class="stats__item" appReveal="up" [delay]="i * 120">
+        <div class="stats__value">
+          {{ displayed()[i] }}<span class="stats__suffix">{{ stat.suffix }}</span>
+        </div>
+        <div class="stats__label">{{ stat.label }}</div>
+      </div>
+    }
+  </div>
+</section>

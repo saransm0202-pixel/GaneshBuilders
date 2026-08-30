@@ -1,0 +1,426 @@
+<section class="est-hero">
+  <div class="container">
+    <span class="section-label section-label--center">Free Tool — No Sign-Up</span>
+    <h1 class="est-hero__title">Estimate Your <em>Dream Home</em></h1>
+    <p class="est-hero__sub">
+      Tell us about your plot, pick a package, and get a complete construction cost breakdown
+      for Chennai — in under two minutes.
+    </p>
+  </div>
+</section>
+
+<section class="est-calc">
+  <div class="container">
+    <div class="calc">
+
+      <header class="calc__head">
+        <ol class="dots">
+          @for (d of ['Plot', 'Floors', 'Package', 'Extras']; track d; let i = $index) {
+            <li class="dots__item" [class.on]="step() > i + 1" [class.now]="step() === i + 1">
+              <span class="dots__circle">{{ step() > i + 1 ? '✓' : i + 1 }}</span>
+              <span class="dots__label">{{ d }}</span>
+            </li>
+          }
+          <li class="dots__item" [class.on]="step() === 5" [class.now]="step() === 5">
+            <span class="dots__circle">★</span>
+            <span class="dots__label">Report</span>
+          </li>
+        </ol>
+
+        <div class="bar"><span class="bar__fill" [style.width.%]="progressPct()"></span></div>
+        <div class="calc__meta">
+          <span>{{ stepLabel() }}</span>
+          <span>{{ progressPct() }}%</span>
+        </div>
+      </header>
+
+      <div class="calc__body">
+
+        <!-- STEP 1 -->
+        @if (step() === 1) {
+          <div class="step-head">
+            <span class="step-icon" aria-hidden="true">📐</span>
+            <div>
+              <h2>Plot &amp; Built-up Area</h2>
+              <p>Your land size and how much area you plan to construct on each floor.</p>
+            </div>
+          </div>
+
+          <label class="fld">
+            <span class="fld__name">Plot Area (sq.ft)</span>
+            <input
+              type="number"
+              min="0"
+              placeholder="e.g. 1200"
+              [value]="plotArea() ?? ''"
+              (input)="setPlot($any($event.target).value)" />
+          </label>
+          <div class="chips">
+            @for (q of [600, 800, 1200, 1500, 2000, 2400]; track q) {
+              <button type="button" class="chip" [class.chip--on]="plotArea() === q" (click)="quickPlot(q)">
+                {{ q }} sqft
+              </button>
+            }
+          </div>
+          <div class="units">
+            <div><strong>{{ inr(plotDisp() || null) }}</strong><span>Sq. Feet</span></div>
+            <div><strong>{{ yards(plotDisp() || null) }}</strong><span>Sq. Yards</span></div>
+            <div><strong>{{ cents(plotDisp() || null) }}</strong><span>Cents</span></div>
+          </div>
+
+          <div class="divider">Built-up Area per Floor</div>
+
+          <label class="fld">
+            <span class="fld__name">Built-up Area per Floor (sq.ft)</span>
+            <input
+              type="number"
+              min="0"
+              placeholder="e.g. 1000"
+              [value]="builtUpArea() ?? ''"
+              (input)="setBuiltUp($any($event.target).value)" />
+          </label>
+          <div class="chips">
+            @for (q of [600, 800, 1200, 1500, 2000, 2500]; track q) {
+              <button type="button" class="chip" [class.chip--on]="builtUpArea() === q" (click)="quickBuiltUp(q)">
+                {{ q }} sqft
+              </button>
+            }
+          </div>
+          <div class="units units--warm">
+            <div><strong>{{ inr(builtDisp() || null) }}</strong><span>Sq. Feet</span></div>
+            <div><strong>{{ yards(builtDisp() || null) }}</strong><span>Sq. Yards</span></div>
+            <div><strong>{{ cents(builtDisp() || null) }}</strong><span>Cents</span></div>
+          </div>
+
+          <div class="divider">Car Parking (Optional)</div>
+
+          <label class="fld">
+            <span class="fld__name">Parking Area (sq.ft) — ₹1,800/sqft</span>
+            <input
+              type="number"
+              min="0"
+              placeholder="Minimum 200 sqft — leave blank if not needed"
+              [value]="parkingArea() ?? ''"
+              (input)="setParking($any($event.target).value)" />
+          </label>
+          <div class="chips">
+            @for (q of [200, 400, 600, 800]; track q) {
+              <button type="button" class="chip" [class.chip--on]="parkingArea() === q" (click)="quickParking(q)">
+                {{ q / 200 }} car{{ q > 200 ? 's' : '' }} ({{ q }})
+              </button>
+            }
+          </div>
+          <div class="units units--cool">
+            <div><strong>{{ inr(parkDisp() || null) }}</strong><span>Sq. Feet</span></div>
+            <div><strong>{{ parkingArea() ? '~' + parkingCars() : '—' }}</strong><span>Cars (approx)</span></div>
+            <div><strong>{{ parkingArea() ? fmt(parkingCost()) : '—' }}</strong><span>Est. Cost</span></div>
+          </div>
+          <p class="note">One car bay needs roughly 200 sq.ft.</p>
+        }
+
+        <!-- STEP 2 -->
+        @if (step() === 2) {
+          <div class="step-head">
+            <span class="step-icon" aria-hidden="true">🏗️</span>
+            <div>
+              <h2>How Many Floors?</h2>
+              <p>Each additional floor adds roughly four months to the build schedule.</p>
+            </div>
+          </div>
+
+          <div class="floor-preview">
+            <span class="floor-preview__count">{{ selectedFloor().count }}</span>
+            <div>
+              <span class="floor-preview__kicker">Selected configuration</span>
+              <span class="floor-preview__name">{{ selectedFloor().label }}</span>
+              <span class="floor-preview__tag">{{ selectedFloor().months }} months baseline</span>
+            </div>
+          </div>
+
+          <div class="grid4">
+            @for (f of floorOptions; track f.id) {
+              <button
+                type="button"
+                class="pick"
+                [class.pick--on]="floorId() === f.id"
+                (click)="chooseFloors(f.id)">
+                <span class="pick__icon" aria-hidden="true">{{ f.icon }}</span>
+                <strong>{{ f.id }}</strong>
+                <span>{{ f.count }} floor{{ f.count > 1 ? 's' : '' }}</span>
+                <em>~{{ f.months }} months</em>
+              </button>
+            }
+          </div>
+        }
+
+        <!-- STEP 3 -->
+        @if (step() === 3) {
+          <div class="step-head">
+            <span class="step-icon" aria-hidden="true">✨</span>
+            <div>
+              <h2>Choose Your Package</h2>
+              <p>Rates are all-inclusive — materials, labour and site supervision.</p>
+            </div>
+          </div>
+
+          <div class="grid4">
+            @for (p of packages; track p.id) {
+              <button
+                type="button"
+                class="pick pick--pkg"
+                [class.pick--on]="packageId() === p.id"
+                (click)="choosePackage(p.id)">
+                <span class="pick__icon" aria-hidden="true">{{ p.icon }}</span>
+                <em class="pick__tier">{{ p.tier }}</em>
+                <strong>{{ p.name }}</strong>
+                <span>₹{{ p.rate.toLocaleString('en-IN') }}/sqft</span>
+              </button>
+            }
+          </div>
+
+          @if (selectedPackage(); as pkg) {
+            <article class="specbox">
+              <aside class="specbox__side">
+                <span class="specbox__tier">{{ pkg.tier }}</span>
+                <h3>{{ pkg.name }}</h3>
+                <div class="ratebox">
+                  <span class="ratebox__label">Base Rate</span>
+                  <span class="ratebox__val">₹{{ pkg.rate.toLocaleString('en-IN') }}</span>
+                  <span class="ratebox__unit">per sq.ft · labour + materials</span>
+                </div>
+                <p class="specbox__est">
+                  Estimated total
+                  <strong>{{ fmt(totalBuiltUp() * pkg.rate) }}</strong>
+                  for {{ totalBuiltUp().toLocaleString('en-IN') }} sq.ft
+                </p>
+                @if (pkg.id === 'custom') {
+                  <p class="specbox__note">
+                    Indicative rate — finalised after your free design consultation.
+                  </p>
+                }
+                <span class="specbox__time">◷ {{ durationMonths() }}–{{ durationMonths() + 10 }} months</span>
+                <div class="specbox__inc">
+                  <span>Included</span>
+                  @for (inc of specs[pkg.id].includes; track inc) {
+                    <i>✓ {{ inc }}</i>
+                  }
+                </div>
+              </aside>
+
+              <div class="specbox__main">
+                <nav class="tabs">
+                  @for (t of specTabs; track t.key) {
+                    <button
+                      type="button"
+                      class="tabs__tab"
+                      [class.tabs__tab--on]="specTab() === t.key"
+                      (click)="setSpecTab(t.key)">
+                      {{ t.label }}
+                    </button>
+                  }
+                </nav>
+                <div class="rows">
+                  @for (row of specs[pkg.id][specTab()]; track row.label) {
+                    <div class="rows__row">
+                      <span>{{ row.label }}</span>
+                      <strong>{{ row.value }}</strong>
+                    </div>
+                  }
+                </div>
+              </div>
+            </article>
+          }
+        }
+
+        <!-- STEP 4 -->
+        @if (step() === 4) {
+          <div class="step-head">
+            <span class="step-icon" aria-hidden="true">➕</span>
+            <div>
+              <h2>Any Extra Requirements?</h2>
+              <p>Add-ons priced on top of the base construction estimate.</p>
+            </div>
+          </div>
+
+          <div class="extras">
+            @for (ex of extrasList; track ex.id) {
+              <label class="extra" [class.extra--on]="isExtraChecked(ex.id)">
+                <span class="extra__top">
+                  <input
+                    type="checkbox"
+                    [checked]="isExtraChecked(ex.id)"
+                    (change)="toggleExtra(ex.id, $any($event.target).checked)" />
+                  <span class="extra__name">{{ ex.label }}</span>
+                  <span class="extra__rate">
+                    {{ ex.fixed ? fmt(ex.rate) : '₹' + ex.rate.toLocaleString('en-IN') + '/' + ex.unit }}
+                  </span>
+                </span>
+                @if (!ex.fixed && isExtraChecked(ex.id)) {
+                  <span class="extra__qty">
+                    <input
+                      type="number"
+                      min="0"
+                      [placeholder]="ex.placeholder"
+                      [value]="extrasState()[ex.id] === true ? '' : (extrasState()[ex.id] || '')"
+                      (input)="setExtraQty(ex.id, $any($event.target).value)" />
+                    <em>{{ ex.unit }}</em>
+                  </span>
+                }
+              </label>
+            }
+          </div>
+
+          <div class="extras-bar">
+            <span>Add-ons total</span>
+            <strong>{{ fmtFull(extrasCost()) }}</strong>
+          </div>
+        }
+
+        <!-- STEP 5 : REPORT -->
+        @if (step() === 5) {
+          <div class="step-head">
+            <span class="step-icon" aria-hidden="true">📊</span>
+            <div>
+              <h2>Your Estimate Report</h2>
+              <p>A complete cost picture for your planned home.</p>
+            </div>
+          </div>
+
+          <div class="report-actions">
+            <button type="button" class="btn-ghosty" (click)="reset()">↻ Recalculate</button>
+            <a class="btn-wa" [href]="whatsappHref()" target="_blank" rel="noopener">Share on WhatsApp</a>
+          </div>
+
+          <div class="total-card">
+            <span class="total-card__label">Total Estimated Construction Cost — Chennai</span>
+            <span class="total-card__num">{{ fmtFull(displayedTotal()) }}</span>
+            <div class="stat4">
+              <div><strong>₹{{ selectedPackage()?.rate?.toLocaleString('en-IN') }}/sqft</strong><span>Base rate</span></div>
+              <div><strong>{{ totalBuiltUp().toLocaleString('en-IN') }} sqft</strong><span>Total built-up</span></div>
+              <div><strong>{{ (plotArea() ?? 0).toLocaleString('en-IN') }} sqft</strong><span>Plot area</span></div>
+              <div><strong>{{ floorId() }}</strong><span>Configuration</span></div>
+            </div>
+          </div>
+
+          <div class="durcard">
+            <span class="durcard__label">Estimated construction duration</span>
+            <span class="durcard__num">{{ durationMonths() }} months</span>
+            <div class="durcard__track">
+              <span class="durcard__fill" [style.width.%]="(durationMonths() / 24) * 100"></span>
+            </div>
+            <div class="durcard__scale"><span>0m</span><span>8m</span><span>16m</span><span>24m</span></div>
+          </div>
+
+          <div class="mini4">
+            <div><strong>{{ fmt(baseCost()) }}</strong><span>Base cost</span></div>
+            <div><strong>{{ fmt(extrasCost()) }}</strong><span>Add-ons</span></div>
+            <div><strong>{{ fmt(emiMonthly()) }}/mo</strong><span>EMI @ 7.1% · 20 yr</span></div>
+            <div><strong>{{ fmt(monthlyOutflow()) }}/mo</strong><span>Monthly outflow</span></div>
+          </div>
+
+          <div class="splitcard">
+            <figure class="donut">
+              <span class="donut__title">Cost distribution by phase</span>
+              <span class="donut__ring" [style.background]="donutGradient()">
+                <span class="donut__hole">
+                  <strong>{{ fmt(grandTotal()) }}</strong>
+                  <em>Grand total</em>
+                </span>
+              </span>
+            </figure>
+            <div class="phases">
+              <span class="donut__title">Phase breakdown — base cost share</span>
+              @for (ph of phases; track ph.label) {
+                <div class="phases__row">
+                  <i [style.background]="ph.color"></i>
+                  <span>{{ ph.label }}</span>
+                  <small>{{ ph.pct }}%</small>
+                  <b>{{ fmtFull(phaseAmount(ph)) }}</b>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="compare">
+            <span class="donut__title">All packages — side by side</span>
+            <div class="compare__grid">
+              @for (p of packages; track p.id) {
+                <article class="comp" [class.comp--on]="packageId() === p.id">
+                  @if (packageId() === p.id) {
+                    <span class="comp__pick">Your pick</span>
+                  }
+                  <em>{{ p.tier }}</em>
+                  <h4>{{ p.name }}</h4>
+                  <span class="comp__rate">₹{{ p.rate.toLocaleString('en-IN') }}/sqft</span>
+                  <strong>{{ fmt(totalBuiltUp() * p.rate) }}</strong>
+                  <span class="comp__lbl">Total estimated cost</span>
+                  <span class="comp__emi">EMI ~ {{ fmt(emi(totalBuiltUp() * p.rate)) }}/mo</span>
+                </article>
+              }
+            </div>
+          </div>
+
+          <div class="sheet">
+            <header class="sheet__head">
+              <span></span><span>Complete estimate sheet</span><span>% share</span><span>Amount</span>
+            </header>
+            @for (ph of phases; track ph.label) {
+              <div class="sheet__row">
+                <i [style.background]="ph.color"></i>
+                <span>{{ ph.label }}</span>
+                <small>{{ ph.pct }}%</small>
+                <b>{{ fmtFull(phaseAmount(ph)) }}</b>
+              </div>
+            }
+            @if (chosenExtras().length > 0) {
+              <span class="sheet__sect">Add-on items</span>
+              @for (ex of chosenExtras(); track ex.id) {
+                <div class="sheet__row sheet__row--addon">
+                  <i style="background: var(--gold);"></i>
+                  <span>{{ ex.label }}</span>
+                  <small>—</small>
+                  <b>{{ fmtFull(extraCost(ex.id)) }}</b>
+                </div>
+              }
+            }
+            <footer class="sheet__total">
+              <span></span><span>Grand total</span><small>100%</small>
+              <strong>{{ fmtFull(grandTotal()) }}</strong>
+            </footer>
+          </div>
+
+          <p class="disclaimer">
+            <strong>Please note:</strong> Figures are indicative estimates for Chennai metro and vary with
+            site conditions, soil type and material prices. Government approvals, architect fees,
+            EB / water connection charges and interior furnishing are not included.
+            Your final quote after a free site visit will be exact.
+          </p>
+
+          <div class="final-cta">
+            <h3>Ready to Build with Ganesh Homes?</h3>
+            <p>Share this estimate with our team — we respond within 24 hours.</p>
+            <div class="final-cta__btns">
+              <a class="btn btn--primary btn--sm" [routerLink]="['/']" queryParamsHandling="preserve">Talk to Our Team →</a>
+              <a class="btn btn--outline btn--sm" [href]="whatsappHref()" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            </div>
+          </div>
+        }
+
+        @if (errorText()) {
+          <p class="error" role="alert">{{ errorText() }}</p>
+        }
+
+        @if (step() < 5) {
+          <div class="wizard-nav">
+            @if (step() > 1) {
+              <button type="button" class="btn-ghosty" (click)="back()">← Back</button>
+            }
+            <button type="button" class="btn-next" (click)="next()">
+              {{ step() === 4 ? '⚡ Generate Full Report' : 'Next — ' + ['Choose Floors', 'Select Package', 'Add Extras'][step() - 1] + ' →' }}
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

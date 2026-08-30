@@ -1,0 +1,23 @@
+<section class="section process" id="process">
+  <div class="container">
+    <div class="section-head section-head--center" appReveal="up">
+      <span class="section-label section-label--center">Our Process</span>
+      <h2 class="section-title">From Dream <em>to Home</em></h2>
+      <p class="section-sub">
+        A clear, structured journey — so you always know what happens next.
+      </p>
+    </div>
+
+    <ol class="timeline">
+      @for (step of steps; track step.step; let i = $index) {
+        <li class="timeline__step" appReveal="up" [delay]="i * 110">
+          <span class="timeline__dot" aria-hidden="true">
+            {{ step.step }}
+          </span>
+          <h3 class="timeline__title">{{ step.title }}</h3>
+          <p class="timeline__text">{{ step.description }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
