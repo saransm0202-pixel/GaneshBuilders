@@ -11,11 +11,21 @@ export interface PackageSpec {
 }
 
 export interface EstimatePackage {
-  id: 'essential' | 'premium' | 'luxury' | 'custom';
+  id:
+    | 'essential'
+    | 'premium'
+    | 'luxury'
+    | 'custom'
+    | 'c-essential'
+    | 'c-standard'
+    | 'c-premium';
   name: string;
   rate: number;
   tier: string;
   icon: string;
+  category?: 'residential' | 'commercial';
+  tagline?: string;
+  highlighted?: boolean;
 }
 
 export interface ExtraItem {
@@ -42,10 +52,13 @@ export interface FloorConfig {
 }
 
 export const ESTIMATE_PACKAGES: EstimatePackage[] = [
-  { id: 'essential', name: 'Essential', rate: 1799, tier: 'Smart Budget', icon: '🏠' },
-  { id: 'premium', name: 'Premium', rate: 2099, tier: 'Most Chosen', icon: '✨' },
-  { id: 'luxury', name: 'Luxury', rate: 2499, tier: 'Top Tier', icon: '👑' },
-  { id: 'custom', name: 'Customize', rate: 2999, tier: 'Your Plan', icon: '🎨' },
+  { id: 'essential', name: 'Essential', rate: 1799, tier: 'Smart Budget', icon: '🏠', category: 'residential', tagline: 'Quality construction within a practical budget.', highlighted: false },
+  { id: 'premium', name: 'Premium', rate: 2099, tier: 'Most Chosen', icon: '✨', category: 'residential', tagline: 'Enhanced specifications for a refined modern home.', highlighted: true },
+  { id: 'luxury', name: 'Luxury', rate: 2499, tier: 'Top Tier', icon: '👑', category: 'residential', tagline: 'Premium materials and bespoke detailing throughout.', highlighted: false },
+  { id: 'custom', name: 'Customize', rate: 2999, tier: 'Your Plan', icon: '🎨', category: 'residential', tagline: 'Let’s build a plan around your vision.', highlighted: false },
+  { id: 'c-essential', name: 'Essential', rate: 1899, tier: 'Smart Value', icon: '🏢', category: 'commercial', tagline: 'A dependable shell for offices, shops and showrooms.', highlighted: false },
+  { id: 'c-standard', name: 'Standard', rate: 2199, tier: 'Best Value', icon: '🏬', category: 'commercial', tagline: 'Built for working spaces that mean business.', highlighted: true },
+  { id: 'c-premium', name: 'Premium', rate: 2499, tier: 'Flagship', icon: '🏛️', category: 'commercial', tagline: 'Flagship-grade build for banks, clinics & retail.', highlighted: false },
 ];
 
 export const PACKAGE_SPECS: Record<EstimatePackage['id'], PackageSpec> = {
@@ -184,6 +197,109 @@ export const PACKAGE_SPECS: Record<EstimatePackage['id'], PackageSpec> = {
       'Dedicated Project Manager',
     ],
   },
+  'c-essential': {
+    structure: [
+      { label: 'Steel', value: 'ISI-grade, any reputed mill' },
+      { label: 'Cement', value: 'ISI-grade, any reputed mill' },
+      { label: 'RCC Mix', value: 'M20' },
+      { label: 'Ceiling Height', value: '10 ft clear' },
+      { label: 'Masonry', value: 'Block walls, smooth plaster' },
+      { label: 'Waterproofing', value: 'Terrace + wet areas' },
+      { label: 'Approvals', value: 'Drawings for approval' },
+    ],
+    finishes: [
+      { label: 'Floor Tiles', value: "2'×2', up to ₹45/sqft" },
+      { label: 'Wall Tiles', value: 'Up to ₹40/sqft' },
+      { label: 'Interior Paint', value: 'ISI emulsion, 2 coats' },
+      { label: 'Exterior Paint', value: 'Weatherproof emulsion' },
+      { label: 'Facade Design', value: 'Clean standard elevation' },
+      { label: 'Signage Fascia', value: 'Provision made' },
+      { label: 'Drawings', value: '2D floor plan' },
+    ],
+    fittings: [
+      { label: 'Main Door', value: 'Readymade teak-finish frame' },
+      { label: 'Windows', value: "Aluminium 3'×4'" },
+      { label: 'Wiring', value: 'ISI-grade' },
+      { label: 'Switches', value: 'ISI-grade modular' },
+      { label: 'CP Fittings', value: 'Allowance up to ₹12,000' },
+      { label: 'Sanitary Ware', value: 'Budget branded range' },
+      { label: 'Plumbing Pipes', value: 'ISI-grade CPVC' },
+    ],
+    includes: ['2D Floor Plan', 'Plan Approval Guidance', 'Dedicated Site Engineer'],
+  },
+  'c-standard': {
+    structure: [
+      { label: 'Steel', value: 'Leading ISI brands (Fe500D)' },
+      { label: 'Cement', value: 'Leading ISI brands (OPC 53)' },
+      { label: 'RCC Mix', value: 'M20 / M25 as per design' },
+      { label: 'Ceiling Height', value: '10.5 ft clear' },
+      { label: 'Masonry', value: 'Blocks + anti-termite' },
+      { label: 'Waterproofing', value: 'Branded + anti-termite' },
+      { label: 'Plastering', value: 'Smooth finishing plaster' },
+    ],
+    finishes: [
+      { label: 'Floor Tiles', value: "4'×2' vitrified, up to ₹90/sqft" },
+      { label: 'Wall Tiles', value: 'Up to ₹70/sqft' },
+      { label: 'Interior Paint', value: 'Premium emulsion + putty' },
+      { label: 'Exterior Paint', value: 'Primer + weatherproof coat' },
+      { label: 'Facade Design', value: '3D elevation included' },
+      { label: 'Structural Drawing', value: 'Included' },
+      { label: 'Signage Fascia', value: 'Ready fascia frame' },
+    ],
+    fittings: [
+      { label: 'Main Door', value: 'Teakwood frame, designer shutter' },
+      { label: 'Windows', value: "UPVC 2-track, 4'×4'" },
+      { label: 'Wiring', value: 'Branded FR-grade' },
+      { label: 'Switches', value: 'Premium modular series' },
+      { label: 'CP Fittings', value: 'Allowance up to ₹22,000' },
+      { label: 'Sanitary Ware', value: 'Branded wash basins' },
+      { label: 'Plumbing Pipes', value: 'Branded CPVC' },
+    ],
+    includes: [
+      '3D Elevation',
+      'Structural Drawing',
+      'MS Stair Railing',
+      'Parking Shade',
+      '1,000L Water Tank',
+    ],
+  },
+  'c-premium': {
+    structure: [
+      { label: 'Steel', value: 'Top-tier brands (TATA / JSW class)' },
+      { label: 'Cement', value: 'Top-tier brands (Ultra / Ramco class)' },
+      { label: 'RCC Mix', value: 'M25' },
+      { label: 'Ceiling Height', value: '11 ft clear' },
+      { label: 'Masonry', value: 'Premium blocks, smooth finish' },
+      { label: 'Waterproofing', value: 'Premium membrane system' },
+      { label: 'Soil Test', value: 'Carried out by us' },
+    ],
+    finishes: [
+      { label: 'Floor Tiles', value: "6'×4' porcelain/granite, up to ₹150/sqft" },
+      { label: 'Wall Tiles', value: 'Up to ₹120/sqft' },
+      { label: 'Interior Paint', value: 'Royale-class + ceiling putty' },
+      { label: 'Exterior Paint', value: 'Ultima-class weather coat' },
+      { label: 'Facade Design', value: 'Designer elevation + cladding' },
+      { label: 'MEP Drawings', value: 'Full MEP drawing set' },
+      { label: 'Signage & Lighting', value: 'Integrated fascia' },
+    ],
+    fittings: [
+      { label: 'Main Door', value: 'Designer metal / glass entrance' },
+      { label: 'Windows', value: 'Branded 3-track UPVC with mesh' },
+      { label: 'Wiring', value: 'Premium brands, copper-rich' },
+      { label: 'Switches', value: 'International brand range' },
+      { label: 'CP Fittings', value: 'Allowance up to ₹45,000' },
+      { label: 'Sanitary Ware', value: 'Wall-hung, premium range' },
+      { label: 'Lift Shaft', value: 'Elevator-ready provision' },
+    ],
+    includes: [
+      'Full Drawings + MEP',
+      'Soil Test Support',
+      'Elevator Shaft Readiness',
+      'SS Glass Railing',
+      '2,000L Water Tank',
+      'Rain Water Harvesting',
+    ],
+  },
 };
 
 export const EXTRA_ITEMS: ExtraItem[] = [
@@ -211,8 +327,8 @@ export const PHASE_SPLITS: PhaseSplit[] = [
 ];
 
 export const FLOOR_CONFIGS: FloorConfig[] = [
-  { id: 'G', label: 'Ground Floor Only', count: 1, months: 12, icon: '🏡' },
-  { id: 'G+1', label: 'Ground + 1', count: 2, months: 16, icon: '🏠' },
-  { id: 'G+2', label: 'Ground + 2', count: 3, months: 20, icon: '🏢' },
-  { id: 'G+3', label: 'Ground + 3', count: 4, months: 24, icon: '🏛️' },
+  { id: 'G', label: 'Ground Floor Only', count: 1, months: 10, icon: '🏡' },
+  { id: 'G+1', label: 'Ground + 1', count: 2, months: 11, icon: '🏠' },
+  { id: 'G+2', label: 'Ground + 2', count: 3, months: 12, icon: '🏢' },
+  { id: 'G+3', label: 'Ground + 3', count: 4, months: 14, icon: '🏛️' },
 ];

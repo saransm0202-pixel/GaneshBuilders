@@ -36,6 +36,16 @@ export class NavbarComponent {
 
   scrollTo(target: string): void {
     this.menuOpen.set(false);
+    if (!this.isHome()) {
+      this.router.navigate(['/']).then(() => {
+        requestAnimationFrame(() => this.scrollToId(target));
+      });
+      return;
+    }
+    requestAnimationFrame(() => this.scrollToId(target));
+  }
+
+  private scrollToId(target: string): void {
     const el = document.getElementById(target);
     if (!el) {
       return;

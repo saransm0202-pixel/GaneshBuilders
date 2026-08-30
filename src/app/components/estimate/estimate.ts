@@ -2,6 +2,7 @@ import { Title } from '@angular/platform-browser';
 import {
   Component,
   NgZone,
+  OnInit,
   computed,
   inject,
   signal,
@@ -19,6 +20,7 @@ import {
 } from '../../models/estimate.model';
 
 type SpecTab = 'structure' | 'finishes' | 'fittings';
+type PkgCategory = 'residential' | 'commercial';
 
 @Component({
   selector: 'app-estimate',
@@ -27,7 +29,7 @@ type SpecTab = 'structure' | 'finishes' | 'fittings';
   templateUrl: './estimate.html',
   styleUrl: './estimate.scss',
 })
-export class EstimateComponent {
+export class EstimateComponent implements OnInit {
   private readonly data = inject(SiteDataService);
   private readonly title = inject(Title);
   private readonly zone = inject(NgZone);
@@ -42,6 +44,22 @@ export class EstimateComponent {
     { key: 'finishes', label: 'Finishes' },
     { key: 'fittings', label: 'Fittings' },
   ];
+
+  readonly category = signal<PkgCategory>('residential');
+
+  readonly residentialPackages = ESTIMATE_PACKAGES.filter(
+    (p) => (p.category ?? 'residential') === 'residential',
+  );
+  readonly commercialPackages = ESTIMATE_PACKAGES.filter((p) => p.category === 'commercial');
+  readonly activePackages = computed(() =>
+    this.category() === 'residential' ? this.residentialPackages : this.commercialPackages,
+  );
+
+  readonly switchNote = computed(() =>
+    this.category() === 'residential'
+      ? 'For your dream home — houses, villas, duplexes & row houses.'
+      : 'For offices, shops, showrooms, clinics & godowns — built for business.',
+  );
 
   readonly step = signal(1);
   readonly errorText = signal('');
@@ -138,7 +156,7 @@ export class EstimateComponent {
   readonly whatsappHref = computed(() => {
     const pkg = this.selectedPackage();
     const msg =
-      `Hi Ganesh Homes, I used your free estimator and got an estimate of ` +
+      `Hi Ganesh Builders, I used your free estimator and got an estimate of ` +
       `${this.fmt(this.grandTotal())}` +
       (pkg ? ` for the ${pkg.name} package` : '') +
       `. I would like to discuss further.`;
@@ -146,7 +164,11 @@ export class EstimateComponent {
   });
 
   constructor() {
-    this.title.setTitle('Free Construction Cost Estimator | Ganesh Homes Chennai');
+    this.title.setTitle('Free Construction Cost Estimator | Ganesh Builders Chennai');
+  }
+
+  ngOnInit(): void {
+    window.scrollTo(0, 0);
   }
 
   /* ---------- formatting ---------- */
@@ -175,6 +197,10 @@ export class EstimateComponent {
 
   pad(i: number): string {
     return String(i).padStart(2, '0');
+  }
+
+  slabs(n: number): number[] {
+    return Array.from({ length: Math.max(n, 1) });
   }
 
   phaseAmount(ph: PhaseSplit): number {
@@ -278,6 +304,14 @@ export class EstimateComponent {
     this.packageId.set(id);
   }
 
+  setCategory(cat: PkgCategory): void {
+    if (this.category() === cat) {
+      return;
+    }
+    this.category.set(cat);
+    this.packageId.set(null);
+  }
+
   setSpecTab(tab: SpecTab): void {
     this.specTab.set(tab);
   }
@@ -337,6 +371,8 @@ export class EstimateComponent {
 
   reset(): void {
     cancelAnimationFrame(this.rafId);
+    cancelAnimationFrame(this.dispRafId);
+    this.dispRafId = 0;
     this.step.set(1);
     this.errorText.set('');
     this.plotArea.set(null);
@@ -345,8 +381,15 @@ export class EstimateComponent {
     this.floorId.set('G');
     this.packageId.set(null);
     this.specTab.set('structure');
+    this.category.set('residential');
     this.extrasState.set({});
     this.displayedTotal.set(0);
+    this.plotDisp.set(0);
+    this.builtDisp.set(0);
+    this.parkDisp.set(0);
+    this.dispTargets.plot = 0;
+    this.dispTargets.built = 0;
+    this.dispTargets.park = 0;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

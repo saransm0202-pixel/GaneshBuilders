@@ -50,6 +50,7 @@ export class SiteDataService {
       ],
       cta: 'Get Estimate',
       highlighted: false,
+      icon: 'home',
     },
     {
       id: 'premium',
@@ -68,6 +69,7 @@ export class SiteDataService {
       ],
       cta: 'Get Estimate',
       highlighted: true,
+      icon: 'spark',
     },
     {
       id: 'luxury',
@@ -86,6 +88,7 @@ export class SiteDataService {
       ],
       cta: 'Get Estimate',
       highlighted: false,
+      icon: 'crown',
     },
     {
       id: 'custom',
@@ -103,6 +106,67 @@ export class SiteDataService {
       ],
       cta: 'Talk to Us',
       highlighted: false,
+      icon: 'search',
+    },
+  ];
+
+  readonly commercialPackages: ConstructionPackage[] = [
+    {
+      id: 'c-essential',
+      name: 'Essential',
+      tagline: 'A dependable shell for offices, shops and showrooms.',
+      price: '₹1,899',
+      priceNote: '/ Sq.Ft',
+      features: [
+        'RCC framed structure, ISI steel & cement',
+        '10 ft clear ceiling, block masonry walls',
+        'Standard floor & wall tiles up to ₹45/sqft',
+        'ISI-grade wiring & modular switches',
+        'Doors & windows allocation per sqft',
+        '2D floor plan + approval guidance',
+        '1-year workmanship warranty',
+      ],
+      cta: 'Get Estimate',
+      highlighted: false,
+      icon: 'building',
+    },
+    {
+      id: 'c-standard',
+      name: 'Standard',
+      tagline: 'Built for working spaces that mean business.',
+      price: '₹2,199',
+      priceNote: '/ Sq.Ft',
+      features: [
+        'Premium-grade steel & branded cement',
+        '10.5 ft ceiling with waterproofing treatment',
+        'Designer tiles or granite floor options',
+        'Branded sanitary & CP fixtures',
+        'Premium wiring with branded modular switches',
+        '3D elevation + structural design',
+        'MS staircase railing & service provisions',
+      ],
+      cta: 'Get Estimate',
+      highlighted: true,
+      icon: 'store',
+    },
+    {
+      id: 'c-premium',
+      name: 'Premium',
+      tagline: 'Flagship-grade build for banks, clinics & retail.',
+      price: '₹2,499',
+      priceNote: '/ Sq.Ft',
+      features: [
+        'Top-tier steel & premium-grade cement',
+        '11 ft ceiling, advanced waterproofing system',
+        'Granite / porcelain floor finishes',
+        'Premium fixture & fittings suite',
+        'SS railings, elevator-ready shaft',
+        'Full drawings, soil test & MEP support',
+        'Extended warranty + dedicated project manager',
+      ],
+      cta: 'Get Estimate',
+      highlighted: false,
+      icon: 'tower',
     },
   ];
 

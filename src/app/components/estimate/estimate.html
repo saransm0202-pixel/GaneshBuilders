@@ -124,30 +124,50 @@
             <span class="step-icon" aria-hidden="true">🏗️</span>
             <div>
               <h2>How Many Floors?</h2>
-              <p>Each additional floor adds roughly four months to the build schedule.</p>
+              <p>Each additional floor adds roughly one to two months to the build schedule.</p>
             </div>
           </div>
 
-          <div class="floor-preview">
-            <span class="floor-preview__count">{{ selectedFloor().count }}</span>
-            <div>
-              <span class="floor-preview__kicker">Selected configuration</span>
-              <span class="floor-preview__name">{{ selectedFloor().label }}</span>
-              <span class="floor-preview__tag">{{ selectedFloor().months }} months baseline</span>
-            </div>
+          <div class="flor-prev">
+            <span class="flor-prev__stack" aria-hidden="true">
+              @for (k of slabs(selectedFloor().count); track $index) {
+                <i
+                  class="flor__slab"
+                  [class.flor__slab--ground]="$last"
+                  [style.width.px]="38 + $index * 5"></i>
+              }
+            </span>
+            <span class="flor-prev__info">
+              <span class="flor-prev__kicker">Selected configuration</span>
+              <span class="flor-prev__name">{{ selectedFloor().label }}</span>
+              <span class="flor-prev__chips">
+                <i>{{ selectedFloor().id }}</i>
+                <i>~{{ selectedFloor().months }} months</i>
+              </span>
+            </span>
           </div>
 
           <div class="grid4">
             @for (f of floorOptions; track f.id) {
               <button
                 type="button"
-                class="pick"
-                [class.pick--on]="floorId() === f.id"
+                class="flor"
+                [class.flor--on]="floorId() === f.id"
                 (click)="chooseFloors(f.id)">
-                <span class="pick__icon" aria-hidden="true">{{ f.icon }}</span>
-                <strong>{{ f.id }}</strong>
-                <span>{{ f.count }} floor{{ f.count > 1 ? 's' : '' }}</span>
-                <em>~{{ f.months }} months</em>
+                <span class="flor__stack" aria-hidden="true">
+                  @for (k of slabs(f.count); track $index) {
+                    <i
+                      class="flor__slab"
+                      [class.flor__slab--ground]="$last"
+                      [style.width.px]="30 + $index * 5"></i>
+                  }
+                </span>
+                <em class="flor__code">{{ f.id }}</em>
+                <strong>{{ f.label }}</strong>
+                <span class="flor__meta">{{ f.count }} floor{{ f.count > 1 ? 's' : '' }} · ~{{ f.months }} mo</span>
+                @if (floorId() === f.id) {
+                  <span class="flor__check" aria-hidden="true">✓</span>
+                }
               </button>
             }
           </div>
@@ -163,17 +183,63 @@
             </div>
           </div>
 
-          <div class="grid4">
-            @for (p of packages; track p.id) {
+          <div class="est-switch">
+            <div
+              class="est-switch__track"
+              [class.est-switch__track--com]="category() === 'commercial'"
+              role="tablist"
+              aria-label="Package category"
+            >
+              <span class="est-switch__thumb" aria-hidden="true"></span>
+
+              <button
+                type="button"
+                class="est-switch__btn"
+                [class.est-switch__btn--on]="category() === 'residential'"
+                role="tab"
+                [attr.aria-selected]="category() === 'residential'"
+                (click)="setCategory('residential')"
+              >
+                <span aria-hidden="true">🏠</span>
+                Residential
+              </button>
+
+              <button
+                type="button"
+                class="est-switch__btn"
+                [class.est-switch__btn--on]="category() === 'commercial'"
+                role="tab"
+                [attr.aria-selected]="category() === 'commercial'"
+                (click)="setCategory('commercial')"
+              >
+                <span aria-hidden="true">🏢</span>
+                Commercial
+              </button>
+            </div>
+            <p class="est-switch__note">{{ switchNote() }}</p>
+          </div>
+
+          <div class="grid4" [class.grid--com]="category() === 'commercial'">
+            @for (p of activePackages(); track p.id; let i = $index) {
               <button
                 type="button"
                 class="pick pick--pkg"
                 [class.pick--on]="packageId() === p.id"
+                [class.pick--featured]="p.highlighted"
+                [class.pick--lux]="p.id === 'luxury'"
+                [class.pick--com]="p.category === 'commercial'"
                 (click)="choosePackage(p.id)">
+                <span class="pkggloss" aria-hidden="true"></span>
                 <span class="pick__icon" aria-hidden="true">{{ p.icon }}</span>
                 <em class="pick__tier">{{ p.tier }}</em>
                 <strong>{{ p.name }}</strong>
-                <span>₹{{ p.rate.toLocaleString('en-IN') }}/sqft</span>
+                <span class="pick__rate">₹{{ p.rate.toLocaleString('en-IN') }}<small>/sqft</small></span>
+                @if (p.tagline) {
+                  <span class="pick__tag">{{ p.tagline }}</span>
+                }
+                @if (packageId() === p.id) {
+                  <span class="pick__check" aria-hidden="true">✓</span>
+                }
               </button>
             }
           </div>
@@ -306,9 +372,9 @@
             <span class="durcard__label">Estimated construction duration</span>
             <span class="durcard__num">{{ durationMonths() }} months</span>
             <div class="durcard__track">
-              <span class="durcard__fill" [style.width.%]="(durationMonths() / 24) * 100"></span>
+              <span class="durcard__fill" [style.width.%]="(durationMonths() / 14) * 100"></span>
             </div>
-            <div class="durcard__scale"><span>0m</span><span>8m</span><span>16m</span><span>24m</span></div>
+            <div class="durcard__scale"><span>0m</span><span>5m</span><span>10m</span><span>14m</span></div>
           </div>
 
           <div class="mini4">
@@ -349,7 +415,7 @@
                   @if (packageId() === p.id) {
                     <span class="comp__pick">Your pick</span>
                   }
-                  <em>{{ p.tier }}</em>
+                  <em>{{ p.tier }}<small class="comp__cat">{{ (p.category ?? 'residential') === 'commercial' ? 'Commercial' : 'Residential' }}</small></em>
                   <h4>{{ p.name }}</h4>
                   <span class="comp__rate">₹{{ p.rate.toLocaleString('en-IN') }}/sqft</span>
                   <strong>{{ fmt(totalBuiltUp() * p.rate) }}</strong>
@@ -397,7 +463,7 @@
           </p>
 
           <div class="final-cta">
-            <h3>Ready to Build with Ganesh Homes?</h3>
+            <h3>Ready to Build with Ganesh Builders?</h3>
             <p>Share this estimate with our team — we respond within 24 hours.</p>
             <div class="final-cta__btns">
               <a class="btn btn--primary btn--sm" [routerLink]="['/']" queryParamsHandling="preserve">Talk to Our Team →</a>

@@ -2,45 +2,119 @@
   <div class="container">
     <div class="section-head section-head--center" appReveal="up">
       <span class="section-label section-label--center">Our Packages</span>
-      <h2 class="section-title">Home Construction <em>Packages</em></h2>
+      <h2 class="section-title">Construction <em>Packages</em></h2>
       <p class="section-sub">
-        Choose a package that fits your vision, lifestyle and budget.
+        Transparent rates, premium materials — choose what fits your project.
       </p>
     </div>
 
-    <div class="packages__grid">
-      @for (pkg of packages; track pkg.id; let i = $index) {
+    <div class="pkg-switch" appReveal="up">
+      <div
+        class="pkg-switch__track"
+        [class.pkg-switch__track--com]="category() === 'commercial'"
+        role="tablist"
+        aria-label="Package category"
+      >
+        <span class="pkg-switch__thumb" aria-hidden="true"></span>
+
+        <button
+          type="button"
+          class="pkg-switch__btn"
+          [class.pkg-switch__btn--on]="category() === 'residential'"
+          role="tab"
+          [attr.aria-selected]="category() === 'residential'"
+          (click)="setCategory('residential')"
+        >
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 11 9-8 9 8"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/>
+          </svg>
+          <span>Residential</span>
+        </button>
+
+        <button
+          type="button"
+          class="pkg-switch__btn"
+          [class.pkg-switch__btn--on]="category() === 'commercial'"
+          role="tab"
+          [attr.aria-selected]="category() === 'commercial'"
+          (click)="setCategory('commercial')"
+        >
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 21h16"/><path d="M6 21V7l6-4 6 4v14"/><path d="M10 21v-4h4v4"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9 13h.01"/><path d="M15 13h.01"/>
+          </svg>
+          <span>Commercial</span>
+        </button>
+      </div>
+      <p class="pkg-switch__note">{{ switchNote() }}</p>
+    </div>
+
+    <div class="packages__grid" [class.packages__grid--com]="category() === 'commercial'">
+      @for (pkg of activePackages(); track pkg.id; let i = $index) {
         <article
           class="pkg"
           [class.pkg--featured]="pkg.highlighted"
+          [class.pkg--luxury]="pkg.id === 'luxury'"
           appReveal="up"
           [delay]="i * 120"
         >
+          <span class="pkg__gloss" aria-hidden="true"></span>
+          <!-- @if (category() === 'commercial') {
+            <span class="pkg__badge">Commercial</span>
+          } -->
+          @if (pkg.id === 'luxury') {
+            <div class="pkg__flag pkg__flag--luxury">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+                <path d="m12 2 3 7 7 .9-5.2 4.9 1.5 7.2L12 18.8 5.7 22l1.5-7.2L2 9.9l7-.9Z"/>
+              </svg>
+              Signature
+            </div>
+          }
           @if (pkg.highlighted) {
             <div class="pkg__flag">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
                 <path d="m12 2 3 7 7 .9-5.2 4.9 1.5 7.2L12 18.8 5.7 22l1.5-7.2L2 9.9l7-.9Z"/>
               </svg>
-              Most Popular
+              {{ pkg.id.startsWith('c-') ? 'Best Value' : 'Most Popular' }}
             </div>
           }
+
           <div class="pkg__icon" aria-hidden="true">
-            @if (pkg.id === 'essential') {
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m3 11 9-8 9 8"/><path d="M5 9v11h14V9"/>
-              </svg>
-            } @else if (pkg.id === 'premium') {
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v18"/><path d="M7 8h7a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h8"/>
-              </svg>
-            } @else if (pkg.id === 'luxury') {
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3 3 7l9 4 9-4-9-4Z"/><path d="M5 11v6c0 1.5 3 3 7 3s7-1.5 7-3v-6"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
-              </svg>
+            @switch (pkg.icon) {
+              @case ('home') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m3 11 9-8 9 8"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/>
+                </svg>
+              }
+              @case ('spark') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v18"/><path d="M7 8h7a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h8"/>
+                </svg>
+              }
+              @case ('crown') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3 3 7l9 4 9-4-9-4Z"/><path d="M5 11v6c0 1.5 3 3 7 3s7-1.5 7-3v-6"/>
+                </svg>
+              }
+              @case ('search') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+              }
+              @case ('building') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 21h16"/><path d="M6 21V7l6-4 6 4v14"/><path d="M10 21v-4h4v4"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9 13h.01"/><path d="M15 13h.01"/>
+                </svg>
+              }
+              @case ('store') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7 5.5 3h13L20 7"/><path d="M3 7h18v4H3z"/><path d="M4 11v9h16v-9"/><path d="M9 20v-5h6v5"/>
+                </svg>
+              }
+              @case ('tower') {
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 21V4h14v17"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h6"/><path d="M3 21h18"/>
+                </svg>
+              }
             }
           </div>
 

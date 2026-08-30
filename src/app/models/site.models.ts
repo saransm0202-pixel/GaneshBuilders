@@ -18,6 +18,7 @@ export interface ConstructionPackage {
   features: string[];
   cta: string;
   highlighted: boolean;
+  icon: 'home' | 'spark' | 'crown' | 'search' | 'building' | 'store' | 'tower';
 }
 
 export interface Project {
