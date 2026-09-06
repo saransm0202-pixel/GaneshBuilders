@@ -3,7 +3,7 @@ import { HeroComponent } from '../hero/hero';
 import { StatsComponent } from '../stats/stats';
 import { AboutComponent } from '../about/about';
 import { PackagesComponent } from '../packages/packages';
-import { ProjectsComponent } from '../projects/projects';
+import { HomeProjectComponent } from '../home-project/home-project';
 import { ServicesComponent } from '../services/services';
 import { WhyChooseUsComponent } from '../why-choose-us/why-choose-us';
 import { ProcessComponent } from '../process/process';
@@ -18,7 +18,7 @@ import { EnquiryComponent } from '../enquiry/enquiry';
     StatsComponent,
     AboutComponent,
     PackagesComponent,
-    ProjectsComponent,
+    HomeProjectComponent,
     ServicesComponent,
     WhyChooseUsComponent,
     ProcessComponent,

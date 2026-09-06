@@ -1,0 +1,71 @@
+<div class="pv" (click)="close.emit()" role="dialog" aria-modal="true" [attr.aria-label]="project.projectName">
+  <span class="pv__backdrop" aria-hidden="true"></span>
+
+  <div class="pv__panel" (click)="$event.stopPropagation()">
+    <span class="pv__gloss" aria-hidden="true"></span>
+
+    <button class="pv__close" (click)="close.emit()" aria-label="Close preview">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div class="pv__media">
+      <img [src]="imageUrl()" [alt]="project.projectName" />
+      <span class="pv__status" [class]="statusClass(project.projectStatus)">
+        <span class="pv__dot"></span>
+        {{ project.projectStatus }}
+      </span>
+    </div>
+
+    <div class="pv__body">
+      <span class="pv__label">Featured Project</span>
+      <h2 class="pv__title">{{ project.projectName }}</h2>
+
+      @if (project.description) {
+        <p class="pv__desc">{{ project.description }}</p>
+      }
+
+      <dl class="pv__facts">
+        <div class="pv__fact">
+          <dt>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Location
+          </dt>
+          <dd>{{ project.projectLocation || 'Chennai' }}</dd>
+        </div>
+
+        <div class="pv__fact">
+          <dt>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v18"/><path d="M5 21h14"/><path d="M5 21V7l7-4 7 4v14"/>
+            </svg>
+            Type
+          </dt>
+          <dd>{{ project.projectType || '—' }}</dd>
+        </div>
+
+        <div class="pv__fact">
+          <dt>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18"/><path d="M9 21V9"/>
+            </svg>
+            Area
+          </dt>
+          <dd>{{ area(project.projectArea) }}</dd>
+        </div>
+      </dl>
+
+      <a class="pv__cta" [routerLink]="estimateUrl" (click)="close.emit()">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+        Get a Free Estimate
+      </a>
+    </div>
+  </div>
+</div>

@@ -8,5 +8,30 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/estimate/estimate').then((m) => m.EstimateComponent),
   },
+  {
+    path: 'users',
+    loadComponent: () =>
+      import('./components/users/users').then((m) => m.UsersComponent),
+  },
+  {
+    path: 'projects',
+    loadComponent: () =>
+      import('./components/projects/projects').then((m) => m.ProjectsComponent),
+  },
+  {
+    path: 'full-projects',
+    loadComponent: () =>
+      import('./components/full-project/full-project').then((m) => m.FullProjectComponent),
+  },
+  {
+    path: 'admin-panel',
+    loadComponent: () =>
+      import('./components/admin-panel/admin-panel').then((m) => m.AdminPanelComponent),
+  },
+  {
+    path: 'app-config',
+    loadComponent: () =>
+      import('./components/app-config/app-config').then((m) => m.AppConfigComponent),
+  },
   { path: '**', redirectTo: '' },
 ];

@@ -178,7 +178,7 @@ export class SiteDataService {
       area: '2,400 Sq.Ft',
       type: 'Individual Villa',
       status: 'Completed',
-      image: 'assets/images/projects/project-1.svg',
+      image: 'assets/images/projects/project1.png',
     },
     {
       id: 2,

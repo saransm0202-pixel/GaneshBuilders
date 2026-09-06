@@ -1,0 +1,53 @@
+.ntf {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: var(--green-deep);
+  color: var(--ivory);
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 36px rgba(35, 58, 44, 0.35);
+  cursor: pointer;
+  animation: ntfIn 0.4s var(--ease-spring) both;
+  user-select: none;
+}
+
+.ntf--err {
+  background: #8b3a3a;
+  box-shadow: 0 10px 36px rgba(139, 58, 58, 0.35);
+}
+
+.ntf--info {
+  background: #3a5a8b;
+  box-shadow: 0 10px 36px rgba(58, 90, 139, 0.35);
+}
+
+.ntf__icon {
+  flex-shrink: 0;
+}
+
+.ntf__msg {
+  white-space: nowrap;
+}
+
+@keyframes ntfIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ntf { animation: none; }
+}

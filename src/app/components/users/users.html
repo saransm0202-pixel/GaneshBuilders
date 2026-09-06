@@ -1,0 +1,265 @@
+<!-- ═══════════════════════ Hero ═══════════════════════ -->
+<section class="usr-hero">
+  <div class="container">
+    <span class="section-label section-label--center">Admin Panel</span>
+    <h1 class="usr-hero__title">User <em>Management</em></h1>
+  </div>
+</section>
+
+<!-- ═══════════════════════ Main ═══════════════════════ -->
+<section class="usr">
+  <div class="container">
+
+    <!-- toolbar -->
+    <div class="usr__bar">
+      <div class="usr__search">
+        <svg class="usr__search-icon" viewBox="0 0 24 24" width="18" height="18"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input
+          class="usr__search-input"
+          type="text"
+          placeholder="Search by name, email, phone or role…"
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+        />
+      </div>
+      <button class="btn btn--primary btn--sm" (click)="openAdd()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+             aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add User
+      </button>
+    </div>
+
+    <!-- data table -->
+    <div class="usr-tbl">
+      <!-- header -->
+      <div class="usr-tbl__head">
+        <span class="usr-tbl__th usr-tbl__th--name">Name</span>
+        <span class="usr-tbl__th">Email</span>
+        <span class="usr-tbl__th">Phone</span>
+        <span class="usr-tbl__th">Role</span>
+        <span class="usr-tbl__th">Status</span>
+        <span class="usr-tbl__th usr-tbl__th--act"></span>
+      </div>
+
+      <!-- skeleton rows -->
+      @if (loading()) {
+        @for (s of [1, 2, 3, 4, 5]; track s) {
+          <div class="usr-tbl__row usr-tbl__row--skel">
+            <span class="usr-tbl__td usr-tbl__td--name">
+              <span class="skel skel--avatar-sm"></span>
+              <span class="skel skel--line skel--w40"></span>
+            </span>
+            <span class="usr-tbl__td"><span class="skel skel--line skel--w60"></span></span>
+            <span class="usr-tbl__td"><span class="skel skel--line skel--w50"></span></span>
+            <span class="usr-tbl__td"><span class="skel skel--badge-sm"></span></span>
+            <span class="usr-tbl__td"><span class="skel skel--dot"></span></span>
+            <span class="usr-tbl__td"></span>
+          </div>
+        }
+      } @else {
+        @for (user of filteredUsers(); track user.id; let i = $index) {
+          <div class="usr-tbl__row" [style.animation-delay.ms]="i * 50">
+            <span class="usr-tbl__td usr-tbl__td--name">
+              <span class="usr-tbl__avatar">{{ initials(user) }}</span>
+              {{ user.firstName }} {{ user.lastName }}
+            </span>
+            <span class="usr-tbl__td">
+              <a class="usr-tbl__link" (click)="openEdit(user)">{{ user.email || '—' }}</a>
+            </span>
+            <span class="usr-tbl__td">{{ user.phone || '—' }}</span>
+            <span class="usr-tbl__td">
+              <span class="usr-tbl__role">{{ user.roleName || 'Unassigned' }}</span>
+            </span>
+            <span class="usr-tbl__td">
+              <span class="usr-tbl__status" [class.usr-tbl__status--off]="!user.isActive">
+                <span class="usr-tbl__dot" [class.usr-tbl__dot--off]="!user.isActive"></span>
+                {{ user.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </span>
+            <span class="usr-tbl__td usr-tbl__td--act">
+              <button class="usr-tbl__edit" (click)="openEdit(user)">Edit</button>
+            </span>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- empty -->
+    @if (!loading() && filteredUsers().length === 0) {
+      <div class="usr__empty">
+        <div class="usr__empty-icon">
+          <svg viewBox="0 0 24 24" width="42" height="42" fill="none"
+               stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3>No team members found</h3>
+        <p>Add your first team member to get started.</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- ═══════════════════════ Panel ═══════════════════════ -->
+@if (panelOpen()) {
+  <div class="usr-panel" (click)="closePanel()">
+    <div class="usr-panel__backdrop"></div>
+    <div class="usr-panel__body" (click)="$event.stopPropagation()">
+
+      <header class="usr-panel__head">
+        <div>
+          <span class="usr-panel__label">{{ editingUser() ? 'Edit' : 'New' }} Member</span>
+          <h2 class="usr-panel__title">
+            {{ editingUser() ? 'Edit Team Member' : 'Add Team Member' }}
+          </h2>
+        </div>
+        <button class="usr-panel__close" (click)="closePanel()" aria-label="Close panel">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="usr-panel__form">
+        <div class="usr-form__row">
+          <div class="usr-field">
+            <label class="usr-field__label" for="uf-first">First Name <span>*</span></label>
+            <input
+              id="uf-first"
+              class="usr-field__input"
+              type="text"
+              formControlName="firstName"
+              placeholder="e.g. Arun"
+              [class.usr-field__input--err]="isInvalid('firstName')"
+            />
+            @if (isInvalid('firstName')) {
+              <span class="usr-field__error">Required</span>
+            }
+          </div>
+          <div class="usr-field">
+            <label class="usr-field__label" for="uf-last">Last Name <span>*</span></label>
+            <input
+              id="uf-last"
+              class="usr-field__input"
+              type="text"
+              formControlName="lastName"
+              placeholder="e.g. Kumar"
+              [class.usr-field__input--err]="isInvalid('lastName')"
+            />
+            @if (isInvalid('lastName')) {
+              <span class="usr-field__error">Required</span>
+            }
+          </div>
+        </div>
+
+        <div class="usr-form__row">
+          <div class="usr-field">
+            <label class="usr-field__label" for="uf-email">Email <span>*</span></label>
+            <input
+              id="uf-email"
+              class="usr-field__input"
+              type="email"
+              formControlName="email"
+              placeholder="arun@example.com"
+              [class.usr-field__input--err]="isInvalid('email')"
+            />
+            @if (isInvalid('email')) {
+              <span class="usr-field__error">Required</span>
+            }
+          </div>
+          <div class="usr-field">
+            <label class="usr-field__label" for="uf-phone">Phone</label>
+            <input
+              id="uf-phone"
+              class="usr-field__input"
+              type="tel"
+              formControlName="phone"
+              placeholder="+91 98765 43210"
+            />
+          </div>
+        </div>
+
+        <div class="usr-field">
+          <label class="usr-field__label" for="uf-role">Role</label>
+          <select
+            id="uf-role"
+            class="usr-field__input usr-field__select"
+            formControlName="roleId"
+          >
+            <option [ngValue]="null">Select role…</option>
+            @for (role of roles(); track role.roleId) {
+              <option [ngValue]="role.roleId">{{ role.role }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="usr-field usr-field--toggle">
+          <span class="usr-field__label">Status</span>
+          <label class="toggle">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="toggle__track">
+              <span class="toggle__thumb"></span>
+            </span>
+            <span class="toggle__text">{{ form.get('isActive')?.value ? 'Active' : 'Inactive' }}</span>
+          </label>
+        </div>
+
+        <div class="usr-panel__actions">
+          <button
+            type="button"
+            class="btn btn--ghost btn--sm"
+            (click)="closePanel()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn--primary btn--sm"
+            [disabled]="saving()"
+          >
+            @if (saving()) {
+              <span class="usr-panel__spinner"></span>
+              Saving…
+            } @else {
+              {{ editingUser() ? 'Update' : 'Create' }}
+            }
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+}
+
+<!-- ═══════════════════════ Toast ═══════════════════════ -->
+@if (toastVisible()) {
+  <div class="usr-toast" [class.usr-toast--err]="toastType() === 'error'">
+    @if (toastType() === 'success') {
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    } @else {
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+      </svg>
+    }
+    {{ toastMessage() }}
+  </div>
+}

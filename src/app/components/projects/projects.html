@@ -1,68 +1,354 @@
-<section class="section projects" id="projects">
+<!-- ═══════════════════════ Hero ═══════════════════════ -->
+<section class="prj-hero">
   <div class="container">
-    <div class="projects__head" appReveal="up">
-      <div class="section-head">
-        <span class="section-label">Our Work</span>
-        <h2 class="section-title">Our <em>Projects</em></h2>
-        <p class="section-sub">
-          Homes thoughtfully designed and built for the way you live.
-        </p>
-      </div>
-      <button class="btn btn--outline btn--sm projects__all" (click)="scrollTo('contact')">
-        View All Projects
-        <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+    <span class="section-label section-label--center">Admin Panel</span>
+    <h1 class="prj-hero__title">Project <em>Management</em></h1>
+  </div>
+</section>
+
+<!-- ═══════════════════════ Main ═══════════════════════ -->
+<section class="prj">
+  <div class="container">
+
+    <!-- toolbar -->
+    <div class="prj__bar">
+      <div class="prj__search">
+        <svg class="prj__search-icon" viewBox="0 0 24 24" width="18" height="18"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
         </svg>
+        <input
+          class="prj__search-input"
+          type="text"
+          placeholder="Search by name, location, type or status…"
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+        />
+      </div>
+      <button class="btn btn--primary btn--sm" (click)="openAdd()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+             aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add Project
       </button>
     </div>
 
-    <div class="projects__grid">
-      @for (project of projects; track project.id; let i = $index) {
-        <article class="card" appReveal="up" [delay]="(i % 2) * 140">
-          <div class="card__media">
-            <img
-              [src]="project.image"
-              [alt]="project.name + ' — ' + project.type"
-              loading="lazy"
-            />
-            <span class="card__num">Project 0{{ project.id }}</span>
-            <span class="card__status" [class.card__status--live]="project.status === 'Ongoing'">
-              {{ project.status }}
+    <!-- data table -->
+    <div class="prj-tbl">
+      <!-- header -->
+      <div class="prj-tbl__head">
+        <span class="prj-tbl__th prj-tbl__th--name">Project</span>
+        <span class="prj-tbl__th">Type</span>
+        <span class="prj-tbl__th">Location</span>
+        <span class="prj-tbl__th">Area (Sq.Ft)</span>
+        <span class="prj-tbl__th">Status</span>
+        <span class="prj-tbl__th">Active</span>
+        <span class="prj-tbl__th prj-tbl__th--act"></span>
+      </div>
+
+      <!-- skeleton rows -->
+      @if (loading()) {
+        @for (s of [1, 2, 3, 4, 5]; track s) {
+          <div class="prj-tbl__row prj-tbl__row--skel">
+            <span class="prj-tbl__td prj-tbl__td--name">
+              <span class="skel skel--avatar-sm"></span>
+              <span class="skel skel--line skel--w40"></span>
             </span>
-            <div class="card__overlay">
-              <button class="btn btn--primary btn--sm" (click)="onView(project)">
-                View Project
-                <svg class="arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                </svg>
-              </button>
-            </div>
+            <span class="prj-tbl__td"><span class="skel skel--badge-sm"></span></span>
+            <span class="prj-tbl__td"><span class="skel skel--line skel--w50"></span></span>
+            <span class="prj-tbl__td"><span class="skel skel--line skel--w30"></span></span>
+            <span class="prj-tbl__td"><span class="skel skel--badge-sm"></span></span>
+            <span class="prj-tbl__td"><span class="skel skel--dot"></span></span>
+            <span class="prj-tbl__td"></span>
           </div>
-          <div class="card__body">
-            <h3 class="card__title">{{ project.name }}</h3>
-            <ul class="card__meta">
-              <li>
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
-                </svg>
-                {{ project.location }}
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
-                </svg>
-                {{ project.area }}
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="m3 11 9-8 9 8"/><path d="M5 9v11h14V9"/>
-                </svg>
-                {{ project.type }}
-              </li>
-            </ul>
+        }
+      } @else {
+        @for (project of filteredProjects(); track project.projectId; let i = $index) {
+          <div class="prj-tbl__row" [style.animation-delay.ms]="i * 50">
+            <span class="prj-tbl__td prj-tbl__td--name">
+              @if (project.imageUrl) {
+                <span class="prj-tbl__thumb-wrap">
+                  <img class="prj-tbl__thumb" [src]="imageSrc(project.imageUrl)" alt="" loading="lazy" />
+                </span>
+              } @else {
+                <span class="prj-tbl__avatar">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                       stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                       stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 21h18"/>
+                    <path d="M5 21V7l7-4 7 4v14"/>
+                    <path d="M9 21v-6h6v6"/>
+                  </svg>
+                </span>
+              }
+              <span class="prj-tbl__name">
+                <span class="prj-tbl__pname">{{ project.projectName }}</span>
+                @if (project.description) {
+                  <span class="prj-tbl__pdesc">{{ project.description }}</span>
+                }
+              </span>
+            </span>
+            <span class="prj-tbl__td">
+              <span class="prj-tbl__type">{{ project.projectType || '—' }}</span>
+            </span>
+            <span class="prj-tbl__td">
+              <svg class="prj-tbl__pin" viewBox="0 0 24 24" width="13" height="13" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              {{ project.projectLocation }}
+            </span>
+            <span class="prj-tbl__td prj-tbl__td--area">{{ project.projectArea.toLocaleString() }}</span>
+            <span class="prj-tbl__td">
+              <span class="prj-tbl__status" [class]="statusClass(project.projectStatus)">
+                <span class="prj-tbl__dot"></span>
+                {{ project.projectStatus }}
+              </span>
+            </span>
+            <span class="prj-tbl__td">
+              <span class="prj-tbl__active" [class.prj-tbl__active--off]="!project.isActive">
+                {{ project.isActive ? 'Live' : 'Hidden' }}
+              </span>
+            </span>
+            <span class="prj-tbl__td prj-tbl__td--act">
+              <button class="prj-tbl__edit" (click)="openEdit(project)">Edit</button>
+            </span>
           </div>
-        </article>
+        }
       }
     </div>
+
+    <!-- empty -->
+    @if (!loading() && filteredProjects().length === 0) {
+      <div class="prj__empty">
+        <div class="prj__empty-icon">
+          <svg viewBox="0 0 24 24" width="42" height="42" fill="none"
+               stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18"/>
+            <path d="M5 21V7l7-4 7 4v14"/>
+            <path d="M9 21v-6h6v6"/>
+            <path d="M14 3h4"/>
+          </svg>
+        </div>
+        <h3>No projects found</h3>
+        <p>Add your first project to get started, or adjust your search.</p>
+      </div>
+    }
   </div>
 </section>
+
+<!-- ═══════════════════════ Panel ═══════════════════════ -->
+@if (panelOpen()) {
+  <div class="prj-panel" (click)="closePanel()">
+    <div class="prj-panel__backdrop"></div>
+    <div class="prj-panel__body" (click)="$event.stopPropagation()">
+
+      <header class="prj-panel__head">
+        <div>
+          <span class="prj-panel__label">{{ editingProject() ? 'Edit' : 'New' }} Project</span>
+          <h2 class="prj-panel__title">
+            {{ editingProject() ? 'Edit Project' : 'Add Project' }}
+          </h2>
+        </div>
+        <button class="prj-panel__close" (click)="closePanel()" aria-label="Close panel">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="prj-panel__form">
+
+        <!-- ── premium circular image uploader ── -->
+        <div class="prj-img">
+          <div class="prj-img__ring"
+               [class.prj-img__ring--has]="hasImage()"
+               [class.prj-img__ring--drag]="isDragOver()"
+               (drop)="onDropImage($event)"
+               (dragover)="$event.preventDefault(); isDragOver.set(true)"
+               (dragleave)="isDragOver.set(false)">
+            @if (hasImage()) {
+              <img class="prj-img__preview" [src]="previewUrl()" alt="Project preview" />
+              <span class="prj-img__badge">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </span>
+            } @else {
+              <span class="prj-img__placeholder">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="none"
+                     stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="3"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+                <span class="prj-img__hint">Drop image here<br/>or browse below</span>
+              </span>
+            }
+          </div>
+
+          <div class="prj-img__controls">
+            <label class="btn btn--primary btn--sm prj-img__upload">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                   stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              {{ hasImage() ? 'Change Image' : 'Upload Image' }}
+              <input
+                class="prj-img__file"
+                type="file"
+                [accept]="acceptedTypes"
+                (change)="onFileSelected($event)"
+              />
+            </label>
+            @if (hasImage()) {
+              <button type="button" class="btn btn--ghost btn--sm" (click)="removeImage()">
+                Remove
+              </button>
+            }
+          </div>
+          <p class="prj-img__note">One image per project — uploading again replaces it automatically.</p>
+        </div>
+
+        <div class="prj-field">
+          <label class="prj-field__label" for="pf-name">Project Name <span>*</span></label>
+          <input
+            id="pf-name"
+            class="prj-field__input"
+            type="text"
+            formControlName="projectName"
+            placeholder="e.g. Modern Villa, OMR"
+            [class.prj-field__input--err]="isInvalid('projectName')"
+          />
+          @if (isInvalid('projectName')) {
+            <span class="prj-field__error">Required</span>
+          }
+        </div>
+
+        <div class="prj-form__row">
+          <div class="prj-field">
+            <label class="prj-field__label" for="pf-type">Type <span>*</span></label>
+            <select
+              id="pf-type"
+              class="prj-field__input prj-field__select"
+              formControlName="projectType"
+              [class.prj-field__input--err]="isInvalid('projectType')"
+            >
+              <option value="" disabled>Select type…</option>
+              @for (type of typeOptions; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+            @if (isInvalid('projectType')) {
+              <span class="prj-field__error">Required</span>
+            }
+          </div>
+          <div class="prj-field">
+            <label class="prj-field__label" for="pf-status">Status</label>
+            <select
+              id="pf-status"
+              class="prj-field__input prj-field__select"
+              formControlName="projectStatus"
+            >
+              @for (status of statusOptions; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="prj-form__row">
+          <div class="prj-field">
+            <label class="prj-field__label" for="pf-loc">Location <span>*</span></label>
+            <input
+              id="pf-loc"
+              class="prj-field__input"
+              type="text"
+              formControlName="projectLocation"
+              placeholder="e.g. Sholinganallur, Chennai"
+              [class.prj-field__input--err]="isInvalid('projectLocation')"
+            />
+            @if (isInvalid('projectLocation')) {
+              <span class="prj-field__error">Required</span>
+            }
+          </div>
+          <div class="prj-field">
+            <label class="prj-field__label" for="pf-area">Area (Sq.Ft) <span>*</span></label>
+            <input
+              id="pf-area"
+              class="prj-field__input"
+              type="number"
+              min="1"
+              formControlName="projectArea"
+              placeholder="e.g. 2400"
+              [class.prj-field__input--err]="isInvalid('projectArea')"
+            />
+            @if (isInvalid('projectArea')) {
+              <span class="prj-field__error">Enter a valid area</span>
+            }
+          </div>
+        </div>
+
+        <div class="prj-field">
+          <label class="prj-field__label" for="pf-desc">Description</label>
+          <textarea
+            id="pf-desc"
+            class="prj-field__input prj-field__textarea"
+            rows="3"
+            formControlName="description"
+            placeholder="Short description of the project…"
+          ></textarea>
+        </div>
+
+        <div class="prj-field prj-field--toggle">
+          <span class="prj-field__label">Active</span>
+          <label class="toggle">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="toggle__track">
+              <span class="toggle__thumb"></span>
+            </span>
+            <span class="toggle__text">{{ form.get('isActive')?.value ? 'Live' : 'Hidden' }}</span>
+          </label>
+        </div>
+
+        <div class="prj-panel__actions">
+          <button
+            type="button"
+            class="btn btn--ghost btn--sm"
+            (click)="closePanel()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn--primary btn--sm"
+            [disabled]="saving()"
+          >
+            @if (saving()) {
+              <span class="prj-panel__spinner"></span>
+              Saving…
+            } @else {
+              {{ editingProject() ? 'Update' : 'Create' }}
+            }
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+}

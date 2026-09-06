@@ -1,0 +1,177 @@
+<section class="ap-stage">
+  <div class="ap-stage__aurora" aria-hidden="true"></div>
+  <div class="ap-stage__grid" aria-hidden="true"></div>
+  <div class="ap-stage__dots" aria-hidden="true"></div>
+  <div class="ap-stage__vig" aria-hidden="true"></div>
+  <div class="ap-stage__scan" aria-hidden="true"></div>
+
+  <div class="ap-stage__orb ap-stage__orb--one" aria-hidden="true"></div>
+  <div class="ap-stage__orb ap-stage__orb--two" aria-hidden="true"></div>
+  <div class="ap-stage__orb ap-stage__orb--three" aria-hidden="true"></div>
+
+  <header class="ap-topbar container">
+    <a class="ap-topbar__crumb" routerLink="/">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Home
+      <span class="ap-topbar__sep">/</span>
+      Admin Console
+    </a>
+
+    <div class="ap-topbar__user">
+      <span class="ap-topbar__avatar">{{ auth.userInitials() }}</span>
+      <span class="ap-topbar__meta">
+        <strong>{{ auth.currentUser()?.firstName }} {{ auth.currentUser()?.lastName }}</strong>
+        <small>Administrator · Full Access</small>
+      </span>
+    </div>
+  </header>
+
+  <section class="ap-intro container">
+    <span class="ap-kicker">
+      <i class="ap-kicker__dot" aria-hidden="true"></i>
+      Control Center · Ganesh Builders
+    </span>
+    <h1 class="ap-intro__title">Admin <em>Console</em></h1>
+    <p class="ap-intro__sub">
+      Command the people and projects behind your portfolio from a single, premium 3D dashboard.
+    </p>
+    <div class="ap-intro__chips" aria-hidden="true">
+      <span class="ap-chip"><i class="ap-chip__dot"></i> Session Active</span>
+      <span class="ap-chip">3 Modules</span>
+      <span class="ap-chip">Secure Access</span>
+    </div>
+  </section>
+
+  <section class="ap-modules container">
+    <div class="ap-module ap-module--gold">
+      <div
+        class="ap-module__3d"
+        (mousemove)="onTilt($event)"
+        (mouseleave)="resetTilt($event)">
+
+        <div class="ap-module__sweep" aria-hidden="true">
+          <div class="ap-module__sheen"></div>
+          <div class="ap-module__ring"></div>
+        </div>
+
+        <a class="ap-module__link" routerLink="/users" aria-label="Open User Management"></a>
+
+        <div class="ap-module__top">
+          <span class="ap-module__icon-wrap">
+            <span class="ap-module__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </span>
+          </span>
+          <span class="ap-module__badge"><i class="ap-module__dot" aria-hidden="true"></i> Active Module</span>
+        </div>
+
+        <h2 class="ap-module__title ap-module__depth--title">User <em>Management</em></h2>
+        <div class="ap-module__rule" aria-hidden="true"></div>
+        <p class="ap-module__desc ap-module__depth--desc">
+          Manage customers, their accounts and portal access — add, edit and control everything from one place.
+        </p>
+
+        <div class="ap-module__footer ap-module__depth--foot">
+          <span class="ap-module__num">01</span>
+          <span class="ap-module__cta">
+            Open Module
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-module ap-module--green">
+      <div
+        class="ap-module__3d"
+        (mousemove)="onTilt($event)"
+        (mouseleave)="resetTilt($event)">
+
+        <div class="ap-module__sweep" aria-hidden="true">
+          <div class="ap-module__sheen"></div>
+          <div class="ap-module__ring"></div>
+        </div>
+
+        <a class="ap-module__link" routerLink="/projects" aria-label="Open Project Management"></a>
+
+        <div class="ap-module__top">
+          <span class="ap-module__icon-wrap">
+            <span class="ap-module__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"/><path d="M5 21V7l7-4v18"/><path d="M19 21V11l-7-4"/>
+              </svg>
+            </span>
+          </span>
+          <span class="ap-module__badge"><i class="ap-module__dot" aria-hidden="true"></i> Active Module</span>
+        </div>
+
+        <h2 class="ap-module__title ap-module__depth--title">Project <em>Management</em></h2>
+        <div class="ap-module__rule" aria-hidden="true"></div>
+        <p class="ap-module__desc ap-module__depth--desc">
+          Add, edit and upload imagery for your construction projects — keep your showcase portfolio fresh and stunning.
+        </p>
+
+        <div class="ap-module__footer ap-module__depth--foot">
+          <span class="ap-module__num">02</span>
+          <span class="ap-module__cta">
+            Open Module
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-module ap-module--slate">
+      <div
+        class="ap-module__3d"
+        (mousemove)="onTilt($event)"
+        (mouseleave)="resetTilt($event)">
+
+        <div class="ap-module__sweep" aria-hidden="true">
+          <div class="ap-module__sheen"></div>
+          <div class="ap-module__ring"></div>
+        </div>
+
+        <a class="ap-module__link" routerLink="/app-config" aria-label="Open App Configuration"></a>
+
+        <div class="ap-module__top">
+          <span class="ap-module__icon-wrap">
+            <span class="ap-module__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </span>
+          </span>
+          <span class="ap-module__badge"><i class="ap-module__dot" aria-hidden="true"></i> Active Module</span>
+        </div>
+
+        <h2 class="ap-module__title ap-module__depth--title">App <em>Configuration</em></h2>
+        <div class="ap-module__rule" aria-hidden="true"></div>
+        <p class="ap-module__desc ap-module__depth--desc">
+          Tune your app identity, contact details and social channels — powered by the APIs
+          <code>getAppConfig</code> and <code>InsertUpdateConfig</code>.
+        </p>
+
+        <div class="ap-module__footer ap-module__depth--foot">
+          <span class="ap-module__num">03</span>
+          <span class="ap-module__cta">
+            Open Module
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ap-foot container">
+    <span>Ganesh Builders · Admin Console</span>
+    <span>Secure Session · © 2026</span>
+  </footer>
+</section>

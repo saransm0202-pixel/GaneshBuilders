@@ -1,0 +1,80 @@
+<article class="pc" appReveal="up" [delay]="delay">
+  <span class="pc__gloss" aria-hidden="true"></span>
+
+  <div class="pc__media">
+    <img
+      class="pc__img"
+      [src]="imageUrl()"
+      [alt]="project.projectName"
+      loading="lazy"
+    />
+
+    <span class="pc__shade" aria-hidden="true"></span>
+
+    <span class="pc__status" [class]="statusClass(project.projectStatus)">
+      <span class="pc__dot"></span>
+      {{ project.projectStatus }}
+    </span>
+
+    <button
+      class="pc__preview"
+      type="button"
+      (click)="preview.emit(project)"
+      aria-label="Preview {{ project.projectName }}"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="17"
+        height="17"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      Quick View
+    </button>
+  </div>
+
+  <div class="pc__body">
+    <h3 class="pc__title">{{ project.projectName }}</h3>
+
+    <p class="pc__meta">
+      <svg
+        class="pc__pin"
+        viewBox="0 0 24 24"
+        width="13"
+        height="13"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+      {{ project.projectLocation || 'Chennai' }}
+    </p>
+
+    @if (areaLabel(project.projectArea) || project.projectType) {
+      <p class="pc__tags">
+        @if (areaLabel(project.projectArea)) {
+          <span class="pc__tag">{{ areaLabel(project.projectArea) }}</span>
+        }
+        @if (project.projectType) {
+          <span class="pc__tag">{{ project.projectType }}</span>
+        }
+      </p>
+    }
+
+    @if (project.description) {
+      <p class="pc__desc">{{ project.description }}</p>
+    }
+  </div>
+</article>
