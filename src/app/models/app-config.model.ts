@@ -3,6 +3,7 @@ export interface IAppConfig {
   accountId: number;
   appName: string;
   appDescription?: string | null;
+  appLogo?: string | null;
   contactNumber?: string | null;
   contactMail?: string | null;
   enableFacebook?: boolean | null;

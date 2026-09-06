@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { AppConfigService } from '../../services/app-config.service';
 import { NotificationService } from '../../services/notification.service';
 import { IAppConfig } from '../../models/app-config.model';
@@ -9,7 +10,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-config',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './app-config.html',
   styleUrl: './app-config.scss',
 })
@@ -20,7 +21,9 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
 
   readonly loading = signal(true);
   readonly saving = signal(false);
+  readonly uploading = signal(false);
   readonly loadedConfig = signal<IAppConfig | null>(null);
+  readonly logoSrc = signal('');
 
   readonly form = new FormGroup({
     appName: new FormControl('', { nonNullable: true, validators: Validators.required }),
@@ -51,6 +54,9 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
     this.configService.getAppConfig(environment.accountId).subscribe({
       next: (config) => {
         this.loadedConfig.set(config);
+        if (config.appLogo) {
+          this.logoSrc.set(this.resolveImage(config.appLogo));
+        }
         this.form.patchValue({
           appName: config.appName ?? '',
           appDescription: config.appDescription ?? '',
@@ -74,6 +80,39 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onLogoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      this.notify.show('Please choose an image file', 'error');
+      return;
+    }
+
+    const preview = URL.createObjectURL(file);
+    this.logoSrc.set(preview);
+
+    this.uploading.set(true);
+    this.configService.uploadAppLogo(environment.accountId, file).subscribe({
+      next: (res) => {
+        this.uploading.set(false);
+        if (res.statusCode === 1 && res.imageUrl) {
+          const url = this.resolveImage(res.imageUrl);
+          this.logoSrc.set(url);
+          this.notify.show('App logo uploaded successfully', 'success');
+        } else {
+          this.notify.show('Logo upload failed — please try again', 'error');
+        }
+      },
+      error: () => {
+        this.uploading.set(false);
+        this.notify.show('Logo upload failed — is the API running?', 'error');
+      },
+    });
+  }
+
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -87,6 +126,7 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
       accountId: environment.accountId,
       appName: (v.appName ?? '').trim(),
       appDescription: v.appDescription ?? '',
+      appLogo: this.logoSrc() || null,
       contactNumber: v.contactNumber ?? '',
       contactMail: v.contactMail ?? '',
       enableFacebook: v.enableFacebook ?? false,
@@ -102,6 +142,9 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.saving.set(false);
         this.loadedConfig.set(res);
+        if (res.appLogo) {
+          this.logoSrc.set(this.resolveImage(res.appLogo));
+        }
         this.notify.show('App configuration saved successfully', 'success');
       },
       error: () => {
@@ -114,5 +157,11 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
   isInvalid(name: string): boolean {
     const c = this.form.get(name);
     return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+
+  private resolveImage(url: string): string {
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${environment.apiOrigin}${url.startsWith('/') ? url : `/${url}`}`;
   }
 }
