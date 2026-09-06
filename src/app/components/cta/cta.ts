@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SiteDataService } from '../../services/site-data.service';
+import { SiteConfigService } from '../../services/site-config.service';
 import { RevealDirective } from '../../directives/reveal.directive';
 
 @Component({
@@ -10,9 +10,8 @@ import { RevealDirective } from '../../directives/reveal.directive';
   styleUrl: './cta.scss',
 })
 export class CtaComponent {
-  private readonly data = inject(SiteDataService);
-
-  readonly phone = this.data.phone;
+  readonly phone = inject(SiteConfigService).contactNumber;
+  readonly phoneHref = inject(SiteConfigService).phoneHref;
 
   scrollTo(target: string): void {
     const el = document.getElementById(target);

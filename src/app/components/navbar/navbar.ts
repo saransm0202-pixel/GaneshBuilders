@@ -2,6 +2,7 @@ import { Component, HostListener, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { SiteDataService } from '../../services/site-data.service';
 import { AuthService } from '../../services/auth.service';
+import { SiteConfigService } from '../../services/site-config.service';
 import { LoginComponent } from '../login/login';
 
 @Component({
@@ -17,8 +18,8 @@ export class NavbarComponent {
   readonly auth = inject(AuthService);
 
   readonly links = this.data.navLinks;
-  readonly phone = this.data.phone;
-  readonly phoneHref = this.data.phoneHref;
+  readonly appLogo = inject(SiteConfigService).logoResolved;
+  readonly brandParts = inject(SiteConfigService).brandParts;
 
   readonly scrolled = signal(false);
   readonly menuOpen = signal(false);

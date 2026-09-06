@@ -28,6 +28,13 @@
   place-items: center;
 }
 
+.footer__mark-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 11px;
+}
+
 .footer__word {
   font-family: var(--font-head);
   font-size: 22px;

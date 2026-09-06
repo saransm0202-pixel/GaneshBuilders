@@ -49,15 +49,15 @@
       <div class="enquiry__contact">
         <div>
           <span class="enquiry__contact-label">Call or WhatsApp</span>
-          <a class="enquiry__contact-value" [href]="'tel:' + phone.replace(/\s/g, '')">{{ phone }}</a>
+          <a class="enquiry__contact-value" [href]="phoneHref()">{{ phone() }}</a>
         </div>
         <div>
           <span class="enquiry__contact-label">WhatsApp Us</span>
-          <a class="enquiry__contact-value" [href]="whatsappHref" target="_blank" rel="noopener noreferrer">Chat Now</a>
+          <a class="enquiry__contact-value" [href]="whatsappHref()" target="_blank" rel="noopener noreferrer">Chat Now</a>
         </div>
         <div>
           <span class="enquiry__contact-label">Email</span>
-          <a class="enquiry__contact-value" [href]="'mailto:' + email">{{ email }}</a>
+          <a class="enquiry__contact-value" [href]="'mailto:' + email()">{{ email() }}</a>
         </div>
       </div>
     </div>

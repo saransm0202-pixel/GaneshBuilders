@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SiteDataService } from '../../services/site-data.service';
+import { SiteConfigService } from '../../services/site-config.service';
 
 @Component({
   selector: 'app-footer',
@@ -11,12 +12,14 @@ import { SiteDataService } from '../../services/site-data.service';
 })
 export class FooterComponent {
   private readonly data = inject(SiteDataService);
+  private readonly config = inject(SiteConfigService);
 
-  readonly phone = this.data.phone;
-  readonly phoneHref = this.data.phoneHref;
-  readonly whatsappHref = this.data.whatsappHref;
-  readonly email = this.data.email;
-  readonly socials = this.data.socials;
+  readonly appLogo = this.config.logoResolved;
+  readonly brandParts = this.config.brandParts;
+  readonly phone = this.config.contactNumber;
+  readonly phoneHref = this.config.phoneHref;
+  readonly email = this.config.email;
+  readonly socials = this.config.socials;
 
   readonly quickLinks = this.data.navLinks;
   readonly serviceLinks = [

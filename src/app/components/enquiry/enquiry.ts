@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SiteDataService } from '../../services/site-data.service';
+import { SiteConfigService } from '../../services/site-config.service';
 import { RevealDirective } from '../../directives/reveal.directive';
 
 @Component({
@@ -12,11 +13,13 @@ import { RevealDirective } from '../../directives/reveal.directive';
 })
 export class EnquiryComponent {
   private readonly data = inject(SiteDataService);
+  private readonly config = inject(SiteConfigService);
 
   readonly packages = this.data.packages.map((pkg) => pkg.name);
-  readonly phone = this.data.phone;
-  readonly whatsappHref = this.data.whatsappHref;
-  readonly email = this.data.email;
+  readonly phone = this.config.contactNumber;
+  readonly phoneHref = this.config.phoneHref;
+  readonly whatsappHref = this.config.whatsappHref;
+  readonly email = this.config.email;
 
   readonly submitted = signal(false);
 

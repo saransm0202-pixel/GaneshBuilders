@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { AppConfigService } from '../../services/app-config.service';
+import { SiteConfigService } from '../../services/site-config.service';
 import { NotificationService } from '../../services/notification.service';
 import { IAppConfig } from '../../models/app-config.model';
 import { environment } from '../../../environments/environment';
@@ -16,6 +17,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AppConfigComponent implements OnInit, AfterViewInit {
   private readonly configService = inject(AppConfigService);
+  private readonly siteConfig = inject(SiteConfigService);
   private readonly notify = inject(NotificationService);
   private readonly titleService = inject(Title);
 
@@ -102,6 +104,7 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
           const url = this.resolveImage(res.imageUrl);
           this.logoSrc.set(url);
           this.notify.show('App logo uploaded successfully', 'success');
+          this.siteConfig.load();
         } else {
           this.notify.show('Logo upload failed — please try again', 'error');
         }
@@ -146,6 +149,7 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
           this.logoSrc.set(this.resolveImage(res.appLogo));
         }
         this.notify.show('App configuration saved successfully', 'success');
+        this.siteConfig.load();
       },
       error: () => {
         this.saving.set(false);

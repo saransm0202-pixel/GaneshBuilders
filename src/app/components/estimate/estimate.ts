@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SiteDataService } from '../../services/site-data.service';
+import { SiteConfigService } from '../../services/site-config.service';
 import {
   ESTIMATE_PACKAGES,
   EXTRA_ITEMS,
@@ -30,9 +30,9 @@ type PkgCategory = 'residential' | 'commercial';
   styleUrl: './estimate.scss',
 })
 export class EstimateComponent implements OnInit {
-  private readonly data = inject(SiteDataService);
   private readonly title = inject(Title);
   private readonly zone = inject(NgZone);
+  private readonly siteConfig = inject(SiteConfigService);
 
   readonly packages = ESTIMATE_PACKAGES;
   readonly specs = PACKAGE_SPECS;
@@ -160,7 +160,7 @@ export class EstimateComponent implements OnInit {
       `${this.fmt(this.grandTotal())}` +
       (pkg ? ` for the ${pkg.name} package` : '') +
       `. I would like to discuss further.`;
-    return `https://wa.me/${this.data.phoneHref.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/${this.siteConfig.phoneDigits()}?text=${encodeURIComponent(msg)}`;
   });
 
   constructor() {

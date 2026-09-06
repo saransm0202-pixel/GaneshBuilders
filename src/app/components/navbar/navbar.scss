@@ -47,6 +47,13 @@
   transition: transform 0.5s var(--ease);
 }
 
+.nav__mark-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
 .nav__brand:hover .nav__mark {
   transform: translateY(-2px);
 }

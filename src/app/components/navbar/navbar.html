@@ -4,16 +4,20 @@
   [class.nav--solid]="!isHome() && !scrolled()"
   [class.nav--open]="menuOpen()">
   <div class="nav__inner container">
-    <a class="nav__brand" [routerLink]="['/']" (click)="scrollTo('home')" aria-label="Ganesh Builders — Home">
+    <a class="nav__brand" [routerLink]="['/']" (click)="scrollTo('home')" [attr.aria-label]="(brandParts().first + ' ' + brandParts().rest) + ' — Home'">
       <span class="nav__mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" width="42" height="42" role="img">
-          <rect x="4" y="4" width="40" height="40" rx="10" fill="currentColor"/>
-          <path d="M24 12 L38 34 H34 L24 18 L14 34 H10 Z" fill="#f6f2ea"/>
-          <rect x="21" y="28" width="6" height="10" fill="#f6f2ea"/>
-        </svg>
+        @if (appLogo()) {
+          <img class="nav__mark-img" [src]="appLogo()" alt="" />
+        } @else {
+          <svg viewBox="0 0 48 48" width="42" height="42" role="img">
+            <rect x="4" y="4" width="40" height="40" rx="10" fill="currentColor"/>
+            <path d="M24 12 L38 34 H34 L24 18 L14 34 H10 Z" fill="#f6f2ea"/>
+            <rect x="21" y="28" width="6" height="10" fill="#f6f2ea"/>
+          </svg>
+        }
       </span>
       <span class="nav__word">
-        <strong>GANESH</strong><em>BUILDERS</em>
+        <strong>{{ brandParts().first }}</strong><em>{{ brandParts().rest }}</em>
         <small>Building Dreams · Creating Homes</small>
       </span>
     </a>
