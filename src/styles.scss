@@ -3,21 +3,32 @@
    ========================================================================== */
 
 :root {
-  /* Palette */
-  --ivory: #f6f2ea;
-  --ivory-2: #fbf8f3;
-  --paper: #fefcf8;
-  --charcoal: #21262b;
-  --ink: #181c20;
-  --green: #33513f;
-  --green-deep: #24382c;
-  --green-tint: #eef2ec;
-  --gold: #c4a265;
-  --gold-soft: #e6d4ac;
-  --muted: #6c7278;
-  --line: rgba(33, 38, 43, 0.12);
-  --line-light: rgba(246, 242, 234, 0.16);
+  /* brand palette — ember orange gradient on black & white */
+  --orange: #ff7d00;
+  --orange-mid: #ff7104;
+  --orange-deep: #ff5712;
+  --orange-soft: #ffb77a;
+  --orange-tint: #fff2e4;
+
+  --ivory: #ffffff;
+  --ivory-2: #fffdf9;
+  --paper: #ffffff;
+  --charcoal: #000000;
+  --ink: #000000;
+  --green: #ff7d00;
+  --green-deep: #1b0b00;
+  --green-tint: #fff2e4;
+  --gold: #ff7d00;
+  --gold-soft: #ffb77a;
+  --muted: #6d6460;
+  --line: rgba(0, 0, 0, 0.1);
+  --line-light: rgba(255, 255, 255, 0.16);
   --white: #ffffff;
+
+  /* cinematic helpers */
+  --brand-grad: linear-gradient(120deg, #ff5712 0%, #ff7104 48%, #ff7d00 100%);
+  --brand-grad-soft: linear-gradient(120deg, #ffb77a, #ff7d00);
+  --glow: 0 18px 50px -16px rgba(255, 113, 4, 0.55);
 
   /* Typography */
   --font-head: 'Playfair Display', 'Georgia', serif;
@@ -32,9 +43,9 @@
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
-  --shadow-sm: 0 2px 10px rgba(24, 28, 32, 0.06);
-  --shadow-md: 0 14px 40px rgba(24, 28, 32, 0.12);
-  --shadow-lg: 0 30px 70px rgba(24, 28, 32, 0.18);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 14px 40px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 30px 70px rgba(0, 0, 0, 0.18);
 
   /* Motion */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -146,6 +157,89 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
+   Cinematic surfaces
+   ========================================================================== */
+
+/* Dark ember band — near-black with orange glow pools + sheen */
+.dark-band {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ivory);
+}
+
+.dark-band::before {
+  content: '';
+  position: absolute;
+  inset: -40% -20% -10%;
+  z-index: -2;
+  background:
+    radial-gradient(46% 42% at 12% 8%, rgba(255, 113, 4, 0.22), transparent 66%),
+    radial-gradient(38% 40% at 88% 16%, rgba(255, 125, 0, 0.16), transparent 68%),
+    radial-gradient(52% 48% at 50% 110%, rgba(255, 87, 18, 0.2), transparent 64%),
+    linear-gradient(180deg, #140a02 0%, #0b0501 55%, #070300 100%);
+  animation: emberDrift 18s ease-in-out infinite alternate;
+}
+
+.dark-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 138, 51, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 138, 51, 0.07) 1px, transparent 1px);
+  background-size: 52px 52px;
+  -webkit-mask-image: radial-gradient(85% 62% at 50% 8%, black, transparent 88%);
+  mask-image: radial-gradient(85% 62% at 50% 8%, black, transparent 88%);
+  pointer-events: none;
+}
+
+@keyframes emberDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-3%, 2%, 0);
+  }
+}
+
+/* Band carrying a real photograph behind a warm cinematic veil */
+.band-shot {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ivory);
+}
+
+.band-shot__img {
+  position: absolute;
+  inset: -8%;
+  z-index: -2;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.band-shot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(10, 5, 1, 0.78), rgba(6, 3, 0, 0.6) 46%, rgba(10, 5, 1, 0.9)),
+    radial-gradient(120% 80% at 50% 0%, rgba(255, 113, 4, 0.2), transparent 60%);
+}
+
+.text-grad {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ==========================================================================
    Typography helpers
    ========================================================================== */
 
@@ -183,7 +277,10 @@ h1, h2, h3, h4 {
 
 .section-title em {
   font-style: italic;
-  color: var(--green);
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .section-sub {
@@ -221,20 +318,26 @@ h1, h2, h3, h4 {
 }
 
 .btn--primary {
-  background: var(--gold);
-  color: var(--ink);
-  box-shadow: 0 12px 30px rgba(196, 162, 101, 0.35);
+  background: var(--brand-grad);
+  background-size: 170% 170%;
+  background-position: 0% 50%;
+  color: var(--white);
+  box-shadow: 0 14px 34px -10px rgba(255, 113, 4, 0.62);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    background-position var(--dur) var(--ease);
 }
 
 .btn--primary:hover {
-  background: #b28f52;
+  background-position: 100% 50%;
   transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(196, 162, 101, 0.45);
+  box-shadow: 0 20px 46px -12px rgba(255, 87, 18, 0.7);
 }
 
 .btn--dark {
   background: var(--charcoal);
   color: var(--ivory);
+  border: 1px solid var(--line-light);
 }
 
 .btn--dark:hover {
@@ -244,9 +347,9 @@ h1, h2, h3, h4 {
 }
 
 .btn--ghost {
-  border: 1px solid rgba(246, 242, 234, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   color: var(--ivory);
-  background: rgba(24, 28, 32, 0.18);
+  background: rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(6px);
 }
 
@@ -262,9 +365,11 @@ h1, h2, h3, h4 {
 }
 
 .btn--outline:hover {
-  background: var(--green);
+  background: var(--brand-grad);
   color: var(--ivory);
+  border-color: transparent;
   transform: translateY(-3px);
+  box-shadow: 0 14px 34px -10px rgba(255, 113, 4, 0.5);
 }
 
 .btn--sm {

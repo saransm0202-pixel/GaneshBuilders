@@ -32,7 +32,7 @@
   <rect x="52" y="52" width="1496" height="896" fill="none" stroke="#9b8a68" stroke-width="1" opacity="0.5"/>
 
   <!-- Title block -->
-  <g stroke="#33513f" stroke-width="2.5" fill="none">
+  <g stroke="#b45518" stroke-width="2.5" fill="none">
     <line x1="60" y1="880" x2="1540" y2="880"/>
     <line x1="60" y1="850" x2="1540" y2="850"/>
     <line x1="60" y1="820" x2="1540" y2="820"/>
@@ -42,7 +42,7 @@
   </g>
 
   <!-- Elevation drawing -->
-  <g fill="none" stroke="#33513f" stroke-linejoin="round">
+  <g fill="none" stroke="#b45518" stroke-linejoin="round">
     <!-- Ground line -->
     <line x1="300" y1="760" x2="1300" y2="760" stroke-width="4"/>
 
@@ -71,7 +71,7 @@
     <!-- Door -->
     <rect x="1020" y="560" width="90" height="200" stroke-width="3.5"/>
     <line x1="1065" y1="560" x2="1065" y2="760" stroke-width="2"/>
-    <circle cx="1032" cy="660" r="4" stroke-width="2" fill="#33513f"/>
+    <circle cx="1032" cy="660" r="4" stroke-width="2" fill="#b45518"/>
 
     <!-- Balcony railing -->
     <g stroke-width="2.5">

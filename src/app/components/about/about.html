@@ -1,43 +1,49 @@
 <section class="section about" id="about">
-  <div class="container about__grid">
+  <div class="container about__in">
     <div class="about__media" appReveal="left">
-      <div class="about__img-wrap">
-        <img
-          src="assets/images/about/aboutus.png"
-          alt="Premium villa built by Ganesh Builders with landscaped garden"
-          loading="lazy"
-        />
-        <div class="about__badge">
-          <strong>10+</strong>
-          <span>Years of<br />Excellence</span>
-        </div>
-      </div>
+      <app-blueprint-reveal
+        [image]="aboutImage"
+        alt="Premium residence crafted by Ganesh Builders"
+        label="Ganesh Builders · Chennai" />
+      <figure class="about__stack">
+        <img [src]="stackImage" alt="Exterior of a home completed by Ganesh Builders" loading="lazy" />
+      </figure>
+      <span class="about__seal" aria-hidden="true">GB</span>
     </div>
 
-    <div class="about__body" appReveal="right">
-      <span class="section-label">About Ganesh Builders</span>
+    <div class="about__content" appReveal="right">
+      <span class="section-label">Who We Are</span>
       <h2 class="section-title">
-        We Don't Just Build Houses.<br />
-        <em>We Build Your Future.</em>
+        We build more than houses.<br />
+        <em>We build your future.</em>
       </h2>
-      <p class="about__text">
+      <p class="about__copy">
         Ganesh Builders is a trusted residential construction company in Chennai
         delivering complete solutions — from planning and design through
-        construction and handover. With a decade of hands-on experience, we
-        combine engineering precision with a genuine commitment to your vision.
+        construction and handover. We pair architectural discipline with honest
+        pricing and a single point of contact from the first sketch to the final key.
       </p>
-      <ul class="about__highlights">
-        @for (item of highlights; track item) {
-          <li>
-            <span class="about__tick" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6 9 17l-5-5"/>
-              </svg>
-            </span>
-            {{ item }}
-          </li>
+
+      <div class="about__principles">
+        @for (principle of principles; track principle; let i = $index) {
+          <div class="principle">
+            <span class="principle__n">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            <p>{{ principle }}</p>
+          </div>
         }
-      </ul>
+      </div>
+
+      <div class="about__mini-stats">
+        @for (stat of miniStats; track stat.label) {
+          <div>
+            <span class="stat__value">
+              {{ stat.value }}<span class="stat__suffix">{{ stat.suffix }}</span>
+            </span>
+            <span class="stat__label">{{ stat.label }}</span>
+          </div>
+        }
+      </div>
+
       <div class="about__cta">
         <a class="btn btn--primary" href="javascript:void(0)" (click)="scrollTo('contact')">
           Know More About Us

@@ -36,9 +36,9 @@
   <line x1="420" y1="300" x2="420" y2="400" stroke="#d8c9a4" stroke-width="4"/>
   <line x1="580" y1="300" x2="580" y2="400" stroke="#d8c9a4" stroke-width="4"/>
   <rect x="380" y="420" width="120" height="60" fill="#222927"/>
-  <circle cx="452" cy="452" r="4" fill="#c4a265"/>
-  <rect x="300" y="128" width="60" height="30" fill="#c4a265"/>
-  <rect x="570" y="128" width="60" height="30" fill="#c4a265"/>
+  <circle cx="452" cy="452" r="4" fill="#ff7d00"/>
+  <rect x="300" y="128" width="60" height="30" fill="#ff7d00"/>
+  <rect x="570" y="128" width="60" height="30" fill="#ff7d00"/>
   <g fill="#161b16">
     <path d="M80 470 Q60 350 130 320 Q210 290 240 370 Q260 430 210 470 Z"/>
     <path d="M800 470 Q830 360 770 330 Q690 300 660 380 Q650 430 690 470 Z"/>

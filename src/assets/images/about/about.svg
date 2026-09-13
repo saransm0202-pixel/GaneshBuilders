@@ -49,8 +49,8 @@
 
     <!-- Door -->
     <rect x="460" y="400" width="90" height="120" fill="#232a2c"/>
-    <line x1="505" y1="400" x2="505" y2="520" stroke="#c4a265" stroke-width="3"/>
-    <circle cx="470" cy="462" r="4" fill="#c4a265"/>
+    <line x1="505" y1="400" x2="505" y2="520" stroke="#ff7d00" stroke-width="3"/>
+    <circle cx="470" cy="462" r="4" fill="#ff7d00"/>
 
     <!-- Terrace -->
     <rect x="720" y="380" width="160" height="140" fill="url(#awall2)"/>

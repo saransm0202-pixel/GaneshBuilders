@@ -74,28 +74,28 @@
     <rect x="320" y="740" width="240" height="16" rx="3" fill="#a07b4b"/>
     <rect x="332" y="756" width="12" height="40" fill="#8a6a3f"/>
     <rect x="536" y="756" width="12" height="40" fill="#8a6a3f"/>
-    <rect x="420" y="722" width="42" height="18" rx="4" fill="#c4a265"/>
+    <rect x="420" y="722" width="42" height="18" rx="4" fill="#ff7d00"/>
   </g>
 
   <!-- Floor lamp -->
   <g>
     <rect x="738" y="560" width="8" height="180" fill="#3a3e41"/>
-    <path d="M706 560 L778 560 L762 500 L722 500 Z" fill="#c4a265"/>
+    <path d="M706 560 L778 560 L762 500 L722 500 Z" fill="#ff7d00"/>
     <ellipse cx="742" cy="742" rx="44" ry="8" fill="#2f3235"/>
   </g>
 
   <!-- Art frame on wall -->
   <rect x="200" y="180" width="180" height="230" fill="#fff9ee"/>
-  <rect x="216" y="196" width="148" height="198" fill="#33513f"/>
-  <path d="M216 300 Q260 250 306 292 Q340 320 364 280 L364 394 L216 394 Z" fill="#c4a265"/>
-  <path d="M216 340 Q250 320 280 350" stroke="#e6d4ac" stroke-width="4" fill="none"/>
+  <rect x="216" y="196" width="148" height="198" fill="#b45518"/>
+  <path d="M216 300 Q260 250 306 292 Q340 320 364 280 L364 394 L216 394 Z" fill="#ff7d00"/>
+  <path d="M216 340 Q250 320 280 350" stroke="#ffb77a" stroke-width="4" fill="none"/>
 
   <!-- Side table + plant -->
   <g>
     <rect x="200" y="700" width="70" height="44" rx="4" fill="#a07b4b"/>
-    <rect x="210" y="740" width="50" height="22" fill="#c4a265"/>
+    <rect x="210" y="740" width="50" height="22" fill="#ff7d00"/>
     <rect x="222" y="668" width="26" height="34" rx="4" fill="#8a6a3f"/>
-    <g fill="#33513f">
+    <g fill="#b45518">
       <path d="M235 668 Q212 636 235 618 Q258 636 235 668"/>
       <path d="M235 668 Q218 646 238 626 Q252 644 235 668"/>
       <path d="M235 668 Q252 640 232 622"/>

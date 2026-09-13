@@ -4,7 +4,7 @@
 
 .enquiry {
   background:
-    radial-gradient(circle at 92% 10%, rgba(196, 162, 101, 0.1), transparent 34%),
+    radial-gradient(circle at 92% 10%, rgba(255, 125, 0, 0.1), transparent 34%),
     var(--ivory);
 }
 
@@ -159,7 +159,7 @@
 .field__input:focus {
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 4px rgba(51, 81, 63, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.12);
   background: var(--white);
 }
 
@@ -219,7 +219,7 @@ select.field__input option:first-child {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  border: 2px solid rgba(246, 242, 234, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   border-top-color: var(--ivory);
   animation: enquirySpin 0.7s linear infinite;
 }

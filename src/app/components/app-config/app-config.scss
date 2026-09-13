@@ -13,8 +13,8 @@
   position: relative;
   padding: 74px 0 148px;
   background:
-    radial-gradient(circle at 12% 15%, rgba(196, 162, 101, 0.18), transparent 42%),
-    radial-gradient(circle at 88% 20%, rgba(196, 162, 101, 0.1), transparent 38%),
+    radial-gradient(circle at 12% 15%, rgba(255, 125, 0, 0.18), transparent 42%),
+    radial-gradient(circle at 88% 20%, rgba(255, 125, 0, 0.1), transparent 38%),
     linear-gradient(160deg, var(--green-deep) 0%, var(--ink) 100%);
   color: var(--ivory);
   overflow: hidden;
@@ -24,8 +24,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(246, 242, 234, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 242, 234, 0.045) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
     background-size: 44px 44px;
     pointer-events: none;
   }
@@ -38,7 +38,7 @@
   top: -130px;
   right: 6%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(196, 162, 101, 0.3), transparent 65%);
+  background: radial-gradient(circle, rgba(255, 125, 0, 0.3), transparent 65%);
   filter: blur(6px);
   animation: acOrb 11s ease-in-out infinite;
 }
@@ -64,7 +64,7 @@
   gap: 7px;
   font-size: 0.82rem;
   font-weight: 700;
-  color: rgba(246, 242, 234, 0.75);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   transition: color 0.2s ease;
 
@@ -100,15 +100,15 @@
   margin: 14px 0 0;
   font-size: 0.96rem;
   line-height: 1.65;
-  color: rgba(246, 242, 234, 0.68);
+  color: rgba(255, 255, 255, 0.68);
 
   code {
     padding: 2px 7px;
     border-radius: 6px;
     font-size: 0.78em;
     color: var(--gold-soft);
-    background: rgba(20, 30, 24, 0.55);
-    border: 1px solid rgba(196, 162, 101, 0.3);
+    background: rgba(12, 5, 0, 0.55);
+    border: 1px solid rgba(255, 125, 0, 0.3);
   }
 }
 
@@ -127,7 +127,7 @@
 
 .ac-card {
   background: #fdfbf6;
-  border: 1px solid rgba(51, 81, 63, 0.09);
+  border: 1px solid rgba(255, 125, 0, 0.09);
   border-radius: 22px;
   padding: 30px 34px 34px;
   box-shadow:
@@ -155,7 +155,7 @@
   border-radius: 13px;
   color: var(--ink);
   background: linear-gradient(150deg, #f7e8c8, #dcbc75);
-  box-shadow: 0 10px 22px -10px rgba(196, 162, 101, 0.8);
+  box-shadow: 0 10px 22px -10px rgba(255, 125, 0, 0.8);
 }
 
 .ac-card__title {
@@ -214,7 +214,7 @@
   font-size: 0.92rem;
   color: var(--ink);
   background: #fff;
-  border: 1.5px solid rgba(51, 81, 63, 0.16);
+  border: 1.5px solid rgba(255, 125, 0, 0.16);
   border-radius: 12px;
   padding: 11px 14px;
   outline: none;
@@ -226,7 +226,7 @@
 
   &:focus {
     border-color: var(--gold);
-    box-shadow: 0 0 0 4px rgba(196, 162, 101, 0.16);
+    box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.16);
   }
 
   &--area {
@@ -257,14 +257,14 @@
   gap: 16px;
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(51, 81, 63, 0.1);
+  border: 1px solid rgba(255, 125, 0, 0.1);
   background: #fff;
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
 
   &:focus-within,
   &:has(.ac-switch input:checked) {
     border-color: var(--gold);
-    box-shadow: 0 10px 28px -16px rgba(196, 162, 101, 0.75);
+    box-shadow: 0 10px 28px -16px rgba(255, 125, 0, 0.75);
   }
 }
 
@@ -361,7 +361,7 @@
 
 .ac-switch input:checked + .ac-switch__track {
   background: linear-gradient(120deg, #cdab66, #a9863f);
-  box-shadow: 0 4px 14px -4px rgba(196, 162, 101, 0.95);
+  box-shadow: 0 4px 14px -4px rgba(255, 125, 0, 0.95);
 
   &::after {
     transform: translateX(20px);
@@ -385,7 +385,7 @@
   padding: 16px 20px;
   border-radius: 18px;
   background: rgba(253, 251, 246, 0.88);
-  border: 1px solid rgba(51, 81, 63, 0.12);
+  border: 1px solid rgba(255, 125, 0, 0.12);
   backdrop-filter: blur(12px);
   box-shadow: 0 24px 60px -28px rgba(35, 58, 44, 0.55);
 }
@@ -404,7 +404,7 @@
   color: #2a1d05;
   background: linear-gradient(120deg, #f0d594, #c9a24f);
   box-shadow:
-    0 16px 34px -12px rgba(196, 162, 101, 0.9),
+    0 16px 34px -12px rgba(255, 125, 0, 0.9),
     0 1px 0 rgba(255, 255, 255, 0.7) inset;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
@@ -413,7 +413,7 @@
     transform: translateY(-2px);
     filter: brightness(1.05);
     box-shadow:
-      0 20px 40px -12px rgba(196, 162, 101, 0.95),
+      0 20px 40px -12px rgba(255, 125, 0, 0.95),
       0 1px 0 rgba(255, 255, 255, 0.7) inset;
   }
 
@@ -463,9 +463,9 @@
   flex: none;
   border-radius: 20px;
   background:
-    radial-gradient(circle at 30% 25%, rgba(196, 162, 101, 0.18), transparent 55%),
+    radial-gradient(circle at 30% 25%, rgba(255, 125, 0, 0.18), transparent 55%),
     linear-gradient(150deg, #f3ead6, #e7ddc2);
-  border: 1.5px dashed rgba(51, 81, 63, 0.25);
+  border: 1.5px dashed rgba(255, 125, 0, 0.25);
   overflow: hidden;
 }
 
@@ -504,8 +504,8 @@
   .ac-save__spinner {
     width: 13px;
     height: 13px;
-    border: 2px solid rgba(246, 242, 234, 0.35);
-    border-top-color: #fdf6e6;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff4e4;
   }
 }
 
@@ -525,7 +525,7 @@
   align-items: center;
   gap: 9px;
   padding: 11px 20px;
-  border: 1.5px solid rgba(51, 81, 63, 0.22);
+  border: 1.5px solid rgba(255, 125, 0, 0.22);
   border-radius: 12px;
   font: inherit;
   font-size: 0.82rem;
@@ -539,7 +539,7 @@
     border-color: var(--gold);
     background: #fbf4e4;
     transform: translateY(-1px);
-    box-shadow: 0 10px 24px -14px rgba(196, 162, 101, 0.9);
+    box-shadow: 0 10px 24px -14px rgba(255, 125, 0, 0.9);
   }
 
   &:disabled {
@@ -560,7 +560,7 @@
 
 .ac-skel {
   border-radius: 10px;
-  background: linear-gradient(90deg, rgba(51, 81, 63, 0.08), rgba(51, 81, 63, 0.03), rgba(51, 81, 63, 0.08));
+  background: linear-gradient(90deg, rgba(255, 125, 0, 0.08), rgba(255, 125, 0, 0.03), rgba(255, 125, 0, 0.08));
   background-size: 200% 100%;
   animation: acShimmer 1.4s linear infinite;
 

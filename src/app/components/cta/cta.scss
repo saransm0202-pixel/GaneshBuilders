@@ -8,18 +8,52 @@
   color: var(--ivory);
   overflow: hidden;
   text-align: center;
+  isolation: isolate;
 }
 
 .cta__bg {
   position: absolute;
-  inset: 0;
-  background: url('/assets/images/about/cta.svg') center / cover no-repeat;
+  inset: -6%;
+  background: url('/assets/images/hero/nbuild06.png') center / cover no-repeat;
+  animation: ctaDrift 22s ease-in-out infinite alternate;
+}
+
+@keyframes ctaDrift {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-2%, 1.5%, 0);
+  }
 }
 
 .cta__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(16, 20, 22, 0.55), rgba(16, 20, 22, 0.78));
+  background:
+    radial-gradient(52% 48% at 50% 118%, rgba(255, 87, 18, 0.3), transparent 62%),
+    linear-gradient(180deg, rgba(8, 4, 0, 0.6), rgba(6, 3, 0, 0.84));
+}
+
+.cta__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(40% 34% at 50% 0%, rgba(255, 125, 0, 0.28), transparent 72%),
+    radial-gradient(34% 30% at 12% 90%, rgba(255, 113, 4, 0.2), transparent 70%),
+    radial-gradient(30% 26% at 90% 88%, rgba(255, 113, 4, 0.16), transparent 70%);
+  animation: ctaBreathe 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ctaBreathe {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .cta__inner {
@@ -35,7 +69,8 @@
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--gold-soft);
+  color: var(--orange-soft);
+  text-shadow: 0 0 18px rgba(255, 125, 0, 0.6);
 }
 
 .cta__title {
@@ -49,7 +84,7 @@
 .cta__text {
   margin-top: 16px;
   font-size: 17.5px;
-  color: rgba(246, 242, 234, 0.82);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .cta__actions {

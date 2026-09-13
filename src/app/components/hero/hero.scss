@@ -65,8 +65,8 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(97deg, rgba(14, 17, 19, 0.78) 0%, rgba(14, 17, 19, 0.42) 46%, rgba(14, 17, 19, 0.06) 78%),
-    linear-gradient(to top, rgba(10, 12, 13, 0.88) 0%, rgba(10, 12, 13, 0.32) 34%, rgba(10, 12, 13, 0) 55%);
+    linear-gradient(97deg, rgba(6, 3, 0, 0.82) 0%, rgba(10, 5, 1, 0.46) 46%, rgba(10, 5, 1, 0.08) 78%),
+    linear-gradient(to top, rgba(6, 3, 0, 0.9) 0%, rgba(10, 5, 1, 0.34) 34%, rgba(10, 5, 1, 0) 55%);
 }
 
 .hero__vignette {
@@ -74,7 +74,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(120% 90% at 50% 42%, transparent 58%, rgba(8, 10, 11, 0.52) 100%);
+  background: radial-gradient(120% 90% at 50% 42%, transparent 58%, rgba(4, 2, 0, 0.55) 100%);
 }
 
 .hero__grain {
@@ -100,7 +100,7 @@
   inset: clamp(12px, 1.6vw, 22px);
   z-index: 3;
   pointer-events: none;
-  border: 1px solid rgba(246, 242, 234, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 /* ==========================================================================
@@ -176,7 +176,7 @@
   max-width: 520px;
   font-size: 17.5px;
   line-height: 1.8;
-  color: rgba(246, 242, 234, 0.86);
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .hero__cta {
@@ -194,7 +194,7 @@
   margin-top: 18px;
   font-size: 13.5px;
   letter-spacing: 0.05em;
-  color: rgba(246, 242, 234, 0.68);
+  color: rgba(255, 255, 255, 0.68);
 
   span {
     color: var(--gold);
@@ -259,7 +259,7 @@
   font-family: var(--font-head);
   font-style: italic;
   font-size: clamp(17px, 2vw, 22px);
-  color: rgba(246, 242, 234, 0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .counter__word {
@@ -306,7 +306,7 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: rgba(246, 242, 234, 0.45);
+  color: rgba(255, 255, 255, 0.45);
   transition: color 0.3s var(--ease);
 }
 
@@ -318,7 +318,7 @@
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(246, 242, 234, 0.62);
+  color: rgba(255, 255, 255, 0.62);
   transition: color 0.3s var(--ease);
 }
 
@@ -346,23 +346,23 @@
 .seg__track {
   display: block;
   height: 2px;
-  background: rgba(246, 242, 234, 0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .seg.is-now .seg__track,
 .seg:hover .seg__track {
-  background: rgba(246, 242, 234, 0.3);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .seg__fill {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.92));
   transform: scaleX(0);
   transform-origin: left;
-  box-shadow: 0 0 12px rgba(196, 162, 101, 0.55);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
 }
 
 /* --- Caption --- */
@@ -373,7 +373,7 @@
   overflow: hidden;
   font-size: 12px;
   letter-spacing: 0.08em;
-  color: rgba(246, 242, 234, 0.66);
+  color: rgba(255, 255, 255, 0.66);
 }
 
 .caption__in {
@@ -399,7 +399,7 @@
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: rgba(246, 242, 234, 0.66);
+  color: rgba(255, 255, 255, 0.66);
   transition: color 0.3s var(--ease);
   opacity: 0;
   animation: film-in 1s var(--ease) 1.5s forwards;
@@ -414,7 +414,7 @@
   display: block;
   width: 1px;
   height: 56px;
-  background: rgba(246, 242, 234, 0.25);
+  background: rgba(255, 255, 255, 0.25);
   overflow: hidden;
 
   span {

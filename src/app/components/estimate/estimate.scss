@@ -5,7 +5,7 @@ est-hero {
 .est-hero {
   padding: calc(82px + clamp(40px, 7vw, 72px)) 0 clamp(28px, 4vw, 44px);
   background:
-    radial-gradient(60% 90% at 80% 0%, rgba(196, 162, 101, 0.12), transparent 65%),
+    radial-gradient(60% 90% at 80% 0%, rgba(255, 125, 0, 0.12), transparent 65%),
     var(--ivory);
   text-align: center;
 
@@ -122,7 +122,7 @@ est-hero {
     }
 
     .now & {
-      box-shadow: 0 0 0 4px rgba(196, 162, 101, 0.25);
+      box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.25);
       border-color: var(--gold);
       color: var(--ink);
     }
@@ -177,7 +177,7 @@ est-hero {
     border-radius: 13px;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.8),
-      0 4px 12px rgba(196, 162, 101, 0.18);
+      0 4px 12px rgba(255, 125, 0, 0.18);
   }
 
   h2 {
@@ -332,14 +332,14 @@ est-hero {
   gap: 28px;
   padding: 26px 30px;
   background:
-    radial-gradient(120% 160% at 100% 0%, rgba(196, 162, 101, 0.16), transparent 55%),
+    radial-gradient(120% 160% at 100% 0%, rgba(255, 125, 0, 0.16), transparent 55%),
     linear-gradient(160deg, #fbf4e8, #f3e8d2);
   border: 1px solid var(--gold-soft);
   border-radius: var(--radius-lg);
   margin-bottom: 22px;
   box-shadow:
     inset 0 1px 0 #fff,
-    0 14px 36px rgba(196, 162, 101, 0.14);
+    0 14px 36px rgba(255, 125, 0, 0.14);
   overflow: hidden;
 
   &::after {
@@ -347,8 +347,8 @@ est-hero {
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(196, 162, 101, 0.14) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(196, 162, 101, 0.14) 1px, transparent 1px);
+      linear-gradient(rgba(255, 125, 0, 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 125, 0, 0.14) 1px, transparent 1px);
     background-size: 26px 26px;
     mask-image: linear-gradient(90deg, transparent 10%, #000 62%, transparent);
     pointer-events: none;
@@ -365,9 +365,9 @@ est-hero {
     flex-shrink: 0;
     padding: 14px 18px;
     background: rgba(255, 255, 255, 0.55);
-    border: 1px solid rgba(196, 162, 101, 0.35);
+    border: 1px solid rgba(255, 125, 0, 0.35);
     border-radius: 16px;
-    box-shadow: 0 8px 22px rgba(196, 162, 101, 0.16);
+    box-shadow: 0 8px 22px rgba(255, 125, 0, 0.16);
   }
 
   &__info {
@@ -406,7 +406,7 @@ est-hero {
       color: var(--green);
       font-size: 0.74rem;
       font-weight: 600;
-      box-shadow: 0 4px 12px rgba(196, 162, 101, 0.14);
+      box-shadow: 0 4px 12px rgba(255, 125, 0, 0.14);
     }
   }
 
@@ -434,7 +434,7 @@ est-hero {
   &:hover {
     transform: translateY(-4px);
     border-color: var(--gold-soft);
-    box-shadow: 0 18px 40px rgba(24, 28, 32, 0.12);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
   }
 
   &__stack {
@@ -480,13 +480,13 @@ est-hero {
     color: var(--ivory);
     font-size: 0.82rem;
     font-weight: 700;
-    box-shadow: 0 6px 14px rgba(51, 81, 63, 0.35);
+    box-shadow: 0 6px 14px rgba(255, 125, 0, 0.35);
   }
 
   &--on {
     border-color: var(--gold);
     background: linear-gradient(175deg, #fdf8ee, var(--ivory));
-    box-shadow: 0 0 0 4px rgba(196, 162, 101, 0.16), 0 18px 40px rgba(196, 162, 101, 0.18);
+    box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.16), 0 18px 40px rgba(255, 125, 0, 0.18);
 
     strong {
       color: var(--green-deep, var(--green));
@@ -510,7 +510,7 @@ est-hero {
   height: 11px;
   border-radius: 3px;
   background: linear-gradient(180deg, #cfc5a8, #b1a47d);
-  border: 1px solid rgba(24, 28, 32, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
   &--ground {
@@ -521,8 +521,8 @@ est-hero {
 
 .flor--on .flor__slab {
   background: linear-gradient(180deg, #8fae99, var(--green));
-  border-color: rgba(196, 162, 101, 0.55);
-  box-shadow: 0 2px 8px rgba(51, 81, 63, 0.35);
+  border-color: rgba(255, 125, 0, 0.55);
+  box-shadow: 0 2px 8px rgba(255, 125, 0, 0.35);
 
   &--ground {
     background: linear-gradient(180deg, var(--green), var(--green-deep, var(--green)));
@@ -561,7 +561,7 @@ est-hero {
   margin-bottom: 22px;
   padding: 14px 18px 16px;
   background:
-    linear-gradient(180deg, rgba(51, 81, 63, 0.05), rgba(51, 81, 63, 0.02)),
+    linear-gradient(180deg, rgba(255, 125, 0, 0.05), rgba(255, 125, 0, 0.02)),
     var(--paper);
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -583,7 +583,7 @@ est-hero {
     height: calc(100% - 10px);
     background: linear-gradient(160deg, var(--green), var(--green-deep));
     border-radius: 999px;
-    box-shadow: 0 8px 22px rgba(24, 28, 32, 0.3);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
     transition: transform 0.45s var(--ease);
     will-change: transform;
   }
@@ -653,7 +653,7 @@ est-hero {
     font-size: 1.7rem;
     line-height: 1;
     margin-bottom: 8px;
-    filter: drop-shadow(0 4px 8px rgba(24, 28, 32, 0.14));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.14));
     transition: transform 0.3s var(--ease-spring);
   }
 
@@ -722,7 +722,7 @@ est-hero {
   &:hover {
     transform: translateY(-4px);
     border-color: var(--gold-soft);
-    box-shadow: 0 18px 40px rgba(24, 28, 32, 0.12);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
   }
 
   .pick__icon {
@@ -798,16 +798,16 @@ est-hero {
     color: var(--ink);
     font-size: 0.82rem;
     font-weight: 700;
-    box-shadow: 0 6px 16px rgba(196, 162, 101, 0.5);
+    box-shadow: 0 6px 16px rgba(255, 125, 0, 0.5);
   }
 
   &.pick--on:not(.pick--featured) {
     border-color: var(--gold);
-    box-shadow: 0 0 0 4px rgba(196, 162, 101, 0.18), 0 18px 34px rgba(24, 28, 32, 0.1);
+    box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.18), 0 18px 34px rgba(0, 0, 0, 0.1);
 
     &.pick--com {
       border-color: #7c3aed;
-      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15), 0 18px 34px rgba(24, 28, 32, 0.1);
+      box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.15), 0 18px 34px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -815,11 +815,11 @@ est-hero {
     background: linear-gradient(160deg, var(--green), var(--green-deep));
     border-color: transparent;
     color: var(--ivory);
-    box-shadow: 0 18px 44px rgba(24, 28, 32, 0.24);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
     z-index: 1;
 
     .pick__icon {
-      background: rgba(196, 162, 101, 0.16);
+      background: rgba(255, 125, 0, 0.16);
     }
 
     .pick__tier {
@@ -827,17 +827,17 @@ est-hero {
     }
 
     .pick__rate {
-      background: rgba(196, 162, 101, 0.16);
-      border-color: rgba(196, 162, 101, 0.4);
+      background: rgba(255, 125, 0, 0.16);
+      border-color: rgba(255, 125, 0, 0.4);
       color: var(--gold-soft);
 
       small {
-        color: rgba(246, 242, 234, 0.6);
+        color: rgba(255, 255, 255, 0.6);
       }
     }
 
     .pick__tag {
-      color: rgba(246, 242, 234, 0.78);
+      color: rgba(255, 255, 255, 0.78);
     }
   }
 
@@ -917,7 +917,7 @@ est-hero {
   }
 
   .pick__icon {
-    background: rgba(196, 162, 101, 0.16);
+    background: rgba(255, 125, 0, 0.16);
   }
 
   .pick__tier {
@@ -929,22 +929,22 @@ est-hero {
   }
 
   .pick__rate {
-    background: rgba(196, 162, 101, 0.16);
-    border-color: rgba(196, 162, 101, 0.4);
+    background: rgba(255, 125, 0, 0.16);
+    border-color: rgba(255, 125, 0, 0.4);
     color: var(--gold-soft);
 
     small {
-      color: rgba(246, 242, 234, 0.6);
+      color: rgba(255, 255, 255, 0.6);
     }
   }
 
   .pick__tag {
-    color: rgba(246, 242, 234, 0.78);
+    color: rgba(255, 255, 255, 0.78);
   }
 
   &.pick--on {
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.4), 0 18px 44px rgba(69, 34, 109, 0.45);
-    border-color: rgba(196, 162, 101, 0.85);
+    box-shadow: 0 0 0 4px rgba(255, 125, 0, 0.4), 0 18px 44px rgba(69, 34, 109, 0.45);
+    border-color: rgba(255, 125, 0, 0.85);
   }
 }
 
@@ -964,7 +964,7 @@ est-hero {
   &__side {
     padding: 26px 22px;
     background:
-      radial-gradient(120% 140% at 95% 0%, rgba(196, 162, 101, 0.2), transparent 55%),
+      radial-gradient(120% 140% at 95% 0%, rgba(255, 125, 0, 0.2), transparent 55%),
       linear-gradient(168deg, #e9efe9, #faf5ea);
     border-right: 1px solid var(--line);
     color: var(--ink);
@@ -1061,8 +1061,8 @@ est-hero {
 .ratebox {
   padding: 13px 15px;
   border-radius: var(--radius-sm);
-  background: rgba(51, 81, 63, 0.08);
-  border: 1px solid rgba(51, 81, 63, 0.12);
+  background: rgba(255, 125, 0, 0.08);
+  border: 1px solid rgba(255, 125, 0, 0.12);
 
   &__label,
   &__unit {
@@ -1272,7 +1272,7 @@ est-hero {
   &:hover {
     background: var(--green-deep, var(--green));
     transform: translateY(-2px);
-    box-shadow: 0 10px 26px rgba(51, 81, 63, 0.32);
+    box-shadow: 0 10px 26px rgba(255, 125, 0, 0.32);
   }
 }
 
@@ -1365,8 +1365,8 @@ est-hero {
 
   div {
     padding: 11px 13px;
-    background: rgba(246, 242, 234, 0.1);
-    border: 1px solid rgba(246, 242, 234, 0.18);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: var(--radius-sm);
   }
 
@@ -1784,7 +1784,7 @@ est-hero {
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(52% 68% at 50% -8%, rgba(196, 162, 101, 0.2), transparent 70%),
+      radial-gradient(52% 68% at 50% -8%, rgba(255, 125, 0, 0.2), transparent 70%),
       linear-gradient(var(--line) 1px, transparent 1px),
       linear-gradient(90deg, var(--line) 1px, transparent 1px);
     background-size:
@@ -1818,8 +1818,8 @@ est-hero {
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(51, 81, 63, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(51, 81, 63, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(255, 125, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 125, 0, 0.05) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: radial-gradient(85% 70% at 50% 22%, #000, transparent 92%);
     pointer-events: none;
@@ -1830,8 +1830,8 @@ est-hero {
   position: relative;
   border-top: 2px solid var(--gold);
   box-shadow:
-    0 40px 90px rgba(24, 28, 32, 0.16),
-    0 6px 18px rgba(24, 28, 32, 0.06);
+    0 40px 90px rgba(0, 0, 0, 0.16),
+    0 6px 18px rgba(0, 0, 0, 0.06);
 
   &::before,
   &::after {
@@ -1903,7 +1903,7 @@ est-hero {
       115deg,
       transparent 32%,
       rgba(230, 212, 172, 0.16) 47%,
-      rgba(246, 242, 234, 0.28) 50%,
+      rgba(255, 255, 255, 0.28) 50%,
       rgba(230, 212, 172, 0.16) 53%,
       transparent 68%
     );
@@ -1937,8 +1937,8 @@ est-hero {
 
 .donut__ring {
   box-shadow:
-    0 26px 60px rgba(51, 81, 63, 0.28),
-    inset 0 0 0 1px rgba(196, 162, 101, 0.25);
+    0 26px 60px rgba(255, 125, 0, 0.28),
+    inset 0 0 0 1px rgba(255, 125, 0, 0.25);
 
   &::before {
     content: '';
@@ -1981,7 +1981,7 @@ est-hero {
   }
 
   .btn--outline {
-    border-color: rgba(246, 242, 234, 0.4);
+    border-color: rgba(255, 255, 255, 0.4);
     color: var(--ivory);
 
     &:hover {

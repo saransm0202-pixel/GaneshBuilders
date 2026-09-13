@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  position: relative;
+  min-height: 320px;
+}
+
+.bp {
+  position: absolute;
+  inset: 0;
+}
+
+.bp__canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 125, 0, 0.32);
+  background: #16100a;
+}
+
+.bp__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image:
+    linear-gradient(rgba(255, 125, 0, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 125, 0, 0.16) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bp__dims {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: rgba(255, 125, 0, 0.5);
+  stroke-width: 1;
+  fill: rgba(255, 125, 0, 0.78);
+  font-size: 9px;
+  font-family: var(--font-body);
+  opacity: 0;
+}
+
+.bp__house {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--orange);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bp__house__frame path,
+.bp__house__frame line,
+.bp__house .bp__house__wall,
+.bp__house .bp__house__base,
+.bp__house .bp__house__cols,
+.bp__house .bp__house__roof,
+.bp__house .bp__house__roofline {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  stroke-width: 1.6;
+}
+
+.bp__house .bp__house__wall,
+.bp__house .bp__house__cols,
+.bp__house .bp__house__roof {
+  stroke-width: 1;
+  opacity: 0.7;
+}
+
+.bp__photo {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+.bp__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bp__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(6, 3, 0, 0.34), transparent 42%),
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 125, 0, 0.12), transparent 60%);
+  pointer-events: none;
+}
+
+.bp__label {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  z-index: 2;
+  background: rgba(22, 16, 10, 0.6);
+  padding: 0.38rem 0.85rem;
+  border: 1px solid rgba(255, 125, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
