@@ -6,6 +6,8 @@ export interface IAppConfig {
   appLogo?: string | null;
   contactNumber?: string | null;
   contactMail?: string | null;
+  accountAddress?: string | null;
+  locationLink?: string | null;
   enableFacebook?: boolean | null;
   facebookLink?: string | null;
   enableWhatsapp?: boolean | null;

@@ -18,6 +18,8 @@ export class SiteConfigService {
   readonly appLogo = signal('');
   readonly contactNumber = signal('');
   readonly contactMail = signal('');
+  readonly accountAddress = signal('');
+  readonly locationLink = signal('');
 
   readonly enableWhatsapp = signal(false);
   readonly whatsappLink = signal('');
@@ -61,6 +63,18 @@ export class SiteConfigService {
 
   readonly email = computed(() => this.contactMail() || 'hello@ganeshhomes.in');
 
+  readonly address = computed(() => this.accountAddress().trim());
+
+  readonly mapHref = computed(() => {
+    const custom = (this.locationLink() || '').trim();
+    if (custom) {
+      return /^https?:\/\//i.test(custom) ? custom : `https://${custom}`;
+    }
+    const a = this.address();
+    if (!a) return '';
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a)}`;
+  });
+
   readonly socials = computed<SiteSocial[]>(() => {
     const list: SiteSocial[] = [];
     if (this.enableInstagram() && this.instagramLink()) {
@@ -87,6 +101,8 @@ export class SiteConfigService {
         this.appLogo.set(c.appLogo || '');
         this.contactNumber.set(c.contactNumber || '');
         this.contactMail.set(c.contactMail || '');
+        this.accountAddress.set(c.accountAddress || '');
+        this.locationLink.set(c.locationLink || '');
         this.enableWhatsapp.set(!!c.enableWhatsapp);
         this.whatsappLink.set(c.whatsappLink || '');
         this.enableFacebook.set(!!c.enableFacebook);

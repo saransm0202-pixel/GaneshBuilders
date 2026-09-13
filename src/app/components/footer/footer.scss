@@ -120,6 +120,15 @@
   line-height: 1.6;
   color: rgba(246, 242, 234, 0.72);
   transition: color 0.3s var(--ease);
+
+  &--block {
+    display: flex;
+    align-items: flex-start;
+
+    span {
+      max-width: 260px;
+    }
+  }
 }
 
 a.footer__contact:hover {

@@ -87,6 +87,10 @@
   font-weight: 600;
   color: var(--green);
   transition: color 0.3s var(--ease);
+
+  &--text {
+    line-height: 1.55;
+  }
 }
 
 .enquiry__contact-value:hover {
@@ -190,6 +194,40 @@ select.field__input option:first-child {
 .enquiry__submit {
   width: 100%;
   margin-top: 6px;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+}
+
+.enquiry__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 2px 0 14px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #a3422c;
+  background: #fdf0ec;
+  border: 1px solid rgba(198, 90, 63, 0.28);
+}
+
+.enquiry__spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(246, 242, 234, 0.4);
+  border-top-color: var(--ivory);
+  animation: enquirySpin 0.7s linear infinite;
+}
+
+@keyframes enquirySpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .enquiry__note {

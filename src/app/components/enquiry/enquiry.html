@@ -59,6 +59,14 @@
           <span class="enquiry__contact-label">Email</span>
           <a class="enquiry__contact-value" [href]="'mailto:' + email()">{{ email() }}</a>
         </div>
+        @if (address()) {
+          <div>
+            <span class="enquiry__contact-label">Visit Our Office</span>
+            <a class="enquiry__contact-value enquiry__contact-value--text" [href]="mapHref()" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Open office location in Google Maps'">
+              {{ address() }}
+            </a>
+          </div>
+        }
       </div>
     </div>
 
@@ -177,11 +185,25 @@
             ></textarea>
           </div>
 
-          <button class="btn btn--primary enquiry__submit" type="submit">
-            Request a Free Consultation
-            <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-            </svg>
+          @if (submitFailed()) {
+            <p class="enquiry__error" role="alert">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+              </svg>
+              {{ submitMessage() }}
+            </p>
+          }
+
+          <button class="btn btn--primary enquiry__submit" type="submit" [disabled]="submitting()">
+            @if (submitting()) {
+              <span class="enquiry__spinner" aria-hidden="true"></span>
+              Submitting…
+            } @else {
+              Request a Free Consultation
+              <svg class="arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            }
           </button>
 
           <p class="enquiry__note">

@@ -1,4 +1,5 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 import {
   AfterViewInit,
   Component,
@@ -74,7 +75,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
 
   readonly active = signal(this.chapters.length - 1);
   readonly atEnd = signal(false);
-
+  private readonly router = inject(Router);
   private readonly canvas = viewChild.required<ElementRef<HTMLDivElement>>('canvas');
   private readonly film = viewChild.required<ElementRef<HTMLVideoElement>>('film');
   private readonly fills = viewChildren<ElementRef<HTMLSpanElement>>('fill');
@@ -182,6 +183,10 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
   }
 
   scrollTo(target: string): void {
+    if (target != 'estimate') {
+      this.router.navigate(['/estimate']);
+      return;
+    }
     const el = document.getElementById(target);
     if (!el) {
       return;

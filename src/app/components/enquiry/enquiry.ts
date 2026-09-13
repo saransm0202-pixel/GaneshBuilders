@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SiteDataService } from '../../services/site-data.service';
 import { SiteConfigService } from '../../services/site-config.service';
+import { ConsultationService } from '../../services/consultation.service';
+import { environment } from '../../../environments/environment';
 import { RevealDirective } from '../../directives/reveal.directive';
 
 @Component({
@@ -14,14 +16,20 @@ import { RevealDirective } from '../../directives/reveal.directive';
 export class EnquiryComponent {
   private readonly data = inject(SiteDataService);
   private readonly config = inject(SiteConfigService);
+  private readonly consultationService = inject(ConsultationService);
 
   readonly packages = this.data.packages.map((pkg) => pkg.name);
   readonly phone = this.config.contactNumber;
   readonly phoneHref = this.config.phoneHref;
   readonly whatsappHref = this.config.whatsappHref;
   readonly email = this.config.email;
+  readonly address = this.config.address;
+  readonly mapHref = this.config.mapHref;
 
   readonly submitted = signal(false);
+  readonly submitting = signal(false);
+  readonly submitFailed = signal(false);
+  readonly submitMessage = signal('');
 
   readonly form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -73,10 +81,40 @@ export class EnquiryComponent {
 
   onSubmit(): void {
     this.form.markAllAsTouched();
-    if (this.form.invalid) {
+    if (this.form.invalid || this.submitting()) {
       return;
     }
-    this.submitted.set(true);
+    const v = this.form.value;
+    this.submitting.set(true);
+    this.submitFailed.set(false);
+    this.submitMessage.set('');
+    this.consultationService
+      .submit({
+        accountId: environment.accountId,
+        name: (v.name ?? '').trim(),
+        phone: (v.phone ?? '').trim(),
+        email: (v.email ?? '').trim(),
+        plotLocation: (v.plotLocation ?? '').trim(),
+        plotArea: (v.plotArea ?? '').trim(),
+        package: (v.package ?? '').trim(),
+        message: (v.message ?? '').trim(),
+      })
+      .subscribe({
+        next: (res) => {
+          this.submitting.set(false);
+          if (res.success) {
+            this.submitted.set(true);
+          } else {
+            this.submitFailed.set(true);
+            this.submitMessage.set(res.message || 'Something went wrong. Please try again.');
+          }
+        },
+        error: () => {
+          this.submitting.set(false);
+          this.submitFailed.set(true);
+          this.submitMessage.set('Unable to submit the form right now. Please try again.');
+        },
+      });
   }
 
   resetForm(): void {
@@ -89,6 +127,9 @@ export class EnquiryComponent {
       package: '',
       message: '',
     });
+    this.submitting.set(false);
+    this.submitFailed.set(false);
+    this.submitMessage.set('');
     this.submitted.set(false);
   }
 }

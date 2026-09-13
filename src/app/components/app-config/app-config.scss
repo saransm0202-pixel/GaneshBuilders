@@ -172,6 +172,12 @@
   color: rgba(35, 58, 44, 0.55);
 }
 
+.ac-hint {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  color: rgba(35, 58, 44, 0.45);
+}
+
 /* ── fields ────────────────────────────────────────── */
 
 .ac-grid {
@@ -184,6 +190,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  &--full {
+    margin-top: 18px;
+  }
 }
 
 .ac-label {

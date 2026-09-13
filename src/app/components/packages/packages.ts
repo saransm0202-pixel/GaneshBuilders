@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { SiteDataService } from '../../services/site-data.service';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { ConstructionPackage } from '../../models/site.models';
+import { Router } from '@angular/router';
 
 export type PackageCategory = 'residential' | 'commercial';
 
@@ -14,7 +15,7 @@ export type PackageCategory = 'residential' | 'commercial';
 })
 export class PackagesComponent {
   private readonly data = inject(SiteDataService);
-
+  private readonly router = inject(Router);
   readonly residential = this.data.packages;
   readonly commercial = this.data.commercialPackages;
 
@@ -35,6 +36,10 @@ export class PackagesComponent {
   }
 
   onCta(pkg: ConstructionPackage): void {
+    if (pkg.id != 'custom') {
+      this.router.navigate(['/estimate']);
+      return;
+    }
     this.scrollTo('contact');
   }
 

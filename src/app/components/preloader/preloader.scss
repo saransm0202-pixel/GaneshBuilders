@@ -1,0 +1,216 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: block;
+  overflow: hidden;
+  background: #0a120d;
+  color: var(--ivory);
+  transition: opacity 0.7s ease, transform 0.7s ease, visibility 0.7s;
+}
+
+:host(.preloader--hidden) {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.pre {
+  position: absolute;
+  inset: 0;
+}
+
+.pre__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pre__fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(115% 95% at 50% 22%, transparent 58%, rgba(3, 6, 4, 0.55) 100%),
+    linear-gradient(to bottom, rgba(6, 12, 8, 0.55), transparent 16%);
+  mix-blend-mode: multiply;
+}
+
+/* ── brand ─────────────────────────────────────────── */
+
+.pre__brand {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 34px 26px 0;
+  pointer-events: none;
+}
+
+.pre__mark {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.6));
+  animation: prePulse 3.4s ease-in-out infinite;
+
+  svg {
+    display: block;
+  }
+}
+
+@keyframes prePulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.pre__brand-text {
+  min-width: 0;
+}
+
+.pre__name {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(1.2rem, 3.6vw, 1.9rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 22px rgba(0, 0, 0, 0.7);
+}
+
+.pre__tag {
+  margin: 4px 0 0;
+  font-size: 0.64rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 234, 0.55);
+}
+
+/* ── status ────────────────────────────────────────── */
+
+.pre__status {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: min(392px, 84vw);
+  pointer-events: none;
+}
+
+.pre__status-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 11px;
+}
+
+.pre__status-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 234, 0.78);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.pre__status-pct {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-soft);
+  text-shadow: 0 0 18px rgba(227, 199, 135, 0.75);
+}
+
+.pre__progress {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(246, 242, 234, 0.1);
+  border: 1px solid rgba(196, 162, 101, 0.45);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(196, 162, 101, 0.18) inset;
+  backdrop-filter: blur(6px);
+}
+
+.pre__bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9c7c3a, #e3c787 62%, #f6dfa0);
+  box-shadow: 0 0 18px rgba(227, 199, 135, 0.9);
+  transition: width 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    animation: preBarPulse 1.8s linear infinite;
+  }
+}
+
+@keyframes preBarPulse {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.pre__status-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 234, 0.42);
+}
+
+/* ── hud ───────────────────────────────────────────── */
+
+.pre__hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.pre__hud--corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: rgba(196, 162, 101, 0.55);
+  border-style: solid;
+  filter: drop-shadow(0 0 6px rgba(196, 162, 101, 0.4));
+
+  &--tl { top: 16px; left: 16px; border-width: 1.5px 0 0 1.5px; }
+  &--tr { top: 16px; right: 16px; border-width: 1.5px 1.5px 0 0; }
+  &--bl { bottom: 16px; left: 16px; border-width: 0 0 1.5px 1.5px; }
+  &--br { bottom: 16px; right: 16px; border-width: 0 1.5px 1.5px 0; }
+}
+
+@media (max-width: 640px) {
+  .pre__brand {
+    padding: 24px 18px 0;
+  }
+
+  .pre__status {
+    bottom: 26px;
+  }
+}

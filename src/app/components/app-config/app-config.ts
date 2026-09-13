@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
 import { AppConfigService } from '../../services/app-config.service';
 import { SiteConfigService } from '../../services/site-config.service';
 import { NotificationService } from '../../services/notification.service';
@@ -11,7 +10,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-config',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './app-config.html',
   styleUrl: './app-config.scss',
 })
@@ -32,6 +31,8 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
     appDescription: new FormControl(''),
     contactNumber: new FormControl(''),
     contactMail: new FormControl(''),
+    accountAddress: new FormControl(''),
+    locationLink: new FormControl(''),
     enableFacebook: new FormControl(false),
     facebookLink: new FormControl(''),
     enableWhatsapp: new FormControl(false),
@@ -64,6 +65,8 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
           appDescription: config.appDescription ?? '',
           contactNumber: config.contactNumber ?? '',
           contactMail: config.contactMail ?? '',
+          accountAddress: config.accountAddress ?? '',
+          locationLink: config.locationLink ?? '',
           enableFacebook: config.enableFacebook ?? false,
           facebookLink: config.facebookLink ?? '',
           enableWhatsapp: config.enableWhatsapp ?? false,
@@ -132,6 +135,8 @@ export class AppConfigComponent implements OnInit, AfterViewInit {
       appLogo: this.logoSrc() || null,
       contactNumber: v.contactNumber ?? '',
       contactMail: v.contactMail ?? '',
+      accountAddress: v.accountAddress ?? '',
+      locationLink: v.locationLink ?? '',
       enableFacebook: v.enableFacebook ?? false,
       facebookLink: v.facebookLink ?? '',
       enableWhatsapp: v.enableWhatsapp ?? false,

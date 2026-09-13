@@ -410,7 +410,7 @@
           <div class="compare">
             <span class="donut__title">All packages — side by side</span>
             <div class="compare__grid">
-              @for (p of packages; track p.id) {
+              @for (p of activePackages(); track p.id) {
                 <article class="comp" [class.comp--on]="packageId() === p.id">
                   @if (packageId() === p.id) {
                     <span class="comp__pick">Your pick</span>

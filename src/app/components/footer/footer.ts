@@ -19,6 +19,8 @@ export class FooterComponent {
   readonly phone = this.config.contactNumber;
   readonly phoneHref = this.config.phoneHref;
   readonly email = this.config.email;
+  readonly address = this.config.address;
+  readonly mapHref = this.config.mapHref;
   readonly socials = this.config.socials;
 
   readonly quickLinks = this.data.navLinks;

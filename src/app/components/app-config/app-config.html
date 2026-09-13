@@ -5,8 +5,7 @@
       <span class="ac-hero__label">Settings · App Configuration</span>
       <h1 class="ac-hero__title">Configure <em>your app</em></h1>
       <p class="ac-hero__sub">
-        Fine-tune the application identity, contact details and social channels. Changes are saved through the
-        <code>InsertUpdateConfig</code> API and reloaded with <code>getAppConfig</code>.
+        Fine-tune the application identity, contact details and social channels.
       </p>
     </div>
   </div>
@@ -158,6 +157,32 @@
                 placeholder="hello@ganeshbuilders.com"
                 autocomplete="off" />
             </div>
+          </div>
+
+          <div class="ac-field ac-field--full">
+            <label class="ac-label" for="accountAddress">Office Address</label>
+            <textarea
+              id="accountAddress"
+              class="ac-input ac-input--area"
+              formControlName="accountAddress"
+              rows="3"
+              maxlength="250"
+              placeholder="Plot No. 12, Anna Nagar Main Rd, Chennai – 600 040"
+              autocomplete="off"></textarea>
+            <p class="ac-hint">Visitors tap the address to open it in Google Maps.</p>
+          </div>
+
+          <div class="ac-field ac-field--full">
+            <label class="ac-label" for="locationLink">Location Link</label>
+            <input
+              id="locationLink"
+              class="ac-input"
+              formControlName="locationLink"
+              type="url"
+              maxlength="300"
+              placeholder="https://maps.app.goo.gl/xxxx"
+              autocomplete="off" />
+            <p class="ac-hint">Optional. Use a precise Google Maps share link (e.g. maps.app.goo.gl) — it overrides the address search. Leave blank to search the address.</p>
           </div>
         </section>
 
