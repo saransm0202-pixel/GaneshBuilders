@@ -3,14 +3,149 @@
 }
 
 .about {
+  position: relative;
   background: var(--paper);
 }
 
 .about__in {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
   gap: clamp(48px, 7vw, 96px);
   align-items: center;
+}
+
+/* Scroll-drawn curve — draws downward with scroll, reverses upward */
+
+.about__line {
+  position: absolute;
+  top: 56px;
+  bottom: 56px;
+  left: clamp(18px, 3vw, 44px);
+  width: 120px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about__line--right {
+  left: auto;
+  right: clamp(18px, 3vw, 44px);
+}
+
+.about__line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 125, 0, 0.14), transparent);
+}
+
+.about__line svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.about__path {
+  fill: none;
+  stroke: url(#aboutLineGrad);
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 10px rgba(255, 113, 4, 0.7));
+}
+
+/* Ignition nodes — light up as the drawn tip passes them */
+
+.about__node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 125, 0, 0.5);
+  background: transparent;
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity 0.3s ease,
+    background-color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    scale 0.35s var(--ease);
+}
+
+.about__node.is-on {
+  opacity: 1;
+  scale: 1;
+  background: var(--orange-deep);
+  border-color: var(--orange-soft);
+  box-shadow:
+    0 0 0 4px rgba(255, 125, 0, 0.16),
+    0 0 18px rgba(255, 113, 4, 0.85);
+}
+
+.about__node.is-on::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 125, 0, 0.45);
+  animation: nodePulse 2.4s var(--ease) infinite;
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.2;
+  }
+}
+
+/* Comet trail behind the moving tip */
+
+.about__trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.about__trail--a {
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, rgba(255, 125, 0, 0.55), transparent 70%);
+}
+
+.about__trail--b {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(255, 113, 4, 0.28), transparent 70%);
+}
+
+.about__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--orange-deep);
+  box-shadow:
+    0 0 0 5px rgba(255, 125, 0, 0.22),
+    0 0 0 9px rgba(255, 125, 0, 0.1),
+    0 0 24px rgba(255, 113, 4, 0.9);
 }
 
 /* ---------- Media — architectural blueprint reveal ---------- */
@@ -178,6 +313,10 @@
   .about__in {
     grid-template-columns: 1fr;
     gap: 56px;
+  }
+
+  .about__line {
+    display: none;
   }
 
   .about__media {

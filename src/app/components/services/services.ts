@@ -32,4 +32,32 @@ export class ServicesComponent {
   iconPath(key: string): string {
     return this.icons[key] ?? '';
   }
+
+  readonly dust = Array.from({ length: 14 }, (_, i) => ({
+    left: `${4 + ((i * 83) % 92)}%`,
+    delay: `${(i % 7) * 1.2}s`,
+    dur: `${7 + (i % 4) * 2.2}s`,
+    size: 3 + (i % 3) * 2,
+  }));
+
+  num(i: number): string {
+    return String(i + 1).padStart(2, '0');
+  }
+
+  onTilt(e: PointerEvent): void {
+    const el = e.currentTarget as HTMLElement;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    el.style.setProperty('--rx', `${((py - 0.5) * -14).toFixed(2)}deg`);
+    el.style.setProperty('--ry', `${((px - 0.5) * 16).toFixed(2)}deg`);
+    el.style.setProperty('--gx', `${(px * 100).toFixed(1)}%`);
+    el.style.setProperty('--gy', `${(py * 100).toFixed(1)}%`);
+  }
+
+  onUntilt(e: PointerEvent): void {
+    const el = e.currentTarget as HTMLElement;
+    el.style.removeProperty('--rx');
+    el.style.removeProperty('--ry');
+  }
 }

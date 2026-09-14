@@ -1,5 +1,19 @@
-<section class="section services" id="services">
-  <div class="container">
+<section class="section services dark-band" id="services" aria-label="Our services">
+<div class="services__scenery" aria-hidden="true">
+    <div class="services__floor"></div>
+    @for (d of dust; track $index) {
+      <span
+        class="services__dust"
+        [style.left]="d.left"
+        [style.width.px]="d.size"
+        [style.height.px]="d.size"
+        [style.--dly]="d.delay"
+        [style.--durn]="d.dur"
+      ></span>
+    }
+  </div>
+
+  <div class="container services__inner">
     <div class="section-head section-head--center" appReveal="up">
       <span class="section-label section-label--center">What We Do</span>
       <h2 class="section-title">Our <em>Services</em></h2>
@@ -11,13 +25,26 @@
     <div class="services__grid">
       @for (service of services; track service.title; let i = $index) {
         <article class="service" appReveal="up" [delay]="(i % 3) * 120">
-          <span class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path [attr.d]="iconPath(service.icon)"/>
-            </svg>
-          </span>
-          <h3 class="service__title">{{ service.title }}</h3>
-          <p class="service__text">{{ service.description }}</p>
+          <div
+            class="service__panel"
+            (pointermove)="onTilt($event)"
+            (pointerleave)="onUntilt($event)"
+          >
+            <span class="service__ghost" aria-hidden="true">{{ num(i) }}</span>
+            <span class="service__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path [attr.d]="iconPath(service.icon)"/>
+              </svg>
+            </span>
+            <h3 class="service__title">{{ service.title }}</h3>
+            <p class="service__text">{{ service.description }}</p>
+            <span class="service__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17 17 7 M7 7h10v10"/>
+              </svg>
+            </span>
+            <span class="service__glare" aria-hidden="true"></span>
+          </div>
         </article>
       }
     </div>

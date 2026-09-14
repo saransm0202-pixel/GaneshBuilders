@@ -1,26 +1,11 @@
-<section class="section why" id="why">
-  <div class="container">
-    <div class="section-head section-head--center" appReveal="up">
-      <span class="section-label section-label--center">The Difference</span>
-      <h2 class="section-title">Why Choose <em>Ganesh Builders?</em></h2>
-      <p class="section-sub">
-        Six reasons families across Chennai trust us with their biggest investment.
-      </p>
-    </div>
-
-    <div class="why__grid">
-      @for (adv of advantages; track adv.title; let i = $index) {
-        <article class="why__card" appReveal="up" [delay]="(i % 3) * 120">
-          <span class="why__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path [attr.d]="iconPath(adv.icon)"/>
-            </svg>
-          </span>
-          <span class="why__num" aria-hidden="true">0{{ i + 1 }}</span>
-          <h3 class="why__title">{{ adv.title }}</h3>
-          <p class="why__text">{{ adv.description }}</p>
-        </article>
-      }
-    </div>
+<section class="section why" id="why" aria-label="Why choose Ganesh Builders">
+  <div class="why__media" appReveal="fade">
+    <img
+      src="assets/images/why/whyus.png"
+      alt="Why choose Ganesh Builders"
+      loading="lazy"
+      fetchpriority="high"
+    />
+    <span class="why__sheen" aria-hidden="true"></span>
   </div>
 </section>

@@ -1,4 +1,22 @@
 <section class="est-hero">
+  <div class="est-hero__scene" aria-hidden="true">
+    <span class="est-hero__blob est-hero__blob--1"></span>
+    <span class="est-hero__blob est-hero__blob--2"></span>
+    <svg class="est-hero__house" viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1.5" preserveAspectRatio="xMidYMid meet">
+      <path d="M20 150 V70 L120 14 L220 70 V150 Z" />
+      <path d="M20 150 H220" />
+      <path d="M120 14 V150" class="est-hero__house-mid" />
+      <path d="M20 150 V70 L120 14" />
+      <path d="M220 150 V70 L120 14" />
+      <rect x="52" y="94" width="36" height="56" />
+      <rect x="152" y="94" width="36" height="56" />
+      <path d="M66 116 l10 -10 10 10" />
+      <path d="M166 116 l10 -10 10 10" />
+      <rect x="100" y="34" width="40" height="28" />
+      <path d="M16 92 h-12 M16 100 h-12 M16 108 h-12 M224 92 h12 M224 100 h12 M224 108 h12" opacity="0.7" />
+    </svg>
+    <div class="est-hero__floor"></div>
+  </div>
   <div class="container">
     <span class="section-label section-label--center">Free Tool — No Sign-Up</span>
     <h1 class="est-hero__title">Estimate Your <em>Dream Home</em></h1>
@@ -12,6 +30,8 @@
 <section class="est-calc">
   <div class="container">
     <div class="calc">
+
+      <div class="calc__gloss" aria-hidden="true"></div>
 
       <header class="calc__head">
         <ol class="dots">
@@ -354,7 +374,22 @@
 
           <div class="report-actions">
             <button type="button" class="btn-ghosty" (click)="reset()">↻ Recalculate</button>
-            <a class="btn-wa" [href]="whatsappHref()" target="_blank" rel="noopener">Share on WhatsApp</a>
+            <button
+              type="button"
+              class="btn-wa"
+              (click)="generateReport(true)"
+              [disabled]="reportBusy()"
+            >
+              Share on WhatsApp
+            </button>
+            <button
+              type="button"
+              class="btn-dl"
+              (click)="generateReport(true)"
+              [disabled]="reportBusy()"
+            >
+              {{ reportBusy() ? 'Preparing…' : '⬇ Download Report' }}
+            </button>
           </div>
 
           <div class="total-card">

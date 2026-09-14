@@ -9,6 +9,10 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SiteConfigService } from '../../services/site-config.service';
+import { NotificationService } from '../../services/notification.service';
+import { EstimateReportService } from '../../services/estimate-report.service';
+import { AuthService } from '../../services/auth.service';
+import type { EstimatePdfData } from './estimate.pdf';
 import {
   ESTIMATE_PACKAGES,
   EXTRA_ITEMS,
@@ -33,6 +37,9 @@ export class EstimateComponent implements OnInit {
   private readonly title = inject(Title);
   private readonly zone = inject(NgZone);
   private readonly siteConfig = inject(SiteConfigService);
+  private readonly reportService = inject(EstimateReportService);
+  private readonly notifications = inject(NotificationService);
+  private readonly auth = inject(AuthService);
 
   readonly packages = ESTIMATE_PACKAGES;
   readonly specs = PACKAGE_SPECS;
@@ -73,6 +80,7 @@ export class EstimateComponent implements OnInit {
   readonly extrasState = signal<Record<string, number | string | true>>({});
 
   readonly displayedTotal = signal(0);
+  readonly reportBusy = signal(false);
 
   /* Animated (count-up) displays for step 1 */
   readonly plotDisp = signal(0);
@@ -160,6 +168,15 @@ export class EstimateComponent implements OnInit {
       `${this.fmt(this.grandTotal())}` +
       (pkg ? ` for the ${pkg.name} package` : '') +
       `. I would like to discuss further.`;
+    return `https://wa.me/${this.siteConfig.phoneDigits()}?text=${encodeURIComponent(msg)}`;
+  });
+
+  readonly whatsappReportHref = computed(() => {
+    const msg =
+      `Hi Ganesh Builders, I just generated my construction cost estimate (approx. ` +
+      `${this.fmt(this.grandTotal())}` +
+      `) and emailed the report to your team. ` +
+      `Please share my report with me here on WhatsApp.`;
     return `https://wa.me/${this.siteConfig.phoneDigits()}?text=${encodeURIComponent(msg)}`;
   });
 
@@ -391,6 +408,123 @@ export class EstimateComponent implements OnInit {
     this.dispTargets.built = 0;
     this.dispTargets.park = 0;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- report download & email ---------- */
+
+  private reportId(): string {
+    const d = new Date();
+    return `EST-${d.getFullYear()}${this.pad(d.getMonth() + 1)}${this.pad(d.getDate())}-${Math.floor(
+      1000 + Math.random() * 9000,
+    )}`;
+  }
+
+  private reportDate(): string {
+    const d = new Date();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${this.pad(d.getDate())} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  private pdfData(estimateId: string): EstimatePdfData {
+    const pkg = this.selectedPackage();
+    return {
+      company: this.siteConfig.appName(),
+      estimateId,
+      date: this.reportDate(),
+      category: this.category() === 'commercial' ? 'Commercial' : 'Residential',
+      packageName: pkg?.name ?? '—',
+      packageTier: pkg?.tier ?? '—',
+      ratePerSqft: pkg?.rate ?? 0,
+      plotAreaSqft: this.plotArea() ?? 0,
+      builtUpPerFloorSqft: this.builtUpArea() ?? 0,
+      parkingSqft: this.parkingArea() ?? 0,
+      totalBuiltUpSqft: this.totalBuiltUp(),
+      configuration: this.selectedFloor().label,
+      durationMonths: this.durationMonths(),
+      baseCost: this.baseCost(),
+      extrasCost: this.extrasCost(),
+      grandTotal: this.grandTotal(),
+      emiMonthly: this.emiMonthly(),
+      monthlyOutflow: this.monthlyOutflow(),
+      phases: this.phases.map((ph) => ({ ...ph, amount: this.phaseAmount(ph) })),
+      extras: this.chosenExtras().map((ex) => ({ label: ex.label, amount: this.extraCost(ex.id) })),
+      packages: this.activePackages().map((p) => ({
+        name: p.name,
+        tier: p.tier,
+        rate: p.rate,
+        total: Math.round(this.totalBuiltUp() * p.rate),
+        selected: this.packageId() === p.id,
+      })),
+      disclaimer:
+        'Please note: Figures are indicative estimates for Chennai metro and vary with site conditions, ' +
+        'soil type and material prices. Government approvals, architect fees, EB / water connection ' +
+        'charges and interior furnishing are not included. Your final quote after a free site visit ' +
+        'will be exact.',
+    };
+  }
+
+  generateReport(sendToWa: boolean): void {
+    if (this.reportBusy()) {
+      return;
+    }
+    this.reportBusy.set(true);
+    if (sendToWa) {
+      window.open(this.whatsappReportHref(), '_blank', 'noopener');
+    }
+    void this.buildAndEmail();
+  }
+
+  private async buildAndEmail(): Promise<void> {
+    try {
+      const estimateId = this.reportId();
+      const pdfData = this.pdfData(estimateId);
+      const { buildEstimatePdf } = await import('./estimate.pdf');
+      const doc = buildEstimatePdf(pdfData);
+      const fileName = `GaneshBuilders-Estimate-${estimateId}.pdf`;
+      this.emailReport(doc.output('blob'), pdfData, fileName);
+    } catch {
+      this.reportBusy.set(false);
+      this.notifications.show('Could not generate the PDF. Please try again.', 'error');
+    }
+  }
+
+  private emailReport(pdf: Blob, data: EstimatePdfData, fileName: string): void {
+    const user = this.auth.currentUser();
+    this.reportService
+      .sendToAdmins(pdf, {
+        customerName: user ? `${user.firstName} ${user.lastName}`.trim() : undefined,
+        customerEmail: user?.email,
+        category: data.category,
+        packageName: `${data.packageName} — ${data.packageTier}`,
+        ratePerSqft: data.ratePerSqft,
+        plotAreaSqft: data.plotAreaSqft,
+        totalBuiltUpSqft: data.totalBuiltUpSqft,
+        configuration: data.configuration,
+        durationMonths: data.durationMonths,
+        baseCost: data.baseCost,
+        extrasCost: data.extrasCost,
+        totalCost: data.grandTotal,
+        emiMonthly: data.emiMonthly,
+        fileName,
+      })
+      .subscribe({
+        next: (res) => {
+          this.reportBusy.set(false);
+          if (res?.success) {
+            this.notifications.show('Report emailed to our team. Ask for it on WhatsApp!', 'success', 6000);
+          } else {
+            this.notifications.show(`PDF ready. ${res?.message ?? 'Email not sent.'}`, 'error', 6000);
+          }
+        },
+        error: () => {
+          this.reportBusy.set(false);
+          this.notifications.show(
+            'PDF ready. Could not email it — our team may be offline. Try again.',
+            'error',
+            6000,
+          );
+        },
+      });
   }
 
   private animateTotal(): void {

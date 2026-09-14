@@ -1,4 +1,4 @@
-<section class="section process" id="process">
+<section class="section process" id="process" aria-label="Our process">
   <div class="container">
     <div class="section-head section-head--center" appReveal="up">
       <span class="section-label section-label--center">Our Process</span>
@@ -8,16 +8,31 @@
       </p>
     </div>
 
-    <ol class="timeline">
+    <div class="process__track" #track>
+      <div class="process__line" aria-hidden="true">
+        <span class="process__line-draw"></span>
+      </div>
+      <span class="process__spark" aria-hidden="true"></span>
+      <span class="process__trail" aria-hidden="true"></span>
+
       @for (step of steps; track step.step; let i = $index) {
-        <li class="timeline__step" appReveal="up" [delay]="i * 110">
-          <span class="timeline__dot" aria-hidden="true">
-            {{ step.step }}
+        <article
+          class="process__item"
+          [class.process__item--even]="i % 2 === 1"
+          appReveal="up"
+          [delay]="i * 120"
+        >
+          <div class="process__card">
+            <span class="process__ghost" aria-hidden="true">{{ step.step }}</span>
+            <h3 class="process__title">{{ step.title }}</h3>
+            <p class="process__text">{{ step.description }}</p>
+          </div>
+          <span class="process__marker" [class.is-on]="i <= activeNode()" aria-hidden="true">
+            <span class="process__marker-ring"></span>
+            <span class="process__marker-dot"></span>
           </span>
-          <h3 class="timeline__title">{{ step.title }}</h3>
-          <p class="timeline__text">{{ step.description }}</p>
-        </li>
+        </article>
       }
-    </ol>
+    </div>
   </div>
 </section>
