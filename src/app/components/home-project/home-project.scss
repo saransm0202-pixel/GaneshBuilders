@@ -11,6 +11,86 @@
   box-shadow: inset 0 46px 70px -52px rgba(10, 5, 1, 0.6);
 }
 
+/* Scroll-drawn corner energy curves — draw in with scroll */
+
+.home-projects .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hp__curve {
+  position: absolute;
+  width: clamp(180px, 28vw, 320px);
+  height: clamp(180px, 28vw, 320px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.hp__curve--tl {
+  top: 0;
+  left: 0;
+}
+
+.hp__curve--br {
+  bottom: 0;
+  right: 0;
+}
+
+.hp__curve svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.hp__path {
+  fill: none;
+  stroke: url(#hpCurveGrad);
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(255, 113, 4, 0.7));
+}
+
+.hp__trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hp__trail--a {
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, rgba(255, 125, 0, 0.55), transparent 70%);
+}
+
+.hp__trail--b {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(255, 113, 4, 0.28), transparent 70%);
+}
+
+.hp__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--orange-deep);
+  box-shadow:
+    0 0 0 5px rgba(255, 125, 0, 0.22),
+    0 0 0 9px rgba(255, 125, 0, 0.1),
+    0 0 24px rgba(255, 113, 4, 0.9);
+}
+
+.hp__trail--a,
+.hp__trail--b {
+  z-index: 1;
+}
+
 .hp__head {
   display: flex;
   align-items: flex-end;
@@ -136,5 +216,9 @@
 
   .hp__grid {
     grid-template-columns: 1fr;
+  }
+
+  .hp__curve {
+    display: none;
   }
 }

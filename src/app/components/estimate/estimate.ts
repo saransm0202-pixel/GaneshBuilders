@@ -1,17 +1,18 @@
 import { Title } from '@angular/platform-browser';
 import {
   Component,
+  HostListener,
   NgZone,
   OnInit,
   computed,
   inject,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SiteConfigService } from '../../services/site-config.service';
 import { NotificationService } from '../../services/notification.service';
 import { EstimateReportService } from '../../services/estimate-report.service';
-import { AuthService } from '../../services/auth.service';
 import type { EstimatePdfData } from './estimate.pdf';
 import {
   ESTIMATE_PACKAGES,
@@ -29,7 +30,7 @@ type PkgCategory = 'residential' | 'commercial';
 @Component({
   selector: 'app-estimate',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './estimate.html',
   styleUrl: './estimate.scss',
 })
@@ -39,7 +40,6 @@ export class EstimateComponent implements OnInit {
   private readonly siteConfig = inject(SiteConfigService);
   private readonly reportService = inject(EstimateReportService);
   private readonly notifications = inject(NotificationService);
-  private readonly auth = inject(AuthService);
 
   readonly packages = ESTIMATE_PACKAGES;
   readonly specs = PACKAGE_SPECS;
@@ -81,6 +81,12 @@ export class EstimateComponent implements OnInit {
 
   readonly displayedTotal = signal(0);
   readonly reportBusy = signal(false);
+  readonly showContactModal = signal(false);
+  readonly reportAction = signal<'download' | 'whatsapp'>('download');
+  readonly contactName = signal('');
+  readonly contactPhone = signal('');
+  readonly contactError = signal('');
+  readonly reportShield = signal(false);
 
   /* Animated (count-up) displays for step 1 */
   readonly plotDisp = signal(0);
@@ -186,6 +192,56 @@ export class EstimateComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
+  }
+
+  /* ---------- report screenshot protection ---------- */
+
+  @HostListener('window:blur')
+  onWindowBlur(): void {
+    if (this.step() === 5 && !this.showContactModal()) this.reportShield.set(true);
+  }
+
+  @HostListener('window:focus')
+  onWindowFocus(): void {
+    this.reportShield.set(false);
+  }
+
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    this.reportShield.set(document.hidden);
+  }
+
+  /* ---------- customer name & phone popup ---------- */
+
+  openContactModal(mode: 'download' | 'whatsapp'): void {
+    if (this.reportBusy()) return;
+    this.reportAction.set(mode);
+    this.contactName.set('');
+    this.contactPhone.set('');
+    this.contactError.set('');
+    this.showContactModal.set(true);
+  }
+
+  closeContactModal(): void {
+    if (this.reportBusy()) return;
+    this.showContactModal.set(false);
+  }
+
+  submitContact(): void {
+    const name = this.contactName().trim();
+    if (!name) {
+      this.contactError.set('Please enter your name.');
+      return;
+    }
+    const digits = this.contactPhone().replace(/\D/g, '');
+    const match = digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : digits;
+    if (!/^[6-9]\d{9}$/.test(match)) {
+      this.contactError.set('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    this.contactError.set('');
+    this.showContactModal.set(false);
+    this.generateReport(this.reportAction() === 'whatsapp', { name, phone: match });
   }
 
   /* ---------- formatting ---------- */
@@ -463,7 +519,7 @@ export class EstimateComponent implements OnInit {
     };
   }
 
-  generateReport(sendToWa: boolean): void {
+  generateReport(sendToWa: boolean, contact: { name: string; phone: string }): void {
     if (this.reportBusy()) {
       return;
     }
@@ -471,29 +527,33 @@ export class EstimateComponent implements OnInit {
     if (sendToWa) {
       window.open(this.whatsappReportHref(), '_blank', 'noopener');
     }
-    void this.buildAndEmail();
+    void this.buildAndEmail(contact);
   }
 
-  private async buildAndEmail(): Promise<void> {
+  private async buildAndEmail(contact: { name: string; phone: string }): Promise<void> {
     try {
       const estimateId = this.reportId();
       const pdfData = this.pdfData(estimateId);
       const { buildEstimatePdf } = await import('./estimate.pdf');
       const doc = buildEstimatePdf(pdfData);
       const fileName = `GaneshBuilders-Estimate-${estimateId}.pdf`;
-      this.emailReport(doc.output('blob'), pdfData, fileName);
+      this.emailReport(doc.output('blob'), pdfData, fileName, contact);
     } catch {
       this.reportBusy.set(false);
       this.notifications.show('Could not generate the PDF. Please try again.', 'error');
     }
   }
 
-  private emailReport(pdf: Blob, data: EstimatePdfData, fileName: string): void {
-    const user = this.auth.currentUser();
+  private emailReport(
+    pdf: Blob,
+    data: EstimatePdfData,
+    fileName: string,
+    contact: { name: string; phone: string },
+  ): void {
     this.reportService
       .sendToAdmins(pdf, {
-        customerName: user ? `${user.firstName} ${user.lastName}`.trim() : undefined,
-        customerEmail: user?.email,
+        customerName: contact.name,
+        customerPhone: contact.phone,
         category: data.category,
         packageName: `${data.packageName} — ${data.packageTier}`,
         ratePerSqft: data.ratePerSqft,

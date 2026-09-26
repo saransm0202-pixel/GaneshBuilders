@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 
 export interface IEstimateReportMail {
   customerName?: string;
+  customerPhone?: string;
   customerEmail?: string;
   category: string;
   packageName: string;
@@ -29,6 +30,7 @@ export class EstimateReportService {
     fd.append('reportPdf', reportPdf, summary.fileName);
     fd.append('accountId', String(environment.accountId));
     fd.append('customerName', summary.customerName ?? '');
+    fd.append('customerPhone', summary.customerPhone ?? '');
     fd.append('customerEmail', summary.customerEmail ?? '');
     fd.append('category', summary.category);
     fd.append('packageName', summary.packageName);

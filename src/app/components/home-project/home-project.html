@@ -1,4 +1,29 @@
 <section class="section home-projects" id="projects">
+  <div class="hp__curve hp__curve--tl" #rail aria-hidden="true">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hpCurveGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ff5712" />
+          <stop offset="0.55" stop-color="#ff7104" />
+          <stop offset="1" stop-color="#ff7d00" />
+        </linearGradient>
+      </defs>
+      <path class="hp__path" d="M4 4 A 100 100 0 0 0 204 4" />
+    </svg>
+    <span class="hp__trail hp__trail--b"></span>
+    <span class="hp__trail hp__trail--a"></span>
+    <span class="hp__dot"></span>
+  </div>
+
+  <div class="hp__curve hp__curve--br" #rail aria-hidden="true">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="none">
+      <path class="hp__path" stroke="url(#hpCurveGrad)" d="M216 216 A 100 100 0 0 0 16 216" />
+    </svg>
+    <span class="hp__trail hp__trail--b"></span>
+    <span class="hp__trail hp__trail--a"></span>
+    <span class="hp__dot"></span>
+  </div>
+
   <div class="container">
     <div class="hp__head" appReveal="up">
       <div class="section-head">

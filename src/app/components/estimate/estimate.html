@@ -364,6 +364,13 @@
 
         <!-- STEP 5 : REPORT -->
         @if (step() === 5) {
+          <div
+            class="report"
+            (contextmenu)="$event.preventDefault()"
+            (copy)="$event.preventDefault()"
+            (cut)="$event.preventDefault()"
+            [class.report--hidden]="reportShield()"
+          >
           <div class="step-head">
             <span class="step-icon" aria-hidden="true">📊</span>
             <div>
@@ -377,7 +384,7 @@
             <button
               type="button"
               class="btn-wa"
-              (click)="generateReport(true)"
+              (click)="openContactModal('whatsapp')"
               [disabled]="reportBusy()"
             >
               Share on WhatsApp
@@ -385,10 +392,10 @@
             <button
               type="button"
               class="btn-dl"
-              (click)="generateReport(true)"
+              (click)="openContactModal('download')"
               [disabled]="reportBusy()"
             >
-              {{ reportBusy() ? 'Preparing…' : '⬇ Download Report' }}
+              {{ reportBusy() ? 'Preparing…' : 'Download Report' }}
             </button>
           </div>
 
@@ -505,6 +512,14 @@
               <a class="btn btn--outline btn--sm" [href]="whatsappHref()" target="_blank" rel="noopener">Chat on WhatsApp</a>
             </div>
           </div>
+
+          @if (reportShield()) {
+            <div class="report__shield">
+              <span aria-hidden="true">🔒</span>
+              <em>Report is hidden while you are away</em>
+            </div>
+          }
+          </div>
         }
 
         @if (errorText()) {
@@ -525,3 +540,51 @@
     </div>
   </div>
 </section>
+
+@if (showContactModal()) {
+  <div class="cmback" (click)="closeContactModal()">
+    <form
+      class="cmm"
+      (submit)="submitContact()"
+      (click)="$event.stopPropagation()"
+      novalidate
+    >
+      <button type="button" class="cmm__x" (click)="closeContactModal()" aria-label="Close">✕</button>
+      <h3>{{ reportAction() === 'whatsapp' ? 'Share your report' : 'Send your report' }}</h3>
+      <p>Tell us who you are so we can email your report to our team.</p>
+      <label class="cmm__fld">
+        <span>Your name <b>*</b></span>
+        <input
+          type="text"
+          name="name"
+          autocomplete="name"
+          [ngModel]="contactName()"
+          (ngModelChange)="contactName.set($event)"
+          placeholder="e.g. Ramesh Kumar"
+        />
+      </label>
+      <label class="cmm__fld">
+        <span>Mobile number <b>*</b></span>
+        <input
+          type="tel"
+          name="phone"
+          autocomplete="tel"
+          inputmode="numeric"
+          [ngModel]="contactPhone()"
+          (ngModelChange)="contactPhone.set($event)"
+          placeholder="10-digit mobile number"
+          maxlength="14"
+        />
+      </label>
+      @if (contactError()) {
+        <p class="cmm__err" role="alert">{{ contactError() }}</p>
+      }
+      <div class="cmm__btns">
+        <button type="button" class="cmm__ghost" (click)="closeContactModal()">Cancel</button>
+        <button type="submit" class="cmm__primary">
+          {{ reportAction() === 'whatsapp' ? 'Share Report' : 'Download Report' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

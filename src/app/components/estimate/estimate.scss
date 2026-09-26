@@ -1601,6 +1601,48 @@ $txt3: rgba(255, 255, 255, 0.45);
   }
 }
 
+/* ---------- report screenshot protection ---------- */
+
+.report {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.report--hidden {
+  filter: blur(16px);
+}
+
+.report__shield {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(7, 2, 0, 0.88);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  padding: 24px;
+}
+
+.report__shield span {
+  font-size: 1.8rem;
+}
+
+.report__shield em {
+  font-style: normal;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .total-card {
   position: relative;
   overflow: hidden;
@@ -2210,5 +2252,169 @@ $txt3: rgba(255, 255, 255, 0.45);
 
   .total-card::after {
     animation: none;
+  }
+}
+
+/* ---------- customer name & phone modal ---------- */
+
+.cmback {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 24px);
+  background: rgba(5, 2, 0, 0.76);
+}
+
+.cmm {
+  position: relative;
+  width: min(100%, 440px);
+  padding: 30px 26px 24px;
+  border: 1px solid rgba(255, 125, 0, 0.35);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, #221106, #120700);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+  color: #fff;
+}
+
+.cmm__x {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  padding: 2px 6px;
+  font-size: 1rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.45);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.cmm__x:hover {
+  color: #fff;
+}
+
+.cmm h3 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #fff;
+  padding-right: 22px;
+}
+
+.cmm > p {
+  margin: 0 0 18px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cmm__fld {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.cmm__fld span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cmm__fld b {
+  color: var(--orange);
+}
+
+.cmm__fld input {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cmm__fld input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.cmm__fld input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 125, 0, 0.18);
+}
+
+.cmm__err {
+  margin: 0 0 14px;
+  padding: 10px 13px;
+  border-left: 3px solid #e74c3c;
+  background: rgba(231, 76, 60, 0.12);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.8rem;
+  color: #ffb4ab;
+}
+
+.cmm__btns {
+  display: flex;
+  gap: 10px;
+}
+
+.cmm__ghost {
+  flex: 1;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.cmm__ghost:hover {
+  color: #fff;
+  border-color: var(--orange);
+}
+
+.cmm__primary {
+  flex: 1.4;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1b0b00;
+  background: linear-gradient(160deg, var(--orange), var(--orange-deep));
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s ease;
+}
+
+.cmm__primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(255, 125, 0, 0.4);
+}
+
+@media (max-width: 420px) {
+  .cmm {
+    padding: 22px 18px 18px;
+  }
+
+  .cmm__btns {
+    flex-direction: column;
   }
 }
