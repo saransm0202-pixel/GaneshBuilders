@@ -5,15 +5,21 @@ import {
   ElementRef,
   inject,
   OnDestroy,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
 import { SiteDataService } from '../../services/site-data.service';
+import { PackageService } from '../../services/package.service';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { ConstructionPackage } from '../../models/site.models';
+import { IPackage } from '../../models/package.model';
 import { Router } from '@angular/router';
 
 export type PackageCategory = 'residential' | 'commercial';
+
+const RES_ICONS: ConstructionPackage['icon'][] = ['home', 'spark', 'crown', 'search'];
+const COM_ICONS: ConstructionPackage['icon'][] = ['building', 'store', 'tower'];
 
 @Component({
   selector: 'app-packages',
@@ -22,12 +28,14 @@ export type PackageCategory = 'residential' | 'commercial';
   templateUrl: './packages.html',
   styleUrl: './packages.scss',
 })
-export class PackagesComponent implements AfterViewInit, OnDestroy {
+export class PackagesComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly data = inject(SiteDataService);
+  private readonly packageService = inject(PackageService);
   private readonly router = inject(Router);
 
-  readonly residential = this.data.packages;
-  readonly commercial = this.data.commercialPackages;
+  readonly residential = signal<ConstructionPackage[]>([]);
+  readonly commercial = signal<ConstructionPackage[]>([]);
+  readonly loading = signal(true);
 
   readonly category = signal<PackageCategory>('residential');
 
@@ -39,6 +47,47 @@ export class PackagesComponent implements AfterViewInit, OnDestroy {
 
   constructor(elementRef: ElementRef<HTMLElement>) {
     this.host = elementRef.nativeElement;
+  }
+
+  ngOnInit(): void {
+    this.packageService.getPackages().subscribe({
+      next: (rows) => {
+        const active = rows.filter((p) => p.isActive);
+        const byType = (wanted: string) =>
+          active.filter(
+            (p) => (p.constructionType ?? '').toLowerCase() === wanted,
+          );
+        this.residential.set(this.toCards(byType('residential'), 'residential'));
+        this.commercial.set(this.toCards(byType('commercial'), 'commercial'));
+        this.loading.set(false);
+      },
+      error: () => {
+        this.residential.set(this.data.packages);
+        this.commercial.set(this.data.commercialPackages);
+        this.loading.set(false);
+      },
+    });
+  }
+
+  private toCards(rows: IPackage[], category: PackageCategory): ConstructionPackage[] {
+    const icons = category === 'residential' ? RES_ICONS : COM_ICONS;
+    return rows
+      .slice()
+      .sort((a, b) => a.packageId - b.packageId)
+      .map((p, idx): ConstructionPackage => {
+        const priced = p.packagePrice != null;
+        return {
+          id: `p-${p.packageId}`,
+          name: p.packageName,
+          tagline: p.description ?? '',
+          price: priced ? `₹${p.packagePrice!.toLocaleString('en-IN')}` : "Let's discuss",
+          priceNote: priced ? '/ Sq.Ft' : 'Your Plan',
+          features: p.features.filter((f) => f.isActive).map((f) => f.feature),
+          cta: 'Get Estimate',
+          highlighted: rows.length > 1 && idx === 1,
+          icon: icons[Math.min(idx, icons.length - 1)],
+        };
+      });
   }
 
   ngAfterViewInit(): void {
@@ -78,7 +127,7 @@ export class PackagesComponent implements AfterViewInit, OnDestroy {
   };
 
   readonly activePackages = computed(() =>
-    this.category() === 'residential' ? this.residential : this.commercial,
+    this.category() === 'residential' ? this.residential() : this.commercial(),
   );
 
   readonly switchNote = computed(() =>

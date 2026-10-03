@@ -50,32 +50,33 @@
     </div>
 
     <div class="packages__grid" [class.packages__grid--com]="category() === 'commercial'">
-      @for (pkg of activePackages(); track pkg.id; let i = $index) {
+      @if (loading()) {
+        @for (s of [1, 2, 3, 4]; track s) {
+          <div class="pkg pkg-skel">
+            <span class="pkg-skel__icon"></span>
+            <span class="pkg-skel__line pkg-skel__line--name"></span>
+            <span class="pkg-skel__line pkg-skel__line--tag"></span>
+            <span class="pkg-skel__line pkg-skel__line--price"></span>
+            <span class="pkg-skel__line pkg-skel__line--feat"></span>
+            <span class="pkg-skel__line pkg-skel__line--feat"></span>
+            <span class="pkg-skel__line pkg-skel__line--feat"></span>
+          </div>
+        }
+      } @else {
+        @for (pkg of activePackages(); track pkg.id; let i = $index) {
         <article
           class="pkg"
           [class.pkg--featured]="pkg.highlighted"
-          [class.pkg--luxury]="pkg.id === 'luxury'"
           appReveal="up"
           [delay]="i * 120"
         >
           <span class="pkg__gloss" aria-hidden="true"></span>
-          <!-- @if (category() === 'commercial') {
-            <span class="pkg__badge">Commercial</span>
-          } -->
-          @if (pkg.id === 'luxury') {
-            <div class="pkg__flag pkg__flag--luxury">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
-                <path d="m12 2 3 7 7 .9-5.2 4.9 1.5 7.2L12 18.8 5.7 22l1.5-7.2L2 9.9l7-.9Z"/>
-              </svg>
-              Signature
-            </div>
-          }
           @if (pkg.highlighted) {
             <div class="pkg__flag">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
                 <path d="m12 2 3 7 7 .9-5.2 4.9 1.5 7.2L12 18.8 5.7 22l1.5-7.2L2 9.9l7-.9Z"/>
               </svg>
-              {{ pkg.id.startsWith('c-') ? 'Best Value' : 'Most Popular' }}
+              {{ category() === 'commercial' ? 'Best Value' : 'Most Popular' }}
             </div>
           }
 
@@ -123,13 +124,8 @@
           <p class="pkg__tagline">{{ pkg.tagline }}</p>
 
           <div class="pkg__price">
-            @if (pkg.id === 'custom') {
-              <span class="pkg__amount pkg__amount--custom">{{ pkg.price }}</span>
-              <span class="pkg__unit">{{ pkg.priceNote }}</span>
-            } @else {
-              <span class="pkg__amount">{{ pkg.price }}</span>
-              <span class="pkg__unit">{{ pkg.priceNote }}</span>
-            }
+            <span class="pkg__amount">{{ pkg.price }}</span>
+            <span class="pkg__unit">{{ pkg.priceNote }}</span>
           </div>
 
           <ul class="pkg__features">
@@ -152,6 +148,7 @@
             </svg>
           </button>
         </article>
+        }
       }
     </div>
   </div>

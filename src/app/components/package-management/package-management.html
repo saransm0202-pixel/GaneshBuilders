@@ -1,0 +1,467 @@
+<!-- ═══════════════════════ Hero ═══════════════════════ -->
+<section class="pkg-hero">
+  <div class="container">
+    <span class="section-label section-label--center">Admin Panel</span>
+    <h1 class="pkg-hero__title">Package <em>Management</em></h1>
+  </div>
+</section>
+
+<!-- ═══════════════════════ Main ═══════════════════════ -->
+<section class="pkg">
+  <div class="container">
+
+    <!-- toolbar -->
+    <div class="pkg__bar">
+      <div class="pkg__search">
+        <svg class="pkg__search-icon" viewBox="0 0 24 24" width="18" height="18"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input
+          class="pkg__search-input"
+          type="text"
+          placeholder="Search by package, type, description or feature…"
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+        />
+      </div>
+      <button class="btn btn--primary btn--sm" (click)="openAdd()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+             aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add Package
+      </button>
+    </div>
+
+    <!-- data table -->
+    <div class="pkg-tbl">
+      <!-- header -->
+      <div class="pkg-tbl__head">
+        <span class="pkg-tbl__th pkg-tbl__th--name">Package</span>
+        <span class="pkg-tbl__th">Construction Type</span>
+        <span class="pkg-tbl__th">Price</span>
+        <span class="pkg-tbl__th">Features</span>
+        <span class="pkg-tbl__th">Status</span>
+        <span class="pkg-tbl__th pkg-tbl__th--act"></span>
+      </div>
+
+      <!-- skeleton rows -->
+      @if (loading()) {
+        @for (s of [1, 2, 3, 4, 5]; track s) {
+          <div class="pkg-tbl__row pkg-tbl__row--skel">
+            <span class="pkg-tbl__td pkg-tbl__td--name">
+              <span class="skel skel--avatar-sm"></span>
+              <span class="skel skel--line skel--w40"></span>
+            </span>
+            <span class="pkg-tbl__td"><span class="skel skel--line skel--w50"></span></span>
+            <span class="pkg-tbl__td"><span class="skel skel--line skel--w40"></span></span>
+            <span class="pkg-tbl__td"><span class="skel skel--badge-sm"></span></span>
+            <span class="pkg-tbl__td"><span class="skel skel--dot"></span></span>
+            <span class="pkg-tbl__td"></span>
+          </div>
+        }
+      } @else {
+        @for (pkg of filteredPackages(); track pkg.packageId; let i = $index) {
+          <div class="pkg-tbl__row" [style.animation-delay.ms]="i * 50">
+            <span class="pkg-tbl__td pkg-tbl__td--name">
+              <span class="pkg-tbl__avatar">{{ (pkg.packageName[0] || 'P').toUpperCase() }}</span>
+              <span class="pkg-tbl__nm">
+                {{ pkg.packageName }}
+                @if (pkg.description) {
+                  <small class="pkg-tbl__desc">{{ pkg.description }}</small>
+                }
+              </span>
+            </span>
+            <span class="pkg-tbl__td">
+              <span class="pkg-tbl__type">{{ pkg.constructionType || '—' }}</span>
+            </span>
+            <span class="pkg-tbl__td"><span class="pkg-tbl__price">{{ priceLabel(pkg) }}</span></span>
+            <span class="pkg-tbl__td">
+              <span class="pkg-tbl__count">{{ pkg.features.length }} feature{{ pkg.features.length === 1 ? '' : 's' }}{{ pkg.specs.length ? ' · ' + pkg.specs.length + ' spec' + (pkg.specs.length === 1 ? '' : 's') : '' }}</span>
+            </span>
+            <span class="pkg-tbl__td">
+              <span class="pkg-tbl__status" [class.pkg-tbl__status--off]="!pkg.isActive">
+                <span class="pkg-tbl__dot" [class.pkg-tbl__dot--off]="!pkg.isActive"></span>
+                {{ pkg.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </span>
+            <span class="pkg-tbl__td pkg-tbl__td--act">
+              <button class="pkg-tbl__edit" (click)="openEdit(pkg)">Edit</button>
+              <button class="pkg-tbl__delete" (click)="onDelete(pkg)">Delete</button>
+            </span>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- empty -->
+    @if (!loading() && filteredPackages().length === 0) {
+      <div class="pkg__empty">
+        <div class="pkg__empty-icon">
+          <svg viewBox="0 0 24 24" width="42" height="42" fill="none"
+               stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <h3>No packages found</h3>
+        <p>Add your first package to get started.</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- ═══════════════════════ Modal ═══════════════════════ -->
+@if (panelOpen()) {
+  <div class="pkg-modal" (click)="closePanel()">
+    <div class="pkg-modal__backdrop"></div>
+    <div
+      class="pkg-modal__body"
+      (click)="$event.stopPropagation()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="editingPackage() ? 'Edit package' : 'Add package'"
+    >
+      <header class="pkg-modal__head">
+        <div class="pkg-modal__head-l">
+          <span class="pkg-modal__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </span>
+          <div>
+            <span class="pkg-modal__label">{{ editingPackage() ? 'Edit' : 'New' }} Package</span>
+            <h2 class="pkg-modal__title">
+              {{ editingPackage() ? 'Edit Package' : 'Create a Package' }}
+            </h2>
+          </div>
+        </div>
+        <button class="pkg-modal__close" (click)="closePanel()" aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="pkg-modal__form">
+
+        <!-- live preview -->
+        <section class="pkg-live" [class.pkg-live--off]="!pvActive()">
+          <span class="pkg-live__gloss" aria-hidden="true"></span>
+          <span class="pkg-live__kicker">Live preview</span>
+
+          <div class="pkg-live__top">
+            <div class="pkg-live__text">
+              <h3 class="pkg-live__name">{{ pvName() }}</h3>
+              <p class="pkg-live__tagline">{{ pvTagline() }}</p>
+            </div>
+            <div class="pkg-live__price">
+              <span class="pkg-live__amount">{{ pvPrice() }}</span>
+              <span class="pkg-live__unit">{{ pvPriceNote() }}</span>
+            </div>
+          </div>
+
+          <div class="pkg-live__meta">
+            <span class="pkg-live__type">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 21h16"/><path d="M6 21V7l6-4 6 4v14"/>
+              </svg>
+              {{ pvType() }}
+            </span>
+            <span class="pkg-live__status" [class.pkg-live__status--off]="!pvActive()">
+              <span class="pkg-live__dot"></span>
+              {{ pvActive() ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+
+          <ul class="pkg-live__features">
+            @if (previewFeatureList().length > 0) {
+              @for (f of previewFeatureList(); track $index; let i = $index) {
+                @if (i < 8) {
+                  <li>
+                    <span class="pkg-live__check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
+                           stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                           stroke-linejoin="round">
+                        <path d="M20 6 9 17l-5-5"/>
+                      </svg>
+                    </span>
+                    {{ f }}
+                  </li>
+                }
+              }
+              @if (previewFeatureList().length > 8) {
+                <li class="pkg-live__more">
+                  +{{ previewFeatureList().length - 8 }} more
+                </li>
+              }
+            } @else {
+              <li class="pkg-live__hint">Add features below to see them here</li>
+            }
+          </ul>
+        </section>
+
+        <!-- details + features -->
+        <div class="pkg-modal__grid">
+
+          <!-- package details -->
+          <div class="pkg-modal__col">
+            <span class="pkg-modal__subhead">Package details</span>
+
+            <div class="pkg-field">
+              <label class="pkg-field__label" for="pf-name">Package Name <span>*</span></label>
+              <input
+                #nameField
+                id="pf-name"
+                class="pkg-field__input"
+                type="text"
+                formControlName="packageName"
+                placeholder="e.g. Premium"
+                [class.pkg-field__input--err]="isInvalid('packageName')"
+              />
+              @if (isInvalid('packageName')) {
+                <span class="pkg-field__error">Required</span>
+              }
+            </div>
+
+            <div class="pkg-form__row">
+              <div class="pkg-field">
+                <label class="pkg-field__label" for="pf-type">Construction Type</label>
+                <select
+                  id="pf-type"
+                  class="pkg-field__input pkg-field__select"
+                  formControlName="constructionTypeId"
+                >
+                  <option [ngValue]="null">Select type…</option>
+                  @for (t of types(); track t.constructionTypeId) {
+                    <option [ngValue]="t.constructionTypeId">{{ t.constructionType }}</option>
+                  }
+                </select>
+              </div>
+              <div class="pkg-field">
+                <label class="pkg-field__label" for="pf-price">Price (₹ / sq.ft)</label>
+                <input
+                  id="pf-price"
+                  class="pkg-field__input"
+                  type="number"
+                  min="0"
+                  step="1"
+                  formControlName="packagePrice"
+                  placeholder="e.g. 1899"
+                />
+              </div>
+            </div>
+
+            <div class="pkg-field">
+              <label class="pkg-field__label" for="pf-desc">Description</label>
+              <textarea
+                id="pf-desc"
+                class="pkg-field__input pkg-field__textarea"
+                rows="2"
+                formControlName="description"
+                placeholder="Short tagline shown on the packages section"
+              ></textarea>
+            </div>
+
+            <div class="pkg-field pkg-field--toggle">
+              <span class="pkg-field__label">Status</span>
+              <label class="toggle">
+                <input type="checkbox" formControlName="isActive" />
+                <span class="toggle__track">
+                  <span class="toggle__thumb"></span>
+                </span>
+                <span class="toggle__text">{{ form.get('isActive')?.value ? 'Active' : 'Inactive' }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- features -->
+          <div class="pkg-modal__col">
+            <div class="pkg-modal__subhead-row">
+              <span class="pkg-modal__subhead">Features</span>
+              <span class="pkg-modal__count">{{ draftCount() }} added</span>
+            </div>
+
+            <div class="pkg-feats">
+              @for (item of features(); track $index; let i = $index) {
+                <div class="pkg-feats__row">
+                  <span class="pkg-feats__num">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+                  <input
+                    [id]="'pf-feat-' + i"
+                    class="pkg-feats__input"
+                    type="text"
+                    placeholder="e.g. Standard civil construction"
+                    [(ngModel)]="item.text"
+                    [ngModelOptions]="{ standalone: true }"
+                    (keydown)="onFeatureKeydown($event)"
+                  />
+                  <button
+                    type="button"
+                    class="pkg-feats__remove"
+                    (click)="removeFeature(i)"
+                    [attr.aria-label]="'Remove feature ' + (i + 1)"
+                  >
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                         stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                      <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+
+            <button type="button" class="pkg-feats__add" (click)="addFeature()">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                   stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                   aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              Add feature
+            </button>
+            <p class="pkg-feats__tip">
+              Press <kbd>Enter</kbd> to add the next feature quickly.
+            </p>
+          </div>
+        </div>
+
+        <!-- package specs -->
+        <section class="pkg-specsec">
+          <div class="pkg-modal__subhead-row">
+            <span class="pkg-modal__subhead">Package specs</span>
+            <span class="pkg-modal__count">{{ specDraftCount() }} added</span>
+          </div>
+
+          <div class="pkg-specs">
+            @for (item of specs(); track $index; let i = $index) {
+              <div class="pkg-specs__row">
+                <span class="pkg-feats__num">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+                <div class="pkg-specs__fields">
+                  <div class="pkg-specs__field">
+                    <label class="pkg-specs__cap" [for]="'pk-spec-type-' + i">Spec type</label>
+                    <select
+                      [id]="'pk-spec-type-' + i"
+                      class="pkg-field__input pkg-field__select"
+                      [ngModel]="item.type"
+                      [ngModelOptions]="{ standalone: true }"
+                      (ngModelChange)="onSpecTypeChange(i, $event)"
+                    >
+                      <option [ngValue]="null">Choose spec type…</option>
+                      @for (st of specTypes(); track st.packageSpecTypeId) {
+                        <option [ngValue]="st">{{ st.packageSpecType }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="pkg-specs__split">
+                    <div class="pkg-specs__field">
+                      <label class="pkg-specs__cap" [for]="'pk-spec-' + i">Label</label>
+                      <input
+                        [id]="'pk-spec-' + i"
+                        class="pkg-field__input pkg-specs__label"
+                        type="text"
+                        placeholder="e.g. Structure"
+                        [(ngModel)]="item.label"
+                        [ngModelOptions]="{ standalone: true }"
+                        (keydown)="onSpecKeydown($event)"
+                      />
+                    </div>
+                    <div class="pkg-specs__field">
+                      <label class="pkg-specs__cap" [for]="'pk-spec-' + i + '-value'">Value</label>
+                      <textarea
+                        [id]="'pk-spec-' + i + '-value'"
+                        class="pkg-field__input pkg-field__textarea pkg-specs__value"
+                        rows="2"
+                        placeholder="What the package covers, e.g. M20 RCC frame, 230mm masonry…"
+                        [(ngModel)]="item.value"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="pkg-feats__remove pkg-specs__remove"
+                  (click)="removeSpec(i)"
+                  [attr.aria-label]="'Remove spec ' + (i + 1)"
+                >
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                       stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            }
+          </div>
+
+          <button type="button" class="pkg-feats__add pkg-specs__add" (click)="addSpec()">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                 stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                 aria-hidden="true">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Add spec
+          </button>
+          <p class="pkg-feats__tip">
+            Pick a spec type, then give it a label &amp; value. Saved specs show as
+            labelled sections on the estimate page. Press <kbd>Enter</kbd> in the Label
+            field to add the next one quickly.
+          </p>
+        </section>
+
+        <footer class="pkg-modal__foot">
+          <span class="pkg-modal__hint">Features are stored in the order shown above.</span>
+          <div class="pkg-modal__actions">
+            <button type="button" class="btn btn--ghost btn--sm" (click)="closePanel()">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn--primary btn--sm"
+              [disabled]="saving()"
+            >
+              @if (saving()) {
+                <span class="pkg-modal__spinner"></span>
+                Saving…
+              } @else {
+                {{ editingPackage() ? 'Update' : 'Create' }}
+              }
+            </button>
+          </div>
+        </footer>
+      </form>
+
+    </div>
+  </div>
+}
+
+<!-- ═══════════════════════ Toast ═══════════════════════ -->
+@if (toastVisible()) {
+  <div class="pkg-toast" [class.pkg-toast--err]="toastType() === 'error'">
+    @if (toastType() === 'success') {
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    } @else {
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+      </svg>
+    }
+    {{ toastMessage() }}
+  </div>
+}

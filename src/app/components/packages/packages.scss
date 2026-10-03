@@ -158,6 +158,53 @@
   transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease), border-color 0.5s var(--ease);
 }
 
+/* skeleton (loading) cards */
+
+.pkg-skel {
+  pointer-events: none;
+  gap: 12px;
+}
+
+.pkg-skel__icon,
+.pkg-skel__line {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.35) 25%,
+    rgba(255, 255, 255, 0.72) 50%,
+    rgba(255, 255, 255, 0.35) 75%
+  );
+  background-size: 200% 100%;
+  animation: pkgSkelShine 1.6s ease-in-out infinite;
+}
+
+.pkg-skel__icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+}
+
+.pkg-skel__line {
+  height: 14px;
+
+  &--name { width: 55%; height: 20px; margin-top: 6px; }
+  &--tag  { width: 85%; }
+  &--price { width: 45%; height: 26px; margin-top: 14px; }
+  &--feat { width: 78%; height: 12px; }
+}
+
+@keyframes pkgSkelShine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pkg-skel__icon,
+  .pkg-skel__line {
+    animation: none;
+  }
+}
+
 .pkg::before {
   content: '';
   position: absolute;

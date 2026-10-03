@@ -22,10 +22,35 @@ import {
   PHASE_SPLITS,
   EstimatePackage,
   PhaseSplit,
+  SpecRow,
 } from '../../models/estimate.model';
+import { PackageService } from '../../services/package.service';
+import { IPackage, IPackageSpecType } from '../../models/package.model';
 
-type SpecTab = 'structure' | 'finishes' | 'fittings';
 type PkgCategory = 'residential' | 'commercial';
+
+interface SpecSection {
+  heading: string;
+  items: SpecRow[];
+}
+
+interface PackageDraft {
+  id: string;
+  name: string;
+  rate: number;
+  tier: string;
+  icon: string;
+  category: PkgCategory;
+  tagline?: string;
+  highlighted?: boolean;
+  features: string[];
+  specSections: SpecSection[];
+}
+
+const RES_TIERS = ['Smart Budget', 'Most Chosen', 'Premium Build', 'Bespoke Fit'];
+const COM_TIERS = ['Smart Value', 'Best Value', 'Flagship Build', 'Bespoke Fit'];
+const RES_ICONS = ['🏠', '✨', '👑', '🎨'];
+const COM_ICONS = ['🏢', '🏬', '🏛️', '🏗️'];
 
 @Component({
   selector: 'app-estimate',
@@ -40,26 +65,91 @@ export class EstimateComponent implements OnInit {
   private readonly siteConfig = inject(SiteConfigService);
   private readonly reportService = inject(EstimateReportService);
   private readonly notifications = inject(NotificationService);
+  private readonly packageService = inject(PackageService);
 
-  readonly packages = ESTIMATE_PACKAGES;
-  readonly specs = PACKAGE_SPECS;
   readonly extrasList = EXTRA_ITEMS;
   readonly phases = PHASE_SPLITS;
   readonly floorOptions = FLOOR_CONFIGS;
-  readonly specTabs: ReadonlyArray<{ key: SpecTab; label: string }> = [
-    { key: 'structure', label: 'Structure' },
-    { key: 'finishes', label: 'Finishes' },
-    { key: 'fittings', label: 'Fittings' },
-  ];
 
   readonly category = signal<PkgCategory>('residential');
 
-  readonly residentialPackages = ESTIMATE_PACKAGES.filter(
-    (p) => (p.category ?? 'residential') === 'residential',
+  private readonly dbPackages = signal<IPackage[]>([]);
+  private readonly specTypes = signal<IPackageSpecType[]>([]);
+  readonly loaded = signal(false);
+  readonly loadError = signal(false);
+
+  private staticDrafts(list: EstimatePackage[]): PackageDraft[] {
+    return list.map((p) => {
+      const ps = PACKAGE_SPECS[p.id];
+      return {
+        id: p.id,
+        name: p.name,
+        rate: p.rate,
+        tier: p.tier,
+        icon: p.icon,
+        category: p.category ?? 'residential',
+        tagline: p.tagline,
+        highlighted: p.highlighted,
+        features: ps.includes,
+        specSections: [
+          { heading: 'Structure', items: ps.structure },
+          { heading: 'Finishes', items: ps.finishes },
+          { heading: 'Fittings', items: ps.fittings },
+        ],
+      };
+    });
+  }
+
+  private dbDrafts(category: PkgCategory): PackageDraft[] {
+    const icons = category === 'residential' ? RES_ICONS : COM_ICONS;
+    const tiers = category === 'residential' ? RES_TIERS : COM_TIERS;
+    const wanted = category === 'residential' ? 'residential' : 'commercial';
+    const rows = this.dbPackages()
+      .filter((p) => p.isActive && (p.constructionType ?? '').toLowerCase() === wanted)
+      .slice()
+      .sort((a, b) => a.packageId - b.packageId);
+    return rows.map((p, idx): PackageDraft => {
+      const groups = new Map<number, SpecSection>();
+      for (const s of p.specs.filter((x) => x.isActive && x.specLabel && x.specValue)) {
+        const key = s.specTypeId ?? 0;
+        if (!groups.has(key)) {
+          const type = this.specTypes().find(
+            (t) => t.packageSpecTypeId === s.specTypeId,
+          );
+          groups.set(key, { heading: type?.packageSpecType ?? '', items: [] });
+        }
+        groups.get(key)!.items.push({
+          label: s.specLabel.trim(),
+          value: s.specValue.trim(),
+        });
+      }
+      return {
+        id: `p-${p.packageId}`,
+        name: p.packageName,
+        rate: p.packagePrice ?? 0,
+        tier: tiers[Math.min(idx, tiers.length - 1)],
+        icon: icons[Math.min(idx, icons.length - 1)],
+        category,
+        tagline: p.description ?? '',
+        highlighted: rows.length > 1 && idx === 1,
+        features: p.features.filter((f) => f.isActive).map((f) => f.feature),
+        specSections: [...groups.values()],
+      };
+    });
+  }
+
+  readonly residentialPackages = computed<PackageDraft[]>(() =>
+    this.loadError()
+      ? this.staticDrafts(ESTIMATE_PACKAGES.filter((p) => (p.category ?? 'residential') === 'residential'))
+      : this.dbDrafts('residential'),
   );
-  readonly commercialPackages = ESTIMATE_PACKAGES.filter((p) => p.category === 'commercial');
+  readonly commercialPackages = computed<PackageDraft[]>(() =>
+    this.loadError()
+      ? this.staticDrafts(ESTIMATE_PACKAGES.filter((p) => p.category === 'commercial'))
+      : this.dbDrafts('commercial'),
+  );
   readonly activePackages = computed(() =>
-    this.category() === 'residential' ? this.residentialPackages : this.commercialPackages,
+    this.category() === 'residential' ? this.residentialPackages() : this.commercialPackages(),
   );
 
   readonly switchNote = computed(() =>
@@ -75,8 +165,8 @@ export class EstimateComponent implements OnInit {
   readonly builtUpArea = signal<number | null>(null);
   readonly parkingArea = signal<number | null>(null);
   readonly floorId = signal('G');
-  readonly packageId = signal<EstimatePackage['id'] | null>(null);
-  readonly specTab = signal<SpecTab>('structure');
+  readonly packageId = signal<string | null>(null);
+  readonly specTab = signal(0);
   readonly extrasState = signal<Record<string, number | string | true>>({});
 
   readonly displayedTotal = signal(0);
@@ -103,7 +193,7 @@ export class EstimateComponent implements OnInit {
   );
 
   readonly selectedPackage = computed(
-    () => this.packages.find((p) => p.id === this.packageId()) ?? null,
+    () => this.activePackages().find((p) => p.id === this.packageId()) ?? null,
   );
 
   readonly progressPct = computed(() =>
@@ -192,6 +282,19 @@ export class EstimateComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
+    this.packageService.getPackages().subscribe({
+      next: (rows) => {
+        this.dbPackages.set(rows);
+        this.loaded.set(true);
+      },
+      error: () => {
+        this.loadError.set(true);
+        this.loaded.set(true);
+      },
+    });
+    this.packageService.getPackageSpecTypes().subscribe({
+      next: (rows) => this.specTypes.set(rows),
+    });
   }
 
   /* ---------- report screenshot protection ---------- */
@@ -373,8 +476,9 @@ export class EstimateComponent implements OnInit {
     this.floorId.set(id);
   }
 
-  choosePackage(id: EstimatePackage['id']): void {
+  choosePackage(id: string): void {
     this.packageId.set(id);
+    this.specTab.set(0);
   }
 
   setCategory(cat: PkgCategory): void {
@@ -383,10 +487,7 @@ export class EstimateComponent implements OnInit {
     }
     this.category.set(cat);
     this.packageId.set(null);
-  }
-
-  setSpecTab(tab: SpecTab): void {
-    this.specTab.set(tab);
+    this.specTab.set(0);
   }
 
   toggleExtra(id: string, checked: boolean): void {
@@ -453,7 +554,6 @@ export class EstimateComponent implements OnInit {
     this.parkingArea.set(null);
     this.floorId.set('G');
     this.packageId.set(null);
-    this.specTab.set('structure');
     this.category.set('residential');
     this.extrasState.set({});
     this.displayedTotal.set(0);

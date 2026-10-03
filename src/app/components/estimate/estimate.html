@@ -262,6 +262,12 @@
                 }
               </button>
             }
+            @if (loaded() && !loadError() && activePackages().length === 0) {
+              <p class="grid-empty">
+                No {{ category() === 'commercial' ? 'commercial' : 'residential' }} packages
+                configured yet — add them in the admin Package Management screen.
+              </p>
+            }
           </div>
 
           @if (selectedPackage(); as pkg) {
@@ -279,40 +285,40 @@
                   <strong>{{ fmt(totalBuiltUp() * pkg.rate) }}</strong>
                   for {{ totalBuiltUp().toLocaleString('en-IN') }} sq.ft
                 </p>
-                @if (pkg.id === 'custom') {
-                  <p class="specbox__note">
-                    Indicative rate — finalised after your free design consultation.
-                  </p>
-                }
                 <span class="specbox__time">◷ {{ durationMonths() }}–{{ durationMonths() + 10 }} months</span>
                 <div class="specbox__inc">
                   <span>Included</span>
-                  @for (inc of specs[pkg.id].includes; track inc) {
+                  @for (inc of pkg.features; track inc) {
                     <i>✓ {{ inc }}</i>
                   }
                 </div>
               </aside>
 
               <div class="specbox__main">
-                <nav class="tabs">
-                  @for (t of specTabs; track t.key) {
-                    <button
-                      type="button"
-                      class="tabs__tab"
-                      [class.tabs__tab--on]="specTab() === t.key"
-                      (click)="setSpecTab(t.key)">
-                      {{ t.label }}
-                    </button>
-                  }
-                </nav>
-                <div class="rows">
-                  @for (row of specs[pkg.id][specTab()]; track row.label) {
-                    <div class="rows__row">
-                      <span>{{ row.label }}</span>
-                      <strong>{{ row.value }}</strong>
-                    </div>
-                  }
-                </div>
+                @if (pkg.specSections.length > 0) {
+                  <nav class="tabs">
+                    @for (grp of pkg.specSections; track $index; let i = $index) {
+                      <button
+                        type="button"
+                        class="tabs__tab"
+                        [class.tabs__tab--on]="specTab() === i"
+                        (click)="specTab.set(i)"
+                      >
+                        {{ grp.heading || 'Details' }}
+                      </button>
+                    }
+                  </nav>
+                  <div class="rows">
+                    @for (row of pkg.specSections[specTab()].items; track row.label) {
+                      <div class="rows__row">
+                        <span>{{ row.label }}</span>
+                        <strong>{{ row.value }}</strong>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="speccol__empty">Spec details will be added soon.</p>
+                }
               </div>
             </article>
           }
@@ -457,7 +463,7 @@
                   @if (packageId() === p.id) {
                     <span class="comp__pick">Your pick</span>
                   }
-                  <em>{{ p.tier }}<small class="comp__cat">{{ (p.category ?? 'residential') === 'commercial' ? 'Commercial' : 'Residential' }}</small></em>
+                  <em>{{ p.tier }}<small class="comp__cat">{{ p.category === 'commercial' ? 'Commercial' : 'Residential' }}</small></em>
                   <h4>{{ p.name }}</h4>
                   <span class="comp__rate">₹{{ p.rate.toLocaleString('en-IN') }}/sqft</span>
                   <strong>{{ fmt(totalBuiltUp() * p.rate) }}</strong>

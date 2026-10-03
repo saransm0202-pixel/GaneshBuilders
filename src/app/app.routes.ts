@@ -33,5 +33,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/app-config/app-config').then((m) => m.AppConfigComponent),
   },
+  {
+    path: 'package-management',
+    loadComponent: () =>
+      import('./components/package-management/package-management').then(
+        (m) => m.PackageManagementComponent,
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];

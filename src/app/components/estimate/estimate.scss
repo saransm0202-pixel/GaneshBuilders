@@ -790,6 +790,17 @@ $txt3: rgba(255, 255, 255, 0.45);
   }
 }
 
+.grid-empty {
+  grid-column: 1 / -1;
+  margin: 10px 0 4px;
+  padding: 18px 20px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* residential / commercial switch */
 
 .est-switch {
@@ -1307,6 +1318,13 @@ $txt3: rgba(255, 255, 255, 0.45);
   }
 }
 
+.speccol__empty {
+  margin: 0;
+  padding: 18px 20px;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
 .tabs {
   display: flex;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -1363,6 +1381,24 @@ $txt3: rgba(255, 255, 255, 0.45);
       text-align: right;
       font-weight: 500;
       color: #fff;
+    }
+  }
+
+  .speccol {
+    padding: 14px 20px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &__head {
+      margin: 0 0 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
     }
   }
 }

@@ -415,6 +415,16 @@
     0 1px 0 rgba(255, 255, 255, 0.22) inset;
 }
 
+.ap-module--ember .ap-module__3d {
+  background:
+    radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 190, 110, 0.22), transparent 48%),
+    linear-gradient(145deg, #b34a00 0%, #7a2f00 46%, #2b1503 100%);
+  box-shadow:
+    0 40px 90px -34px rgba(0, 0, 0, 0.75),
+    0 0 52px -10px rgba(255, 113, 4, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
 .ap-module__sweep {
   position: absolute;
   inset: 0;

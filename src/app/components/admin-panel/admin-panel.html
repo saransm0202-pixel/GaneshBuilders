@@ -39,7 +39,7 @@
     </p>
     <div class="ap-intro__chips" aria-hidden="true">
       <span class="ap-chip"><i class="ap-chip__dot"></i> Session Active</span>
-      <span class="ap-chip">3 Modules</span>
+      <span class="ap-chip">4 Modules</span>
       <span class="ap-chip">Secure Access</span>
     </div>
   </section>
@@ -161,6 +161,48 @@
 
         <div class="ap-module__footer ap-module__depth--foot">
           <span class="ap-module__num">03</span>
+          <span class="ap-module__cta">
+            Open Module
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-module ap-module--ember">
+      <div
+        class="ap-module__3d"
+        (mousemove)="onTilt($event)"
+        (mouseleave)="resetTilt($event)">
+
+        <div class="ap-module__sweep" aria-hidden="true">
+          <div class="ap-module__sheen"></div>
+          <div class="ap-module__ring"></div>
+        </div>
+
+        <a class="ap-module__link" routerLink="/package-management" aria-label="Open Package Management"></a>
+
+        <div class="ap-module__top">
+          <span class="ap-module__icon-wrap">
+            <span class="ap-module__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </span>
+          </span>
+          <span class="ap-module__badge"><i class="ap-module__dot" aria-hidden="true"></i> Active Module</span>
+        </div>
+
+        <h2 class="ap-module__title ap-module__depth--title">Package <em>Management</em></h2>
+        <div class="ap-module__rule" aria-hidden="true"></div>
+        <p class="ap-module__desc ap-module__depth--desc">
+          Configure your construction packages and their features — pricing, construction type and everything your site displays.
+        </p>
+
+        <div class="ap-module__footer ap-module__depth--foot">
+          <span class="ap-module__num">04</span>
           <span class="ap-module__cta">
             Open Module
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
